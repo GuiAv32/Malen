@@ -7,6 +7,10 @@ image Entrada1= "images/Fondos/Entrada_con_cabeza.png"
 image Entrada2= "images/Fondos/Entrada_sin_cabeza.png"
 image Dormitorio= "images/Fondos/Dormitorio.png"
 image Dormitorio1= "images/Fondos/DormitorioPostMes.png"
+image Cocina="images/Fondos/Cocina.png"
+image B1="images/Fondos/Balanza0.png"
+image B2="images/Fondos/BalanzaOro.png"
+image Comedor="images/Fondos/Comedor.png"
 
 # Variables
 default tBv = False
@@ -260,6 +264,8 @@ label where:
             jump dine
 
 label kitchen:
+    scene Cocina
+    with fade
     # Pantalla: Cocina
     # Personajes en Pantalla: Roga
     if not visited_kitchen:
@@ -385,6 +391,8 @@ label tower_B:
 
 label tower_C:
     # Pantalla: Mesa con Balanza
+    scene B2
+    with fade
     if not visited_tower_c:
         $ visited_tower_c = True
         $ rooms += 1
@@ -407,6 +415,8 @@ label storage:
     jump where
 
 label entrace:
+    scene Entrada
+    with fade
     # Pantalla: Entrada
     # Implementar click a la cabeza del alce y escaleras
     if not visited_entrance:
@@ -418,6 +428,8 @@ label entrace:
 # --HAY QUE IMPLEMENTAR TODA LA SEGUNDA PLANTA
 
 label dine:
+    scene Comedor
+    with fade
     # Pantalla: Comedor Enorme (mesas con mantas, candelabro, pinturas)
     # Personajes en Pantalla: Yaga
 
@@ -550,6 +562,9 @@ label dine_end:
     "Decides escapar en menos de una semana. Robarás todo lo que puedas para largarte"
     "No confías ni confiarás nunca en los adultos"
     "Así que, ¿Por qué te quedarías a pensar si quedarte o no?"
+
+    scene black
+    with fade
 
     # Transición: Pantalla negra
     # Texto en pantalla / Ilustraciones: "1 Mes después"
