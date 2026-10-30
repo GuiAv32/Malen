@@ -1,18 +1,23 @@
-﻿# Coloca el código de tu juego en este archivo.
-
-# Declara los personajes usados en el juego como en el ejemplo:
+﻿# Declara los personajes usados en el juego:
 define m = Character("[name]", color = "#A30031")
 define y = Character("Baba Yaga", color = "#9B00A3")
 define r = Character("Baba Roga", color = "#0085A3")
 
-# Definiendo algunas variables:
-python:
-    tBv = False
-    tCv = False
-    sv = False
-    rooms = 0
+# Variables
+default tBv = False
+default tCv = False
+default sv = False
+default rooms = 0
 
-# El juego comienza aquí.
+default asked_yaga = False
+default asked_kids = False
+default asked_food = False
+default sospecha = 0
+default duda = 0
+default tiene_linterna = False
+default tiene_cuchillo = False
+default tiene_llave_alce = False
+default roga_vivo = True
 
 label start:
     ### Acto 1 ###
