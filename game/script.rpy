@@ -127,7 +127,7 @@ label start:
 
     scene Entrada1
     with fade
-
+    play music "audio/Musica/Impertinence.mp3" volume 3.0 fadein 1.0
     # Personajes en Pantalla: Yaga
     y "Hola, mi buen mozo,  mi nombre es Yaga. Pero a algunos les gusta llamarme Baba Yaga"
 
