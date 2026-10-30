@@ -38,6 +38,8 @@ label start:
     ### Acto 1 ###
     scene black
     with fade
+    play music "audio/efectos/Carruaje .mp3" volume 3.0 fadein 2.0
+    
     # Pantalla: negra 
     # Audio: viento invernal y traqueteo de caballos
     "Deberías sentir el frío habitual de esta época del año"
@@ -49,7 +51,7 @@ label start:
 
     # Pantalla: carruaje
     "Has despertado en un carruaje en movimiento" 
-    "Te toca los cachetes y confirmas algo"
+    "Te tocas los cachetes y confirmas algo"
     "No estás soñando"
     "Lo cual, es demasiado bueno para ser real"
 
@@ -80,6 +82,8 @@ label start:
     "???" "Así fue como perdí un dedo mío…"
     "???" "…"
     "???" "…Ehh, olvida esooooo, ¿Quieres?"
+
+    stop music fadeout 2.0
 
     scene black
     with fade
