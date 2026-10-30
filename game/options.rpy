@@ -31,6 +31,7 @@ define config.version = "1.0"
 ## comillas triples y deja una línea en blanco entre párrafos.
 
 define gui.about = _p("""
+    AQUÍ HAY QUE PONER LAS LICENCIAS DE USO DE TODO
 """)
 
 
