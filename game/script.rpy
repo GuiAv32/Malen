@@ -369,7 +369,7 @@ label tower_C:
         $ visited_tower_c = True
         $ rooms += 1
 
-    "Describir lo extraño de la escena ante es imposible"
+    "Describir lo extraño de la escena es imposible"
     "Mejor es hora de irte"
 
     jump where
@@ -474,23 +474,30 @@ label dine_questions:
             y "No hay de qué"
             y "Esto debió serte dado desde hace mucho antes"
             y "Realmente, enfrentarte a un destino desafortunado sin vivir la alegría de vivir. ¿Qué horrible sería, no crees?"
+            
             r "¿Y a míiii no me agradecerán nada?"
+            
             y "Cállate"
+            
             jump dine_questions
 
         "¿Qué pasó con los otros niños?" if not asked_kids:
             $ asked_kids = True
             r "Oh, tuvieron que marcharse"
             r "No tuvieron mucho tiem-"
+            
             y "¡Mucho tiempo con nosotros!"
             y "Mira, chico, te ofrecemos vivir aquí"
             y "Sin embargo, en un mes. Quiero que termines de tomar una decisión"
             y "Hasta ahora, parece que te hemos secuestrado"
+            
             r "Buenoooo... en la práctica... es eso"
+            
             y "¡Silencio, animal!"
             y "Como decía, no quiero que pienses de inmediato en quedarte aquí"
             y "Tienes muchas oportunidades en la vida"
             y "Por lo cual, piensa en eso, ¿sí?"
+            
             jump dine_questions
 
         "¿Ustedes no van a comer?" if not asked_food:
@@ -498,9 +505,12 @@ label dine_questions:
             y "¡Uh, no, tranquilo, no!"
             y "Ya he comido"
             y "No necesito comer... en un tiempo"
+            
             r "Yo de por sí no como"
+            
             y "Jojojo, qué gracioso eres"
             y "¿verdad?"
+            
             jump dine_questions
 
         "Concluir conversación" if asked_yaga and asked_kids and asked_food:
@@ -526,8 +536,7 @@ label dine_end:
 
     jump act2
 
-
-    ### ACTO 2 ###
+### ACTO 2 ###
 
 label act2:
     # Pantalla: Habitación del niño (con dibujos y juguetes)
@@ -563,6 +572,7 @@ label act2:
         "Habría dormido mejor si el sirviente fuera más educado":
             $ sospecha += 1
             r "Perooo... solo hiceeee... mi trabajo"
+            
             y "Bueno, ese trabajo no es suficiente"
             y "Como siempre, siendo torpe. ¡Ten más educación!"
 
@@ -640,8 +650,7 @@ label yaga_diary:
 
     jump puzzles_section
 
-
-    ### EXPLORACIÓN DE PISTAS Y ENFRENTAMIENTOS ###
+### EXPLORACIÓN DE PISTAS Y ENFRENTAMIENTOS ###
 
 label puzzles_section:
     # Textos de pistas e interacciones de la fase de resolución
@@ -710,7 +719,7 @@ label puzzles_section:
             menu:
                 "Usar la linterna contra Baba Roga":
                     r "ΑΗΗΗΗΗΗΗΗΗΗΗΗΗΗ"
-                    r "AG, ¡No! ¿¡Por qué tú..!?"
+                    r "AGH, ¡No! ¿¡Por qué tú..!?"
                     r "No, por favor..."
                     r "Solo seguía... sus órdenes..."
                     "..."
@@ -721,7 +730,7 @@ label puzzles_section:
                     "Lo esquivas lo suficiente y escapas a la puerta. La cierras con llave para que no te siga"
                     r "Chiicccooooo, abreeee"
                     r "Por favor... ella me castigará si no..."
-                    r "Chicooooooooo000000000000"
+                    r "ChicoooooooooOOOOOOOO"
                     "Habla y habla"
                     "Su voz se va cansando..."
                     "Es inútil preocuparte porque él entre. No hay otra entrada. Decides irte y explorar los cuartos de invitados"
@@ -732,7 +741,7 @@ label puzzles_section:
             "Lo esquivas lo suficiente y escapas a la puerta. La cierras con llave para que no te siga"
             r "Chiicccooooo, abreeee"
             r "Por favor... ella me castigará si no..."
-            r "Chicooooooooo000000000000"
+            r "ChicoooooooooOOOOOOOOOOO"
             "Habla y habla"
             "Su voz se va cansando..."
             "Es inútil preocuparte porque él entre. No hay otra entrada. Decides irte y explorar los cuartos de invitados"
@@ -754,7 +763,7 @@ label puzzles_section:
             "Es eficaz, lo oyes gritar"
             "Fue instintivo. Te iba a atacar..."
             "Aún así, te duele. No sabes si tenía sentido o no su furia..."
-            r "Ahg... ahg..."
+            r "Agh... agh..."
             "Baba Roga se retuerce. No puede hablar. Su piel se incendia..."
             ".. y termina por convertirse en polvo"
             "Ya puedes mirar los cuartos de invitados"
@@ -769,14 +778,13 @@ label puzzles_section:
             r "ABREEEE LA PUERTAAAAAAAAAAAAAAAA"
             r "Túuuuuuuuuuuuuuuuu"
             r "Te mereeeeces tooooodo lo malo"
-            r "TOOOOODOOO000"
+            r "TOOOOODOOOOO"
             "Baba Roga sigue tocando la puerta. Decides irte."
             "Ya puedes mirar los cuartos de invitados"
 
     jump act3
 
-
-    ### ACTO 3: CUARTOS DE INVITADOS Y FINAL ###
+### ACTO 3: CUARTOS DE INVITADOS Y FINAL ###
 
 label act3:
 
@@ -903,7 +911,7 @@ label escape_attempt:
 
         "No, pero sigue estando mal.":
             $ duda += 1
-            y "....."
+            y "..."
             y "Ya veo..."
             y "Es un poco patético, para una mujer como yo, que quiera hablar contigo antes de que fallezcas. Lamento molestarte con palabrerías vacías"
 
@@ -922,7 +930,7 @@ label escape_attempt:
     # Sonido de llamas
     y "¿Ese ruido de dónde...?"
     y "Un momento... también huele a..."
-    y "¡! ¡ESE IDIOTAAAAAAA!"
+    y "¡ESE IDIOTAAAAAAA!"
 
     # Yaga se va
     "Se está quemando algo. Debe ser por la cocina de Roga"
