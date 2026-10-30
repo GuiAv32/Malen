@@ -7,6 +7,12 @@ define r = Character("Baba Roga", color = "#0085A3")
 default tBv = False
 default tCv = False
 default sv = False
+default visited_kitchen = False
+default visited_tower_a = False
+default visited_tower_b = False
+default visited_tower_c = False
+default visited_storage = False
+default visited_entrance = False
 default rooms = 0
 
 default asked_yaga = False
@@ -218,13 +224,13 @@ label where:
         "Ir al Torreon A":
             jump tower_A
 
-        "Ir al Torreon B" if not tBv:
+        "Ir al Torreon B" if not visited_tower_b:
             jump tower_B
 
-        "Ir al Torreon C" if not tCv:
+        "Ir al Torreon C" if not visited_tower_c:
             jump tower_C
 
-        "Ir al Almacén" if not sv:
+        "Ir al Almacén" if not visited_storage:
             jump storage
 
         "Ir a la Entrada":
@@ -236,6 +242,10 @@ label where:
 label kitchen:
     # Pantalla: Cocina
     # Personajes en Pantalla: Roga
+    if not visited_kitchen:
+        $ visited_kitchen = True
+        $ rooms += 1
+
     r "Oh… has venido conmiiiigo. Que… “encantador”"
     r "Disculpe. Estoy ocupadoooo en esto, querido huesped"
 
@@ -299,10 +309,18 @@ label kitchen:
 
 label tower_A:
     # Implementar Click de Libros
+    if not visited_tower_a:
+        $ visited_tower_a = True
+        $ rooms += 1
+
     jump where
 
 label tower_B:
     # Pantalla: Armario
+    if not visited_tower_b:
+        $ visited_tower_b = True
+        $ rooms += 1
+
     "No hay mucho aquí, solo un armario."
 
     menu closet_choice:
@@ -343,32 +361,38 @@ label tower_B:
         "Los gritos se alejan. Parece que no te notaron"
         "...Mejor regresar"
 
-        $ tBv = True
-        $ rooms += 1
         jump where
 
 label tower_C:
     # Pantalla: Mesa con Balanza
+    if not visited_tower_c:
+        $ visited_tower_c = True
+        $ rooms += 1
+
     "Describir lo extraño de la escena ante es imposible"
     "Mejor es hora de irte"
 
-    $ tCv = True
-    $ rooms += 1
     jump where
 
 label storage:
     # Pantalla: Almacén
+    if not visited_storage:
+        $ visited_storage = True
+        $ rooms += 1
+
     "Cuanto polvo…"
     "Si de aquí sale la comida, no quieres averiguar qué te están preparando"
     "Es tan desolado el lugar que sientes una ligera brisa helada en tus tobillos"
 
-    $ sv = True
-    $ rooms += 1
     jump where
 
 label entrace:
     # Pantalla: Entrada
     # Implementar click a la cabeza del alce y escaleras
+    if not visited_entrance:
+        $ visited_entrance = True
+        $ rooms += 1
+
     jump where
 
 # --HAY QUE IMPLEMENTAR TODA LA SEGUNDA PLANTA
