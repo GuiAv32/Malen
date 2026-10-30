@@ -61,12 +61,20 @@ label start:
     "No hace falta pensar demasiado para recordarlo…"
     "Es el mismo hombre que te preguntó si aceptabas ser acogido"
 
+    play sound "audio/efectos/Ladridos.mp3" volume 2.0
+
     # Audio: lobos ladrando
     "???" "Ay, ay, ay…. ¡Chuchos… estúpidos! aléjense, asustaraaaán al nene"
 
+    play sound "audio/efectos/GolpeLobo.mp3" volume 2.0
+
     "Unos ladridos y golpeteos a la puerta te sobresaltan. Parecen perros. Puede que sean algo más grande que un perro"
 
+    play sound "audio/efectos/Ladridos.mp3" volume 2.0
+
     "???" "Será un shooooock enorme… para él verlos tan pronto. Aguantense. Él eeeees su amo a partir de ahora… también"
+
+    stop sound fadeout 1.0
 
     # --Tal vez podríamos no poner esto y más bien solo hacerle fadeout al audio.
     "Los sonidos de esos supuestos sabuesos se alejan"
@@ -89,7 +97,7 @@ label start:
     with fade
     # Audio: nada
     "No tardas mucho en finalmente llegar. El transporte dejó de vibrar. Te toca bajarte y entrar a un enorme Castillo"
-
+    play sound "audio/efectos/PuertaAbrir.mp3" volume 2.0
     # Pantalla: Entrada Enorme
 
     scene Entrada1
