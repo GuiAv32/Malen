@@ -2,6 +2,9 @@
 define m = Character("[name]", color = "#A30031")
 define y = Character("Baba Yaga", color = "#9B00A3")
 define r = Character("Baba Roga", color = "#0085A3")
+image carruaje_bg = Movie(play="video/Carruaje.webm", loop=True)
+image Entrada1= "images/Fondos/Entrada_con_cabeza.png"
+image Entrada2= "images/Fondos/Entrada_sin_cabeza.png"
 
 # Variables
 default tBv = False
@@ -27,12 +30,16 @@ default roga_vivo = True
 
 label start:
     ### Acto 1 ###
-
+    scene black
+    with fade
     # Pantalla: negra 
     # Audio: viento invernal y traqueteo de caballos
     "Deberías sentir el frío habitual de esta época del año"
     "El infame aliento de Dios en tus poros"
     "Pero en esta ocasión, no es así"
+
+    scene carruaje_bg
+    with fade
 
     # Pantalla: carruaje
     "Has despertado en un carruaje en movimiento" 
@@ -68,17 +75,24 @@ label start:
     "???" "…"
     "???" "…Ehh, olvida esooooo, ¿Quieres?"
 
+    scene black
+    with fade
     # Audio: nada
     "No tardas mucho en finalmente llegar. El transporte dejó de vibrar. Te toca bajarte y entrar a un enorme Castillo"
 
     # Pantalla: Entrada Enorme
+
+    scene Entrada1
     # Personajes en Pantalla: Roga
     "???" "Ufff, Ha sido un largo. Encontrarte fue una suerte chico. Estabas helado. Te iba a dar hipotermia si llegaba demasiado tarde"
-    "???" "O algo mucho peor"
+    "???" "Y eso te hubiera llevado a algo... mucho peor"
     "???" "En fin. Es tal y como te prometí. Ahora eres acogido en nuestro humilde hogar"
-    "???" "La señora Yagaaaaa debe estar en la Sala de estar para recibirte"
+    "???" "La señora Yagaaaaa debe estar en su cuarto"
     "???" "Ella es una buena samaritana. Sabía que algún niño… podía estar en un deplorable estado"
-    "???" "Ven, te guío"
+    "???" "Espera aquí, ya regreso"
+
+    scene black
+    with fade
 
     # Pantalla: negra
     "Te preguntas si esto tiene sentido"
@@ -92,6 +106,9 @@ label start:
     # Audio: Música
     "???" "Juo, juo, juo…"
     "???" "Pero mira que tierno niño"
+
+    scene Entrada1
+    with fade
 
     # Personajes en Pantalla: Yaga
     y "Hola, mi buen mozo,  mi nombre es Yaga. Pero a algunos les gusta llamarme Baba Yaga"
