@@ -5,6 +5,8 @@ define r = Character("Baba Roga", color = "#0085A3")
 image carruaje_bg = Movie(play="video/Carruaje.webm", loop=True)
 image Entrada1= "images/Fondos/Entrada_con_cabeza.png"
 image Entrada2= "images/Fondos/Entrada_sin_cabeza.png"
+image Dormitorio= "images/Fondos/Dormitorio.png"
+image Dormitorio1= "images/Fondos/DormitorioPostMes.png"
 
 # Variables
 default tBv = False
@@ -208,7 +210,8 @@ label act1:
     y "Sí, sí. Perdona. Pero haz el favor de llevarlo a su nueva habitación"
 
     r "Como ordene"
-
+    scene Dormitorio
+    with fade
     # Pantalla: Habitación
     # Personajes en Pantalla: Roga
     r "Esta es su… habitación. Anterioooormente le perteneció a unaaaa chiquilla que estuvo con nosotros"
