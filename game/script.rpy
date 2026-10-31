@@ -2,6 +2,10 @@
 define m = Character("[name]", color = "#A30031")
 define y = Character("Baba Yaga", color = "#9B00A3")
 define r = Character("Baba Roga", color = "#0085A3")
+
+
+#Cuartos a lo largo del Juego
+
 image carruaje_bg = Movie(play="video/Carruaje.webm", loop=True)
 image Entrada1= "images/Fondos/Entrada_con_cabeza.png"
 image Entrada2= "images/Fondos/Entrada_sin_cabeza.png"
@@ -11,6 +15,17 @@ image Cocina="images/Fondos/Cocina.png"
 image B1="images/Fondos/Balanza0.png"
 image B2="images/Fondos/BalanzaOro.png"
 image Comedor="images/Fondos/Comedor.png"
+image LinternaIs="images/Fondos/LinternaEsta.png"
+image LinternaNot="images/Fondos/LinternaNoEsta.png"
+image CuboIs="images/Fondos/CuboEsta.png"
+image CuboNot="images/Fondos/CuboNoEsta.png"
+image SalaLeer="images/Fondos/SalaLeer.png"
+image SalaPapel="images/Fondos/SalaPapel.png"
+image Balanza0="images/Fondos/Balanza0.png"
+image BalanzaHuevoOro="images/Fondos/BalanzaOro.png"
+image AlmacenComida="images/Fondos/AlmacenComida.png"
+
+
 
 # Variables
 default tBv = False
@@ -127,12 +142,14 @@ label start:
 
     scene Entrada1
     with fade
-    play music "audio/Musica/Impertinence.mp3" volume 3.0 fadein 1.0
+    play music "audio/Musica/Impertinence.mp3" volume 1.0 fadein 1.0
     # Personajes en Pantalla: Yaga
     y "Hola, mi buen mozo,  mi nombre es Yaga. Pero a algunos les gusta llamarme Baba Yaga"
 
     # Personajes en Pantalla: Yaga, Roga
     "???" "¿Algunos? A todos, mi señora"
+
+    play sound "audio/efectos/GruyidoYaga.mp3" volume 2.0
 
     y "Solo algunos, simio pálido. Gente sin modales, como tú"
     y "Le estás dando mal ejemplo al niño"
@@ -149,6 +166,8 @@ label yaga_smile:
     y "¿Eh?"
     y "¿Te gusta?"    
     y "Bueno, tienes razón. No es un mal apodo"
+
+    play sound "audio/efectos/SuspiroRoga.mp3" volume 3.0
 
     "???" "Si usted dice… mi señora"
 
@@ -177,6 +196,8 @@ label act1:
 
     "???" "Noooo lo he hecho"
     "???" "Estaba conduciendo"
+
+    play sound "audio/efectos/GruyidoYaga.mp3" volume 2.0
 
     y "Pudiste haberte presentado a la vez… como sea"
     y "El niño debe estar asustado"
@@ -223,6 +244,8 @@ label act1:
 
     r "No necesita llamarme así…"
 
+    play sound "audio/efectos/GruyidoYaga.mp3" volume 2.0
+
     y "Sí, sí. Perdona. Pero haz el favor de llevarlo a su nueva habitación"
 
     r "Como ordene"
@@ -230,6 +253,8 @@ label act1:
     with fade
     # Pantalla: Habitación
     # Personajes en Pantalla: Roga
+
+    play sound "audio/efectos/SuspiroRoga.mp3" volume 3.0
     r "Esta es su… habitación. Anterioooormente le perteneció a unaaaa chiquilla que estuvo con nosotros"
     r "Era muy amigable. No obstante, quiso irse a estudiar en un colegio lejos de aquí"
     r "Así que, actualmente tú eres el dueño"
@@ -283,7 +308,7 @@ label kitchen:
     if not visited_kitchen:
         $ visited_kitchen = True
         $ rooms += 1
-
+    play sound "audio/efectos/SuspiroRoga.mp3" volume 4.0
     r "Oh… has venido conmiiiigo. Que… “encantador”"
     r "Disculpe. Estoy ocupadoooo en esto, querido huesped"
 
@@ -306,6 +331,7 @@ label kitchen:
         r "NUNCA"
         r "Bueno, emmm"
         r "Disculpe la desafortunada confusión"
+        play sound "audio/efectos/SuspiroRoga.mp3" volume 3.0
         r "Mi señora es llamada “Baba Yaga” y a mí no me molesta llamarla así"
         r "Pero la parte de “Baba” es solo por confundirla con mi “prometida” en el pueblo cercano"
         r "En realidad, su nombre es “Yaga”, a secas"
@@ -341,6 +367,7 @@ label kitchen:
         jump roga_dial1
 
     label roga_bye:
+        play sound "audio/efectos/SuspiroRoga.mp3" volume 3.0
         r "Chao, chico"
 
         jump where
@@ -350,6 +377,8 @@ label tower_A:
     if not visited_tower_a:
         $ visited_tower_a = True
         $ rooms += 1
+    scene SalaLeer
+    with fade
 
     jump where
 
@@ -358,7 +387,8 @@ label tower_B:
     if not visited_tower_b:
         $ visited_tower_b = True
         $ rooms += 1
-
+    scene CuboIs
+    with fade
     "No hay mucho aquí, solo un armario."
 
     menu closet_choice:
@@ -373,9 +403,9 @@ label tower_B:
         "Decides esconderte en el Armario"
 
         # Pantalla: Negra
-
+        play sound "audio/efectos/SuspiroRoga.mp3" volume 3.0
         r "¿Me ha llamado… mi señora?"
-
+        play sound "audio/efectos/GruyidoYaga.mp3" volume 2.0
         y "Sí, tonto. ¿Qué es ese nefasto aroma que desprende tu arte obsceno?"
 
         r "Le he dicho… que noooo llame así a mi comida…"
@@ -416,6 +446,8 @@ label tower_C:
 
 label storage:
     # Pantalla: Almacén
+    scene AlmacenComida
+    with fade
     if not visited_storage:
         $ visited_storage = True
         $ rooms += 1
@@ -444,7 +476,8 @@ label dine:
     with fade
     # Pantalla: Comedor Enorme (mesas con mantas, candelabro, pinturas)
     # Personajes en Pantalla: Yaga
-
+    stop music fadeout 1.0
+    
     # Caso 1: Si exploró al menos dos habitaciones ($ rooms >= 2)
     if rooms >= 2:
         y "¡Bienvenido chico!"
@@ -452,7 +485,7 @@ label dine:
         y "Un momento, en serio ¿Lo que veo ahí es una sonrisa?"
         y "Jujujuju. ¡Qué chuecos tienes tus dienticos de leche!"
         y "Una gran diferencia para tu... “aspecto original”"
-
+    
     # Caso 2: Si fue directo al comedor ($ rooms < 2)
     else:
         y "Has sido muy rápido"
@@ -462,6 +495,7 @@ label dine:
         y "Lástima que nuestro “sirviente” no sea más competente por eso"
 
     # Personajes en Pantalla: Yaga, Roga
+    play music "audio/Musica/Bourree .mp3" volume 1 fadein 1.0
     y "¡Oh, mira que te tardas, lenturro!"
 
     r "Es lo que... hay... señora"
@@ -469,6 +503,7 @@ label dine:
 
     y "¿Y por eso el niño tendrá menos hambre?"
     y "¡Ya dale de comer!"
+    stop music fadeout 2.0
 
     "Recibes el plato en tu mesa..."
     "Se ve sano"
@@ -482,6 +517,8 @@ label dine:
     "....."
     "..."
     "Estaba... delicioso..."
+
+    play music "audio/Musica/Bourree .mp3" volume 0.5 fadein 2.0
 
     y "¿Hmmm?"
     y "¿Estás llorando, niño?"
@@ -518,7 +555,7 @@ label dine_questions:
             y "No hay de qué"
             y "Esto debió serte dado desde hace mucho antes"
             y "Realmente, enfrentarte a un destino desafortunado sin vivir la alegría de vivir. ¿Qué horrible sería, no crees?"
-            
+            play sound "audio/efectos/SuspiroRoga.mp3" volume 4.0
             r "¿Y a míiii no me agradecerán nada?"
             
             y "Cállate"
@@ -534,9 +571,9 @@ label dine_questions:
             y "Mira, chico, te ofrecemos vivir aquí"
             y "Sin embargo, en un mes. Quiero que termines de tomar una decisión"
             y "Hasta ahora, parece que te hemos secuestrado"
-            
+            play sound "audio/efectos/SuspiroRoga.mp3" volume 4.0
             r "Buenoooo... en la práctica... es eso"
-            
+            play sound "audio/efectos/GruyidoYaga.mp3" volume 2.0
             y "¡Silencio, animal!"
             y "Como decía, no quiero que pienses de inmediato en quedarte aquí"
             y "Tienes muchas oportunidades en la vida"
@@ -566,6 +603,7 @@ label dine_end:
     y "Te esperan varios días de deliberación"
 
     # Transición: Cuarto del niño
+    stop music fadeout 2.0
     "La habitación ya está climatizada"
     "Te espera una agradable cama para tí"
     "No sabes si esto es real"
@@ -574,9 +612,12 @@ label dine_end:
     "Decides escapar en menos de una semana. Robarás todo lo que puedas para largarte"
     "No confías ni confiarás nunca en los adultos"
     "Así que, ¿Por qué te quedarías a pensar si quedarte o no?"
+    
 
     scene black
     with fade
+
+    
 
     # Transición: Pantalla negra
     # Texto en pantalla / Ilustraciones: "1 Mes después"
@@ -689,10 +730,12 @@ label yaga_diary:
     "Iré a orar hasta que sea la hora... aunque ese idiota en el cielo sea injusto, veremos si se ablanda un poco con él en el más allá"
 
     # Transición: Sala / Niño arrodillado
+    "........"
+    "¿Por...qué?"
+    "¿Por qué...?"
     "¿Por qué?"
-    "¿Por qué?"
-    "¿Por qué?"
-    "¿Por qué? ¿Por qué? ¿Por qué? ¿Por qué? ¿Por qué? ¿Por qué? ¿Por qué?"
+    "¿Por qué? ¿Por qué? ¿Por qué? ¿Por qué? ¿Por qué? ¿Por qué? ¿Por qué?¿POR QUÉ?"
+    "..............."
     "...Necesitas escapar de aquí"
 
     jump puzzles_section
