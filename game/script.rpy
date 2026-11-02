@@ -295,7 +295,7 @@ label where:
             jump storage
 
         "Ir a la Entrada":
-            jump entrace
+            jump entrance
 
         "Ir al Comedor":
             jump dine
@@ -373,14 +373,35 @@ label kitchen:
         jump where
 
 label tower_A:
-    # Implementar Click de Libros
     if not visited_tower_a:
         $ visited_tower_a = True
         $ rooms += 1
     scene SalaLeer
     with fade
 
-    jump where
+    # Pantalla: Torreón A (Estantería con libros, mesa y sofá)
+    "Ves una estantería con varios libros, además de una mesa y un sofá donde sentarse"
+    "Hay tres libros que llaman tu atención por sus títulos"
+
+    label tower_A_menu:
+        menu:
+            "Examinar 'La Odisea'":
+                "Agarras el libro y lees un poco"
+                "Te cuesta mucho leer como para empezar con esto ahora, así que lo dejas tal como está"
+                jump tower_A_menu
+
+            "Examinar 'La Biblia'":
+                "Pasas las hojas un momento"
+                "Te cuesta mucho leer como para empezar con esto ahora, así que la dejas tal como está"
+                jump tower_A_menu
+
+            "Examinar 'El Cíclope' de Eurípides":
+                "Revisas las páginas de la obra de Eurípides"
+                "Te cuesta mucho leer como para empezar con esto ahora, así que lo dejas tal como está"
+                jump tower_A_menu
+
+            "Regresar":
+                jump where
 
 label tower_B:
     # Pantalla: Armario
@@ -458,18 +479,110 @@ label storage:
 
     jump where
 
-label entrace:
-    scene Entrada
-    with fade
-    # Pantalla: Entrada
-    # Implementar click a la cabeza del alce y escaleras
+label entrance:
     if not visited_entrance:
         $ visited_entrance = True
         $ rooms += 1
 
-    jump where
+    scene Entrada1
+    with fade
+
+    # Pantalla: Entrada (Paredes adoquinadas, alfombra con líneas amarillas, focos)
+    "Estás en la enorme entrada del castillo"
+
+    menu entrance_menu:
+        "Tocar la cabeza de alce":
+            "Ese alce parece estar viéndote con disgusto..."
+            "Te gustaría tirarlo de su egocéntrico lugar"
+            jump entrance_menu
+
+        "Revisar las escaleras":
+            "Ves dos escaleras que conducen hacia una segunda planta y una puerta en medio de estas"
+            menu:
+                "Subir a la segunda planta":
+                    jump planta_dos
+
+                "Quedarse en la planta baja":
+                    jump entrance_menu
+
+        "Regresar":
+            jump where
 
 # --HAY QUE IMPLEMENTAR TODA LA SEGUNDA PLANTA
+label planta_dos:
+    # Pantalla: Segunda Planta
+    "Ya estás en la Segunda Planta, ¿a dónde vas?"
+
+    menu planta_dos_menu:
+        "Ir a la Sala de estar":
+            jump segunda_sala_estar
+
+        "Ir al Almacén de materiales":
+            jump almacen_materiales
+
+        "Ir al Baño":
+            jump bano_planta_dos
+
+        "Bajar a la planta baja":
+            jump entrace
+
+
+label segunda_sala_estar:
+    # Pantalla: Sala de estar (segunda planta - varios sofás y una mesa en el centro)
+    "Ves varios sofás y, en el centro de estos, una mesa"
+    "Notas que debajo de esa mesa hay un papel asomándose"
+
+    menu sala_estar_menu:
+        "Examinar el papel bajo la mesa":
+            "Lees lo que dice el papel:"
+            "“La bestia fue eclipsada. El héroe de los dioses fue victorioso tras terminar su viaje. Pero su civilización cambió de fe pese a sus logros”"
+            "¿Qué sentido tendrá esto?"
+            
+            # Aparición sorpresa de Baba Yaga según el PDF
+            y "Oh, aquí estabas"
+            y "Al final, decidiste explorar, ¿Eh?"
+            y "Qué bueno, qué bueno"
+            y "Eso dice mucho de tí. ¿Debes estar contento, no?"
+            y "Los niños como tú no merecen vivir con la incompetencia de los adultos"
+            y "Por lo tanto, supongo que expío los pecados de mis congéneres"
+            y "Como sea, he estado esperando en el Comedor"
+            y "Ven cuando te sientas listo"
+            y "El idiota de Roga es horrible, pero sabe hacer platillos... “decentes”"
+            
+            "Baba Yaga se marcha"
+            jump planta_dos_menu
+
+        "Regresar al distribuidor de la segunda planta":
+            jump planta_dos
+
+
+label almacen_materiales:
+    # Pantalla: Almacén de materiales (mesas, cajas)
+    "Es una habitación llena de mesas y cajas"
+    "En una de ellas hay una linterna enorme, sin foco"
+
+    menu almacen_menu:
+        "Examinar la linterna":
+            "Te suena haber visto eso en algún lugar"
+            "Recuerdas que los policías lo llamaban “linterna” en la calle, y que sirve para iluminar"
+            "Solo que esta es más grande que una normal"
+            $ tiene_linterna = True
+            "¡Te has quedado con la linterna!"
+            jump almacen_menu
+
+        "Regresar":
+            jump planta_dos
+
+
+label bano_planta_dos:
+    # Pantalla: Baño
+    "Sientes el vapor tocar tu piel. El agua no es fría. No es sucia"
+    "Es agua para asearte"
+    "¿Siquiera... eso es posible?"
+    
+    menu bano_menu:
+        "Regresar":
+            jump planta_dos
 
 label dine:
     scene Comedor
