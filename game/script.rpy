@@ -546,6 +546,8 @@ label planta_dos:
 
 label segunda_sala_estar:
     # Pantalla: Sala de estar (segunda planta - varios sofás y una mesa en el centro)
+    scene SalaPapel
+    with fade
     "Ves varios sofás y, en el centro de estos, una mesa"
     "Notas que debajo de esa mesa hay un papel asomándose"
 
@@ -574,6 +576,8 @@ label segunda_sala_estar:
 
 
 label almacen_materiales:
+    scene LinternaIs
+    with fade
     # Pantalla: Almacén de materiales (mesas, cajas)
     "Es una habitación llena de mesas y cajas"
     "En una de ellas hay una linterna enorme, sin foco"
@@ -593,6 +597,8 @@ label almacen_materiales:
 
 label bano_planta_dos:
     # Pantalla: Baño
+    scene Bayo
+    with fade
     "Sientes el vapor tocar tu piel. El agua no es fría. No es sucia"
     "Es agua para asearte"
     "¿Siquiera... eso es posible?"
