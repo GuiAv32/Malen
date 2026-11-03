@@ -27,6 +27,8 @@ image AlmacenComida="images/Fondos/AlmacenComida.png"
 image Bayo="images/Fondos/Bayo.png"
 image CuartoRogaNoFoco="images/Fondos/TallerRoga_sinfoco.png"
 image CuartoRogaFoco="images/Fondos/TallerRoga_confoco.png"
+image CuartoYaga="images/Fondos/CuartoYaga.png"
+image CuartoYaga1="images/Fondos/CuartoYaga1.png"
 #####Cuartos Ninos###
 image Cuarto1="images/Fondos/Cuarto1.png"
 image Cuarto2="images/Fondos/Cuarto2.png"
@@ -660,7 +662,7 @@ label dine:
     "No..."
     "No lo entiendes"
 
-    y "Ya te sientes mejor, ¿no, muchacho?"
+    y "Ya te sientes mejor, ¿no,[name]?"
     y "¡No hay nada mejor que una sopa, un abrazo y un techo encima tuyo!"
     y "Sé que los jóvenes como tú tienden a costarles dejarse amar. No los culpo, las calles los han convertido en niños-adultos. Adultos rotos"
     y "No quiero que temas aquí"
@@ -756,7 +758,8 @@ label dine_end:
 
 label act2:
     # Pantalla: Habitación del niño (con dibujos y juguetes)
-
+    scene Dormitorio1
+    with fade
     "La mañana se siente fresca"
     "El invierno azota fuera y no por eso se cuela en tu ventana"
     "De saber que estarías aquí hace más de un mes..."
@@ -776,6 +779,8 @@ label act2:
             r "No es una pregunta. Ven, chico..."
 
     # Transición: Comedor
+    scene Comedor
+    with fade
     y "Miren nada más, como está el muchacho"
     y "Te ves mejor con ropa de hombrecito bien portado"
     y "¿Cómo amaneciste?"
@@ -821,6 +826,8 @@ label act2:
     y "Bien, bien. ¡Chaito, mi niño!"
 
     # Transición: Cuarto del niño
+    scene Dormitorio1
+    with fade
     "Tras comer, te retiras a tu habitación"
     "Todas estas cosas... TUS cosas están aquí"
     "Nunca creíste que las tendrías"
@@ -831,17 +838,29 @@ label act2:
     "La prueba definitiva para todo"
     "Que sea lo que Dios quiera..."
 
+    scene black
+    with fade
+
+    play sound "audio/efectos/LlaveAbre.mp3" volume 4.0
+
     "Aquí es"
     "No sabes si esto es justo para ella..."
     "Pero sí es justo para tí"
 
     # Transición: Cuarto de Baba Yaga / Caldero
+    scene CuartoYaga
+    with fade
+    
     "¿Así que esto es su cuarto?"
     "Jurarías que no... no pinta con su apariencia"
 
 label yaga_diary:
     "Esto... parece un Diario"
     "Por suerte, has mejorado en leer"
+
+    scene black
+    with fade
+
     "Entrada, nombre del niño: [name]"
     "Ya ha pasado casi un mes"
     "Estamos cerca de la fecha. Es horrible. Pero el destino es inevitable"
@@ -858,6 +877,10 @@ label yaga_diary:
     "Iré a orar hasta que sea la hora... aunque ese idiota en el cielo sea injusto, veremos si se ablanda un poco con él en el más allá"
 
     # Transición: Sala / Niño arrodillado
+
+    scene CuartoYaga
+    with fade
+
     "........"
     "¿Por...qué?"
     "¿Por qué...?"
@@ -1007,6 +1030,8 @@ label puzzles_section:
 label act3:
 
 label guest_room_1:
+    scene Cuarto1
+    with fade
     "El cuarto estaba cerrado, pero no hay polvo acumulado. Alguien cuidaba con esmero esta habitación"
     "Ves una nota, ¿La lees?"
     menu:
@@ -1021,6 +1046,8 @@ label guest_room_1:
             pass
 
 label guest_room_2:
+    scene Cuarto2
+    with fade
     "El cuarto estaba cerrado, pero no hay polvo acumulado. Alguien cuidaba con esmero esta habitación"
     "Ves una nota, ¿La lees?"
     menu:
@@ -1033,6 +1060,8 @@ label guest_room_2:
             pass
 
 label guest_room_3:
+    scene Cuarto3
+    with fade
     "El cuarto estaba cerrado, pero no hay polvo acumulado. Alguien cuidaba con esmero esta habitación"
     "Ves una nota, ¿La lees?"
     menu:
@@ -1057,6 +1086,8 @@ label guest_room_3:
             pass
 
 label guest_room_4:
+    scene Cuarto4
+    with fade
     "El cuarto estaba cerrado, pero no hay polvo acumulado. Alguien cuidaba con esmero esta habitación"
     "Ves una nota, ¿La lees?"
     menu:
@@ -1071,6 +1102,8 @@ label guest_room_4:
             pass
 
 label guest_room_5:
+    scene Cuarto5
+    with fade
     "El cuarto estaba cerrado, pero no hay polvo acumulado. Alguien cuidaba con esmero esta habitación"
     "Ves una nota, ¿La lees?"
     menu:
