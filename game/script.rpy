@@ -242,6 +242,8 @@ label where:
             jump entrance
         "Ir al Comedor" if not diario_leido:
             jump dine
+        "Ir al Cuarto de Baba Roga" if tiene_llave_huevo:
+            jump roga_room
 
 label kitchen:
     scene Cocina
@@ -318,7 +320,7 @@ label kitchen:
             "Ahora que se ha ido, robas el huevo"
             "No hay que perder el tiempo"
             $ tiene_huevo = True
-            jump where
+            jump tower_C
 
 
 label tower_A:
@@ -440,6 +442,110 @@ label entrance:
                     jump entrance_menu
         "Regresar":
             jump where
+
+label roga_room:
+    # En el cuarto de Baba Roga
+    "Encuentras una serie de notas casi decorando el cuarto"
+    "'La señora me ha pedido cuidar de la llave de los invitados'"
+    "'Seguro le retuerce el estómago... recordar el pecado que se esconde en cada habitación...'"
+    "'Solo en los niños siente pena. ¿Por qué no en mí, su sirviente?'"
+    "'Como sea, he dejado la llave en el jardín. En el altar del centro'"
+    "'Eeeees imposible que el niño llegué ahí. Los árboles bañan el jardín con sombras y los chuchos estáaaan rondando'"
+    "..."
+    "Hay un foco aquí"
+
+    if tiene_linterna:
+        "Podría ser útil con tu linterna, así que se la colocas"
+    else:
+        "...aunque no tienes nada con lo que te sirva aún"
+
+    # Patio y Huida
+    "Ya tienes la llave de invitados"
+    "Puede que halles pistas ahí"
+
+    menu:
+        "Salir":
+            pass
+
+    # Confrontación con Baba Roga
+    if sospecha < 2:
+        r "¿Qué haces aquí?"
+        r "Chico... ¿abriste la Jaula... y robaste la llave?"
+        r "... niño..."
+        r "¿Acaso te diste cuenta?"
+        r "¿Saaaabes lo que nosotros...?"
+        r "..."
+        r "Lo... siento"
+
+        if tiene_linterna:
+            menu:
+                "Usar la linterna contra Baba Roga":
+                    r "ΑΗΗΗΗΗΗΗΗΗΗΗΗΗΗ"
+                    r "AGH, ¡No! ¿¡Por qué tú..!?"
+                    r "No, por favor..."
+                    r "Solo seguía... sus órdenes..."
+                    "..."
+                    "Ya puedes mirar los cuartos de invitados"
+                    $ roga_vivo = False
+                "Huir":
+                    "Eludes sus garras"
+                    "Intenta capturarte, pero es lento"
+                    "Lo esquivas lo suficiente y escapas a la puerta. La cierras con llave para que no te siga"
+                    r "Chiicccooooo, abreeee"
+                    r "Por favor... ella me castigará si no..."
+                    r "ChicoooooooooOOOOOOOO"
+                    "Habla y habla"
+                    "Su voz se va cansando..."
+                    "Es inútil preocuparte porque él entre. No hay otra entrada. Decides irte y explorar los cuartos de invitados"
+                    "Ya puedes mirar los cuartos de invitados"
+        else:
+            "Eludes sus garras"
+            "Intenta capturarte, pero es lento"
+            "Lo esquivas lo suficiente y escapas a la puerta. La cierras con llave para que no te siga"
+            r "Chiicccooooo, abreeee"
+            r "Por favor... ella me castigará si no..."
+            r "ChicoooooooooOOOOOOOOOOO"
+            "Habla y habla"
+            "Su voz se va cansando..."
+            "Es inútil preocuparte porque él entre. No hay otra entrada. Decides irte y explorar los cuartos de invitados"
+            "Ya puedes mirar los cuartos de invitados"
+
+    else: # sospecha >= 2
+        r "..."
+        r "Así queeee..."
+        r "¿Looo sabías, eh?"
+        r "Pareceeee que su pésima actitud... no fue lo único que te quedaste de ella"
+        r "Ja... ja... ja... ja..."
+        r "A ella no puedo hacerle nada..."
+        r "Ella es mi maestra"
+        r "¿Peroooo a tí?"
+        r "Me servirás para desestresarmeeee..."
+
+        if tiene_linterna:
+            "Baba Roga te amenaza, así que usas la linterna"
+            "Es eficaz, lo oyes gritar"
+            "Fue instintivo. Te iba a atacar..."
+            "Aún así, te duele. No sabes si tenía sentido o no su furia..."
+            r "Agh... agh..."
+            "Baba Roga se retuerce. No puede hablar. Su piel se incendia..."
+            ".. y termina por convertirse en polvo"
+            "Ya puedes mirar los cuartos de invitados"
+            $ roga_vivo = False
+        else:
+            "Baba Roga intenta matarte"
+            "Corres a un costado cuando él usa sus uñas para tratar de matarte"
+            "No intenta capturarte, te quiere usar como carne de desestrés"
+            "Tiene sentido... le trataste mal. Mal, mal, mal"
+            "Ni siquiera sabiendo cómo se siente, lo trataste mejor..."
+            "Aún así, evitas sus garras..."
+            "Es lento. Tú más joven y ágil. A prisas, corres a la puerta, sales, y cierras la puerta con la llave"
+            r "ABREEEE LA PUERTAAAAAAAAAAAAAAAA"
+            r "Túuuuuuuuuuuuuuuuu"
+            r "Te mereeeeces tooooodo lo malo"
+            r "TOOOOODOOOOO"
+            "Baba Roga sigue tocando la puerta. Decides irte."
+            "Ya puedes mirar los cuartos de invitados"
+    jump act3
 
 label planta_dos:
     # Pantalla: Segunda Planta
@@ -747,103 +853,6 @@ label yaga_diary:
             "..."
             "Ya has visto suficiente. Es mejor irse ahora"
             jump where
-
-
-### EXPLORACIÓN DE PISTAS Y ENFRENTAMIENTOS ###
-
-label puzzles_section:
-    # En el cuarto de Baba Roga
-    "Nota de Baba Roga: La señora me ha pedido cuidar de la llave de los invitados"
-    "Nota de Baba Roga: Seguro le retuerce el estómago... recordar el pecado que se esconde en cada habitación..."
-    "Nota de Baba Roga: Solo en los niños siente pena. ¿Por qué no en mí, su sirviente?"
-    "Nota de Baba Roga: Como sea, he dejado la llave en el jardín. En el altar del centro"
-    "Nota de Baba Roga: Eeeees imposible que el niño llegué ahí. Los árboles bañan el jardín con sombras y los chuchos estáaaan rondando"
-
-    if tiene_linterna:
-        "Este foco podría ser útil con tu linterna, así que se la colocas"
-
-    # Patio y Huida
-    "Ya tienes la llave de invitados"
-    "Puede que halles pistas ahí"
-
-    # Confrontación con Baba Roga
-    if sospecha < 2:
-        r "¿Qué haces aquí?"
-        r "Chico... ¿abriste la Jaula... y robaste la llave?"
-        r "... niño..."
-        r "¿Acaso te diste cuenta?"
-        r "¿Saaaabes lo que nosotros...?"
-        r "..."
-        r "Lo... siento"
-
-        if tiene_linterna:
-            menu:
-                "Usar la linterna contra Baba Roga":
-                    r "ΑΗΗΗΗΗΗΗΗΗΗΗΗΗΗ"
-                    r "AGH, ¡No! ¿¡Por qué tú..!?"
-                    r "No, por favor..."
-                    r "Solo seguía... sus órdenes..."
-                    "..."
-                    "Ya puedes mirar los cuartos de invitados"
-                "Huir":
-                    "Eludes sus garras"
-                    "Intenta capturarte, pero es lento"
-                    "Lo esquivas lo suficiente y escapas a la puerta. La cierras con llave para que no te siga"
-                    r "Chiicccooooo, abreeee"
-                    r "Por favor... ella me castigará si no..."
-                    r "ChicoooooooooOOOOOOOO"
-                    "Habla y habla"
-                    "Su voz se va cansando..."
-                    "Es inútil preocuparte porque él entre. No hay otra entrada. Decides irte y explorar los cuartos de invitados"
-                    "Ya puedes mirar los cuartos de invitados"
-        else:
-            "Eludes sus garras"
-            "Intenta capturarte, pero es lento"
-            "Lo esquivas lo suficiente y escapas a la puerta. La cierras con llave para que no te siga"
-            r "Chiicccooooo, abreeee"
-            r "Por favor... ella me castigará si no..."
-            r "ChicoooooooooOOOOOOOOOOO"
-            "Habla y habla"
-            "Su voz se va cansando..."
-            "Es inútil preocuparte porque él entre. No hay otra entrada. Decides irte y explorar los cuartos de invitados"
-            "Ya puedes mirar los cuartos de invitados"
-
-    else: # sospecha >= 2
-        r "..."
-        r "Así queeee..."
-        r "¿Looo sabías, eh?"
-        r "Pareceeee que su pésima actitud... no fue lo único que te quedaste de ella"
-        r "Ja... ja... ja... ja..."
-        r "A ella no puedo hacerle nada..."
-        r "Ella es mi maestra"
-        r "¿Peroooo a tí?"
-        r "Me servirás para desestresarmeeee..."
-
-        if tiene_linterna:
-            "Baba Roga te amenaza, así que usas la linterna"
-            "Es eficaz, lo oyes gritar"
-            "Fue instintivo. Te iba a atacar..."
-            "Aún así, te duele. No sabes si tenía sentido o no su furia..."
-            r "Agh... agh..."
-            "Baba Roga se retuerce. No puede hablar. Su piel se incendia..."
-            ".. y termina por convertirse en polvo"
-            "Ya puedes mirar los cuartos de invitados"
-        else:
-            "Baba Roga intenta matarte"
-            "Corres a un costado cuando él usa sus uñas para tratar de matarte"
-            "No intenta capturarte, te quiere usar como carne de desestrés"
-            "Tiene sentido... le trataste mal. Mal, mal, mal"
-            "Ni siquiera sabiendo cómo se siente, lo trataste mejor..."
-            "Aún así, evitas sus garras..."
-            "Es lento. Tú más joven y ágil. A prisas, corres a la puerta, sales, y cierras la puerta con la llave"
-            r "ABREEEE LA PUERTAAAAAAAAAAAAAAAA"
-            r "Túuuuuuuuuuuuuuuuu"
-            r "Te mereeeeces tooooodo lo malo"
-            r "TOOOOODOOOOO"
-            "Baba Roga sigue tocando la puerta. Decides irte."
-            "Ya puedes mirar los cuartos de invitados"
-
-    jump act3
 
 ### ACTO 3: CUARTOS DE INVITADOS Y FINAL ###
 
