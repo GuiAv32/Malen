@@ -13,9 +13,6 @@ image B2="images/Fondos/BalanzaOro.png"
 image Comedor="images/Fondos/Comedor.png"
 
 # Variables
-default tBv = False
-default tCv = False
-default sv = False
 default visited_kitchen = False
 default visited_tower_a = False
 default visited_tower_b = False
@@ -29,8 +26,12 @@ default asked_kids = False
 default asked_food = False
 default sospecha = 0
 default duda = 0
+default diario_leido = False
 default tiene_linterna = False
+default tiene_huevo = False
+default tiene_balde = False
 default tiene_cuchillo = False
+default tiene_llave_huevo = False
 default tiene_llave_alce = False
 default roga_vivo = True
 
@@ -227,19 +228,19 @@ label where:
     # Pantalla: Negra
     "¿A dónde irás?"
     menu:
-        "Ir a la Cocina":
+        "Ir a la Cocina" if not tiene_huevo:
             jump kitchen
         "Ir al Torreon A":
             jump tower_A
-        "Ir al Torreon B" if not visited_tower_b:
+        "Ir al Torreon B" if not visited_tower_b or not diario_leido:
             jump tower_B
-        "Ir al Torreon C" if not visited_tower_c:
+        "Ir al Torreon C":
             jump tower_C
-        "Ir al Almacén" if not visited_storage:
+        "Ir al Almacén" if not visited_storage or not diario_leido:
             jump storage
         "Ir a la Entrada":
             jump entrance
-        "Ir al Comedor":
+        "Ir al Comedor" if not diario_leido:
             jump dine
 
 label kitchen:
@@ -247,6 +248,8 @@ label kitchen:
     with fade
     # Pantalla: Cocina
     # Personajes en Pantalla: Roga
+
+    # --IMPLEMENTAR FASE DISTINTA--
     if not visited_kitchen:
         $ visited_kitchen = True
         $ rooms += 1
@@ -254,45 +257,69 @@ label kitchen:
     r "Oh… has venido conmiiiigo. Que… “encantador”"
     r "Disculpe. Estoy ocupadoooo en esto, querido huesped"
 
-    menu roga_dial1:
-        "¿Eres el esposo de Baba Yaga?":
-            r "Uy… no"
-            r "No, no, no"
-            r "NUNCA"
-            r "Bueno, emmm"
-            r "Disculpe la desafortunada confusión"
-            r "Mi señora es llamada “Baba Yaga” y a mí no me molesta llamarla así"
-            r "Pero la parte de “Baba” es solo por confundirla con mi “prometida” en el pueblo cercano"
-            r "En realidad, su nombre es “Yaga”, a secas"
-            r "Séeee que es raro, si no estamos comprometidos"
-            r "Pero, aquí entre nos"
-            r "Me gusta hacerme justicia por los excesos de sus insultos…"
-            r "Así que, BABA YAGA, BABA YAGA"
-            y "¡TE ESCUCHO DESDE LA OTRA PUNTA DEL CASTILLO, SARANGANO DE PELOS MUERTOS!"
-            r "..."
-            r "Uf, casi me escucha"
-            jump roga_dial1
+    if not diario_leido:
+        menu roga_dial1:
+            "¿Eres el esposo de Baba Yaga?":
+                r "Uy… no"
+                r "No, no, no"
+                r "NUNCA"
+                r "Bueno, emmm"
+                r "Disculpe la desafortunada confusión"
+                r "Mi señora es llamada “Baba Yaga” y a mí no me molesta llamarla así"
+                r "Pero la parte de “Baba” es solo por confundirla con mi “prometida” en el pueblo cercano"
+                r "En realidad, su nombre es “Yaga”, a secas"
+                r "Séeee que es raro, si no estamos comprometidos"
+                r "Pero, aquí entre nos"
+                r "Me gusta hacerme justicia por los excesos de sus insultos…"
+                r "Así que, BABA YAGA, BABA YAGA"
+                y "¡TE ESCUCHO DESDE LA OTRA PUNTA DEL CASTILLO, SARANGANO DE PELOS MUERTOS!"
+                r "..."
+                r "Uf, casi me escucha"
+                jump roga_dial1
 
-        "¿Uy, qué sopa haces? Huele bien":
-            r "¿Ah sí?"
-            r "Creía que estaba arruinándola"
-            r "Tengo dificultades para oler…"
-            r "Y saborear. Sobre todo saborear"
-            r "Ahhhhh…"
-            r "Extraño mi juventud"
-            jump roga_dial1
+            "¿Uy, qué sopa haces? Huele bien":
+                r "¿Ah sí?"
+                r "Creía que estaba arruinándola"
+                r "Tengo dificultades para oler…"
+                r "Y saborear. Sobre todo saborear"
+                r "Ahhhhh…"
+                r "Extraño mi juventud"
+                jump roga_dial1
 
-        "¿Por qué tan pálido?":
-            r "Oh, por nada en especial"
-            r "Soy sensible a la luz"
-            r "La del sol, más que nada"
-            r "Aunque a veces un foco bieeeen potente me hace daño"
-            r "No te sorprendas por eso si ves que apago las luces a mi paso"
-            jump roga_dial1
+            "¿Por qué tan pálido?":
+                r "Oh, por nada en especial"
+                r "Soy sensible a la luz"
+                r "La del sol, más que nada"
+                r "Aunque a veces un foco bieeeen potente me hace daño"
+                r "No te sorprendas por eso si ves que apago las luces a mi paso"
+                jump roga_dial1
 
-        "¡Adiós!":
-            r "Chao, chico"
+            "¡Adiós!":
+                r "Chao, chico"
+                jump where
+    else:
+        if not tiene_balde:
+            "No, aún no tienes lo necesario para conseguir lo que buscas aquí."
             jump where
+        else:
+            "Sería útil tirar el agua aquí"
+            "Tiras el agua para distraer a Roga"
+            r "¿Qué ocurre chico?"
+            r "¿Has tirado... aguaaaa por accidente?"
+            if sospecha < 2:
+                r "Jajajaja"
+                r "Eres muy torpe"
+                r "Ya me encargaré"
+            else:
+                r ".... No tiene gracia... chico"
+                r "Esa vieja pueeeede ser mi “jefa”..."
+                r "Pero lo es porque se lo permito"
+                r "Tú no estarás lo suficiente..... para que tenga que llamarte “jefe”"
+            "Ahora que se ha ido, robas el huevo"
+            "No hay que perder el tiempo"
+            $ tiene_huevo = True
+            jump where
+
 
 label tower_A:
     if not visited_tower_a:
@@ -302,6 +329,7 @@ label tower_A:
     # Pantalla: Torreón A (Estantería con libros, mesa y sofá)
     "Ves una estantería con varios libros, además de una mesa y un sofá donde sentarse"
     "Hay tres libros que llaman tu atención por sus títulos"
+    # Cambiar la escena a los 3 libros
     label tower_A_menu:
         menu:
             "Examinar 'La Odisea'":
@@ -359,8 +387,25 @@ label tower_C:
         $ visited_tower_c = True
         $ rooms += 1
     "Describir lo extraño de la escena es imposible"
-    "Mejor es hora de irte"
-    jump where
+    "Igualmente te causa curiosidad"
+    menu egg:
+        "Inspeccionar la balanza":
+            if not tiene_huevo:
+                # Al intentar agarrar el huevo
+                "No es buena idea quitar el huevo falso sin reemplazarlo por algo de un mismo tamaño"
+                "¿Tal vez robar un huevo en la cocina sea buena idea?"
+                jump where
+            else:
+                # Al intentar distraer a Roga
+                "Ahora que tienes el huevo, lo cambias por el de la Jaula"
+                "¡Ya lo tienes en tus manos!"
+                "Lo notas al instante. Es un huevo falso"
+                "Se puede abrir con un giro, permitiendo extraer la llave de Baba Roga"
+                $ tiene_llave_huevo = True
+                jump where
+        "Irte":
+            "Mejor es hora de irte"
+            jump where
 
 label storage:
     # Pantalla: Almacén
@@ -400,9 +445,9 @@ label planta_dos:
     # Pantalla: Segunda Planta
     "Ya estás en la Segunda Planta, ¿a dónde vas?"
     menu planta_dos_menu:
-        "Ir a la Sala de estar":
+        "Ir a la Sala de estar" if not diario_leido:
             jump segunda_sala_estar
-        "Ir al Almacén de materiales":
+        "Ir al Almacén de materiales" if not tiene_linterna:
             jump almacen_materiales
         "Ir al Baño":
             jump bano_planta_dos
@@ -458,6 +503,11 @@ label bano_planta_dos:
     "Es agua para asearte"
     "¿Siquiera... eso es posible?"  
     menu bano_menu:
+        "Inspeccionar balde" if diario_leido:
+            "Tal vez tirar agua sea una buena distracción"
+            "Has llenado el balde"
+            $ tiene_balde = True
+            jump planta_dos
         "Regresar":
             jump planta_dos
 
@@ -655,6 +705,7 @@ label act2:
     "Jurarías que no... no pinta con su apariencia"
 
 label yaga_diary:
+    $ diario_leido = True
     "Esto... parece un Diario"
     "Por suerte, has mejorado en leer"
     "Entrada, nombre del niño: [name]"
@@ -673,54 +724,34 @@ label yaga_diary:
     "Iré a orar hasta que sea la hora... aunque ese idiota en el cielo sea injusto, veremos si se ablanda un poco con él en el más allá"
 
     # Transición: Sala / Niño arrodillado
+    "¿...Por qué...?"
     "¿Por qué?"
-    "¿Por qué?"
-    "¿Por qué?"
+    "¿¡Por qué!?"
     "¿Por qué? ¿Por qué? ¿Por qué? ¿Por qué? ¿Por qué? ¿Por qué? ¿Por qué?"
     "...Necesitas escapar de aquí"
-    jump puzzles_section
+
+    # Textos de pistas e interacciones de la fase de resolución
+    "..."
+    "A lo mejor no es buena idea salir del cuarto todavía. Pueden haber pistas"
+
+    menu clues:
+        "Revisar más el diario":
+            "Pasas página tras página, pero no encuentras nada de interés ahí"
+            jump clues
+        "Ver hojas sueltas":
+            "Agarras unas hojas que estaban fuera del diario..."
+            "..."
+            "'Como el niño lleva un buen tiempo merodeando los alrededores, esconderé las llaves mejor. La principal la dejaré en el lugar habitual'"
+            "'La de los Invitados se la dejaré al idiota de Roga. Mientras que la copia de la llave de Roga estará en su “creativa trampa” del huevo.'" 
+            "'No sé qué manía tiene por intentar crear cosas tan estúpidas como esas. Pero espero que sea lo bastante seguro como él presume'"
+            "..."
+            "Ya has visto suficiente. Es mejor irse ahora"
+            jump where
+
 
 ### EXPLORACIÓN DE PISTAS Y ENFRENTAMIENTOS ###
 
 label puzzles_section:
-    # Textos de pistas e interacciones de la fase de resolución
-    "A lo mejor no es buena idea salir del cuarto todavía. Pueden haber pistas"
-
-    # Pista encontrada en la hoja
-    "Como el niño lleva un buen tiempo merodeando los alrededores, esconderé las llaves mejor. La principal la dejaré en el lugar habitual"
-    "La de los Invitados se la dejaré al idiota de Roga. Mientras que la copia de la llave de Roga estará en su “creativa trampa” del huevo. No sé qué manía tiene por intentar crear cosas tan estúpidas como esas. Pero espero que sea lo bastante seguro como él presume"
-
-    # Al intentar agarrar el huevo
-    "No es buena idea quitar el huevo falso sin reemplazarlo por algo de un mismo tamaño"
-    "¿Tal vez robar un huevo en la cocina sea buena idea?"
-
-    # Al intentar distraer a Roga
-    "Tal vez tirar agua sea una buena distracción"
-    "Has llenado el balde"
-    "Sería útil tirar el agua aquí"
-    "Tiras el agua para distraer a Roga"
-
-    # Reacción de Roga al agua
-    r "¿Qué ocurre chico?"
-    r "¿Has tirado... aguaaaa por accidente?"
-
-    if sospecha < 2:
-        r "Jajajaja"
-        r "Eres muy torpe"
-        r "Ya me encargaré"
-    else:
-        r ".... No tiene gracia... chico"
-        r "Esa vieja pueeeede ser mi “jefa”..."
-        r "Pero lo es porque se lo permito"
-        r "Tú no estarás lo suficiente..... para que tenga que llamarte “jefe”"
-
-    "Ahora que se ha ido, robas el huevo"
-    "No hay que perder el tiempo"
-    "Ahora que tienes el huevo, lo cambias por el de la Jaula"
-    "¡Ya lo tienes en tus manos!"
-    "Lo notas al instante. Es un huevo falso"
-    "Se puede abrir con un giro, permitiendo extraer la llave de Baba Roga"
-
     # En el cuarto de Baba Roga
     "Nota de Baba Roga: La señora me ha pedido cuidar de la llave de los invitados"
     "Nota de Baba Roga: Seguro le retuerce el estómago... recordar el pecado que se esconde en cada habitación..."
