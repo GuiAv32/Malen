@@ -32,6 +32,7 @@ default tiene_huevo = False
 default tiene_balde = False
 default tiene_cuchillo = False
 default tiene_llave_huevo = False
+default visita_cuarto_3 = False
 default tiene_llave_alce = False
 default roga_vivo = True
 
@@ -857,6 +858,19 @@ label yaga_diary:
 ### ACTO 3: CUARTOS DE INVITADOS Y FINAL ###
 
 label act3:
+    menu:
+        "Cuarto de Invitados 1":
+            jump guest_room_1
+        "Cuarto de Invitados 2":
+            jump guest_room_2
+        "Cuarto de Invitados 3":
+            jump guest_room_3
+        "Cuarto de Invitados 4":
+            jump guest_room_4
+        "Cuarto de Invitados 5":
+            jump guest_room_5
+        "Regresar" if visita_cuarto_3:
+            jump escape_attempt
 
 label guest_room_1:
     "El cuarto estaba cerrado, pero no hay polvo acumulado. Alguien cuidaba con esmero esta habitación"
@@ -871,6 +885,7 @@ label guest_room_1:
             "<Lo siento, Lucy. No podré viajar contigo>"
         "No":
             pass
+    jump act3
 
 label guest_room_2:
     "El cuarto estaba cerrado, pero no hay polvo acumulado. Alguien cuidaba con esmero esta habitación"
@@ -883,6 +898,7 @@ label guest_room_2:
             "<Juro por él aprovechar esta oportunidad que me dió la señora Yaga. Me quedaré con ella para servirle. Es lo menos que puedo hacer>"
         "No":
             pass
+    jump act3
 
 label guest_room_3:
     "El cuarto estaba cerrado, pero no hay polvo acumulado. Alguien cuidaba con esmero esta habitación"
@@ -904,9 +920,10 @@ label guest_room_3:
             "<Debería destruir esta hoja, ¿pero eso no sería destruir tus esfuerzos?>"
             "<Merezco recordar cada tanto cómo soy un monstruo para ellos>"
             "<Ser un monstruo es mejor que ser indiferente, ¿no lo crees, Dios?>"
-            $ tiene_llave_alce = True
+            $ visita_cuarto_3 = True
         "No":
             pass
+    jump act3
 
 label guest_room_4:
     "El cuarto estaba cerrado, pero no hay polvo acumulado. Alguien cuidaba con esmero esta habitación"
@@ -921,6 +938,7 @@ label guest_room_4:
             "No... no quiero averiguarlo>"
         "No":
             pass
+    jump act3
 
 label guest_room_5:
     "El cuarto estaba cerrado, pero no hay polvo acumulado. Alguien cuidaba con esmero esta habitación"
@@ -940,9 +958,14 @@ label guest_room_5:
             "<Tu hijo se quedará muerto>"
         "No":
             pass
+    jump act3
 
 label escape_attempt:
-    # Al pulsar la cabeza del Alce
+    $ tiene_llave_alce = True
+    "Decides regresar a la entrada para ver la cabeza de alce"
+    "La toqueteas, la mueves..."
+    # Cabeza de alce caída
+    "..."
     "Agarras la llave escondida"
     "Ya puedes salir de aquí"
     "Te giras. Te centras en girar la perilla..."
