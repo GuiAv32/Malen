@@ -24,8 +24,15 @@ image SalaPapel="images/Fondos/SalaPapel.png"
 image Balanza0="images/Fondos/Balanza0.png"
 image BalanzaHuevoOro="images/Fondos/BalanzaOro.png"
 image AlmacenComida="images/Fondos/AlmacenComida.png"
-
-
+image Bayo="images/Fondos/Bayo.png"
+image CuartoRogaNoFoco="images/Fondos/TallerRoga_sinfoco.png"
+image CuartoRogaFoco="images/Fondos/TallerRoga_confoco.png"
+#####Cuartos Ninos###
+image Cuarto1="images/Fondos/Cuarto1.png"
+image Cuarto2="images/Fondos/Cuarto2.png"
+image Cuarto3="images/Fondos/Cuarto3.png"
+image Cuarto4="images/Fondos/Cuarto4.png"
+image Cuarto5="images/Fondos/Cuarto5.png"
 
 # Variables
 default tBv = False
@@ -420,8 +427,13 @@ label tower_B:
             jump where
 
     label yaga_arg:
-        "Baba Yaga y Baba Roga se escuchan llegando"
+
+        scene black
+        with fade
+        play sound "audio/efectos/Armario.mp3" volume 3.0
+
         "Decides esconderte en el Armario"
+        "De repente, Baba Yaga y Baba Roga se escuchan llegando"
 
         # Pantalla: Negra
         play sound "audio/efectos/SuspiroRoga.mp3" volume 3.0
@@ -449,6 +461,9 @@ label tower_B:
 
         "Los gritos se alejan. Parece que no te notaron"
         "...Mejor regresar"
+
+        scene CuboIs
+        with fade
 
         jump where
 
@@ -524,7 +539,7 @@ label planta_dos:
             jump bano_planta_dos
 
         "Bajar a la planta baja":
-            jump entrace
+            jump entrance
 
 
 label segunda_sala_estar:
