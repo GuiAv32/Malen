@@ -2,6 +2,8 @@
 define m = Character("[name]", color = "#A30031")
 define y = Character("Baba Yaga", color = "#9B00A3")
 define r = Character("Baba Roga", color = "#0085A3")
+
+# Define los escenarios a usar
 image carruaje_bg = Movie(play="video/Carruaje.webm", loop=True)
 image Entrada1= "images/Fondos/Entrada_con_cabeza.png"
 image Entrada2= "images/Fondos/Entrada_sin_cabeza.png"
@@ -11,6 +13,25 @@ image Cocina="images/Fondos/Cocina.png"
 image B1="images/Fondos/Balanza0.png"
 image B2="images/Fondos/BalanzaOro.png"
 image Comedor="images/Fondos/Comedor.png"
+image LinternaIs="images/Fondos/LinternaEsta.png"
+image LinternaNot="images/Fondos/LinternaNoEsta.png"
+image CuboIs="images/Fondos/CuboEsta.png"
+image CuboNot="images/Fondos/CuboNoEsta.png"
+image SalaLeer="images/Fondos/SalaLeer.png"
+image SalaPapel="images/Fondos/SalaPapel.png"
+image Balanza0="images/Fondos/Balanza0.png"
+image BalanzaHuevoOro="images/Fondos/BalanzaOro.png"
+image AlmacenComida="images/Fondos/AlmacenComida.png"
+image Bayo="images/Fondos/Bayo.png"
+image CuartoRogaNoFoco="images/Fondos/TallerRoga_sinfoco.png"
+image CuartoRogaFoco="images/Fondos/TallerRoga_confoco.png"
+image CuartoYaga="images/Fondos/CuartoYaga.png"
+image CuartoYaga1="images/Fondos/CuartoYaga1.png"
+image Cuarto1="images/Fondos/Cuarto1.png"
+image Cuarto2="images/Fondos/Cuarto2.png"
+image Cuarto3="images/Fondos/Cuarto3.png"
+image Cuarto4="images/Fondos/Cuarto4.png"
+image Cuarto5="images/Fondos/Cuarto5.png"
 
 # Variables
 default visited_kitchen = False
@@ -20,7 +41,6 @@ default visited_tower_c = False
 default visited_storage = False
 default visited_entrance = False
 default rooms = 0
-
 default asked_yaga = False
 default asked_kids = False
 default asked_food = False
@@ -124,12 +144,13 @@ label start:
     "???" "Pero mira que tierno niño"
     scene Entrada1
     with fade
-    play music "audio/Musica/Impertinence.mp3" volume 3.0 fadein 1.0
+    play music "audio/Musica/Impertinence.mp3" volume 1.0 fadein 1.0
     # Personajes en Pantalla: Yaga
     y "Hola, mi buen mozo,  mi nombre es Yaga. Pero a algunos les gusta llamarme Baba Yaga"
 
     # Personajes en Pantalla: Yaga, Roga
     "???" "¿Algunos? A todos, mi señora"
+    play sound "audio/efectos/GruyidoYaga.mp3" volume 2.0
     y "Solo algunos, simio pálido. Gente sin modales, como tú"
     y "Le estás dando mal ejemplo al niño"
 
@@ -138,6 +159,7 @@ label start:
             y "¿Eh?"
             y "¿Te gusta?"    
             y "Bueno, tienes razón. No es un mal apodo"
+            play sound "audio/efectos/SuspiroRoga.mp3" volume 3.0
             "???" "Si usted dice… mi señora"
             jump act1
 
@@ -156,6 +178,7 @@ label act1:
     y "Aunque eso sí. Debo saber, ¿Te has presentado como es debido, paleta blanca?"
     "???" "Noooo lo he hecho"
     "???" "Estaba conduciendo"
+    play sound "audio/efectos/GruyidoYaga.mp3" volume 2.0
     y "Pudiste haberte presentado a la vez… como sea"
     y "El niño debe estar asustado"
     y "Él es Baba Roga. Como dije, es algo estúpido. Disculpa su falta de modales"
@@ -198,6 +221,7 @@ label act1:
     y "Oye, cara de poker"
 
     r "No necesita llamarme así…"
+    play sound "audio/efectos/GruyidoYaga.mp3" volume 2.0
 
     y "Sí, sí. Perdona. Pero haz el favor de llevarlo a su nueva habitación"
 
@@ -206,6 +230,7 @@ label act1:
     with fade
     # Pantalla: Habitación
     # Personajes en Pantalla: Roga
+    play sound "audio/efectos/SuspiroRoga.mp3" volume 3.0
     r "Esta es su… habitación. Anterioooormente le perteneció a unaaaa chiquilla que estuvo con nosotros"
     r "Era muy amigable. No obstante, quiso irse a estudiar en un colegio lejos de aquí"
     r "Así que, actualmente tú eres el dueño"
@@ -257,6 +282,7 @@ label kitchen:
         $ visited_kitchen = True
         $ rooms += 1
 
+    play sound "audio/efectos/SuspiroRoga.mp3" volume 4.0
     r "Oh… has venido conmiiiigo. Que… “encantador”"
     r "Disculpe. Estoy ocupadoooo en esto, querido huesped"
 
@@ -268,6 +294,7 @@ label kitchen:
                 r "NUNCA"
                 r "Bueno, emmm"
                 r "Disculpe la desafortunada confusión"
+                play sound "audio/efectos/SuspiroRoga.mp3" volume 3.0
                 r "Mi señora es llamada “Baba Yaga” y a mí no me molesta llamarla así"
                 r "Pero la parte de “Baba” es solo por confundirla con mi “prometida” en el pueblo cercano"
                 r "En realidad, su nombre es “Yaga”, a secas"
@@ -298,6 +325,7 @@ label kitchen:
                 jump roga_dial1
 
             "¡Adiós!":
+                play sound "audio/efectos/SuspiroRoga.mp3" volume 3.0
                 r "Chao, chico"
                 jump where
     else:
@@ -329,6 +357,8 @@ label tower_A:
         $ visited_tower_a = True
         $ rooms += 1
 
+    scene SalaLeer
+    with fade
     # Pantalla: Torreón A (Estantería con libros, mesa y sofá)
     "Ves una estantería con varios libros, además de una mesa y un sofá donde sentarse"
     "Hay tres libros que llaman tu atención por sus títulos"
@@ -352,6 +382,8 @@ label tower_A:
 
 label tower_B:
     # Pantalla: Armario
+    scene CuboIs
+    with fade
     if not visited_tower_b:
         $ visited_tower_b = True
         $ rooms += 1
@@ -362,7 +394,12 @@ label tower_B:
             "Decides esconderte en el Armario"
 
             # Pantalla: Negra
+            scene black
+            with fade
+            play sound "audio/efectos/Armario.mp3" volume 3.0
+            play sound "audio/efectos/SuspiroRoga.mp3" volume 3.0
             r "¿Me ha llamado… mi señora?"
+            play sound "audio/efectos/GruyidoYaga.mp3" volume 2.0
             y "Sí, tonto. ¿Qué es ese nefasto aroma que desprende tu arte obsceno?"
             r "Le he dicho… que noooo llame así a mi comida…"
             y "¿Y cómo puedo si quiera considerarlo comida?"
@@ -378,6 +415,8 @@ label tower_B:
             y "¡A que te doy una…!"
             "Los gritos se alejan. Parece que no te notaron"
             "...Mejor regresar"
+            scene CuboIs
+            with fade
             jump where
         "Regresar":
             jump where
@@ -412,6 +451,8 @@ label tower_C:
 
 label storage:
     # Pantalla: Almacén
+    scene AlmacenComida
+    with fade
     if not visited_storage:
         $ visited_storage = True
         $ rooms += 1
@@ -564,6 +605,8 @@ label planta_dos:
 
 label segunda_sala_estar:
     # Pantalla: Sala de estar (segunda planta - varios sofás y una mesa en el centro)
+    scene SalaPapel
+    with fade
     "Ves varios sofás y, en el centro de estos, una mesa"
     "Notas que debajo de esa mesa hay un papel asomándose"
 
@@ -589,6 +632,8 @@ label segunda_sala_estar:
             jump planta_dos
 
 label almacen_materiales:
+    scene LinternaIs
+    with fade
     # Pantalla: Almacén de materiales (mesas, cajas)
     "Es una habitación llena de mesas y cajas"
     "En una de ellas hay una linterna enorme, sin foco"
@@ -606,6 +651,8 @@ label almacen_materiales:
 
 label bano_planta_dos:
     # Pantalla: Baño
+    scene Bayo
+    with fade
     "Sientes el vapor tocar tu piel. El agua no es fría. No es sucia"
     "Es agua para asearte"
     "¿Siquiera... eso es posible?"  
@@ -623,6 +670,7 @@ label dine:
     with fade
     # Pantalla: Comedor Enorme (mesas con mantas, candelabro, pinturas)
     # Personajes en Pantalla: Yaga
+    stop music fadeout 1.0
 
     # Caso 1: Si exploró al menos dos habitaciones ($ rooms >= 2)
     if rooms >= 2:
@@ -640,11 +688,13 @@ label dine:
         y "Lástima que nuestro “sirviente” no sea más competente por eso"
 
     # Personajes en Pantalla: Yaga, Roga
+    play music "audio/Musica/Bourree .mp3" volume 1 fadein 1.0
     y "¡Oh, mira que te tardas, lenturro!"
     r "Es lo que... hay... señora"
     r "Mi pierna no estáaaaaa en sus mejores días"
     y "¿Y por eso el niño tendrá menos hambre?"
     y "¡Ya dale de comer!"
+    stop music fadeout 2.0
     "Recibes el plato en tu mesa..."
     "Se ve sano"
     "Demasiado sano..."
@@ -657,6 +707,7 @@ label dine:
     "....."
     "..."
     "Estaba... delicioso..."
+    play music "audio/Musica/Bourree .mp3" volume 0.5 fadein 2.0
     y "¿Hmmm?"
     y "¿Estás llorando, niño?"
     y "Oh, pobrecito"
@@ -688,6 +739,7 @@ label dine_questions:
             y "No hay de qué"
             y "Esto debió serte dado desde hace mucho antes"
             y "Realmente, enfrentarte a un destino desafortunado sin vivir la alegría de vivir. ¿Qué horrible sería, no crees?"
+            play sound "audio/efectos/SuspiroRoga.mp3" volume 4.0
             r "¿Y a míiii no me agradecerán nada?"
             y "Cállate"
             jump dine_questions
@@ -699,7 +751,9 @@ label dine_questions:
             y "Mira, chico, te ofrecemos vivir aquí"
             y "Sin embargo, en un mes. Quiero que termines de tomar una decisión"
             y "Hasta ahora, parece que te hemos secuestrado"
+            play sound "audio/efectos/SuspiroRoga.mp3" volume 4.0
             r "Buenoooo... en la práctica... es eso"  
+            play sound "audio/efectos/GruyidoYaga.mp3" volume 2.0
             y "¡Silencio, animal!"
             y "Como decía, no quiero que pienses de inmediato en quedarte aquí"
             y "Tienes muchas oportunidades en la vida"
@@ -723,6 +777,7 @@ label dine_end:
     y "Te esperan varios días de deliberación"
 
     # Transición: Cuarto del niño
+    stop music fadeout 2.0
     "La habitación ya está climatizada"
     "Te espera una agradable cama para tí"
     "No sabes si esto es real"
@@ -742,6 +797,8 @@ label dine_end:
 
 label act2:
     # Pantalla: Habitación del niño (con dibujos y juguetes)
+    scene Dormitorio1
+    with fade
     "La mañana se siente fresca"
     "El invierno azota fuera y no por eso se cuela en tu ventana"
     "De saber que estarías aquí hace más de un mes..."
@@ -758,6 +815,8 @@ label act2:
             r "No es una pregunta. Ven, chico..."
 
     # Transición: Comedor
+    scene Comedor
+    with fade
     y "Miren nada más, como está el muchacho"
     y "Te ves mejor con ropa de hombrecito bien portado"
     y "¿Cómo amaneciste?"
@@ -794,6 +853,8 @@ label act2:
     y "Bien, bien. ¡Chaito, mi niño!"
 
     # Transición: Cuarto del niño
+    scene Dormitorio1
+    with fade
     "Tras comer, te retiras a tu habitación"
     "Todas estas cosas... TUS cosas están aquí"
     "Nunca creíste que las tendrías"
@@ -803,11 +864,16 @@ label act2:
     "Tras tantos abrazos, te hiciste por fin con la llave de su cuarto"
     "La prueba definitiva para todo"
     "Que sea lo que Dios quiera..."
+    scene black
+    with fade
+    play sound "audio/efectos/LlaveAbre.mp3" volume 4.0
     "Aquí es"
     "No sabes si esto es justo para ella..."
     "Pero sí es justo para tí"
 
     # Transición: Cuarto de Baba Yaga / Caldero
+    scene CuartoYaga
+    with fade
     "¿Así que esto es su cuarto?"
     "Jurarías que no... no pinta con su apariencia"
 
@@ -815,6 +881,8 @@ label yaga_diary:
     $ diario_leido = True
     "Esto... parece un Diario"
     "Por suerte, has mejorado en leer"
+    scene black
+    with fade
     "Entrada, nombre del niño: [name]"
     "Ya ha pasado casi un mes"
     "Estamos cerca de la fecha. Es horrible. Pero el destino es inevitable"
@@ -831,6 +899,8 @@ label yaga_diary:
     "Iré a orar hasta que sea la hora... aunque ese idiota en el cielo sea injusto, veremos si se ablanda un poco con él en el más allá"
 
     # Transición: Sala / Niño arrodillado
+    scene CuartoYaga
+    with fade
     "¿...Por qué...?"
     "¿Por qué?"
     "¿¡Por qué!?"
@@ -873,6 +943,8 @@ label act3:
             jump escape_attempt
 
 label guest_room_1:
+    scene Cuarto1
+    with fade
     "El cuarto estaba cerrado, pero no hay polvo acumulado. Alguien cuidaba con esmero esta habitación"
     "Ves una nota, ¿La lees?"
     menu:
@@ -888,6 +960,8 @@ label guest_room_1:
     jump act3
 
 label guest_room_2:
+    scene Cuarto2
+    with fade
     "El cuarto estaba cerrado, pero no hay polvo acumulado. Alguien cuidaba con esmero esta habitación"
     "Ves una nota, ¿La lees?"
     menu:
@@ -901,6 +975,8 @@ label guest_room_2:
     jump act3
 
 label guest_room_3:
+    scene Cuarto3
+    with fade
     "El cuarto estaba cerrado, pero no hay polvo acumulado. Alguien cuidaba con esmero esta habitación"
     "Ves una nota, ¿La lees?"
     menu:
@@ -926,6 +1002,8 @@ label guest_room_3:
     jump act3
 
 label guest_room_4:
+    scene Cuarto4
+    with fade
     "El cuarto estaba cerrado, pero no hay polvo acumulado. Alguien cuidaba con esmero esta habitación"
     "Ves una nota, ¿La lees?"
     menu:
@@ -941,6 +1019,8 @@ label guest_room_4:
     jump act3
 
 label guest_room_5:
+    scene Cuarto5
+    with fade
     "El cuarto estaba cerrado, pero no hay polvo acumulado. Alguien cuidaba con esmero esta habitación"
     "Ves una nota, ¿La lees?"
     menu:
