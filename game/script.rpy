@@ -3,9 +3,7 @@ define m = Character("[name]", color = "#A30031")
 define y = Character("Baba Yaga", color = "#9B00A3")
 define r = Character("Baba Roga", color = "#0085A3")
 
-
-#Cuartos a lo largo del Juego
-
+# Define los escenarios a usar
 image carruaje_bg = Movie(play="video/Carruaje.webm", loop=True)
 image Entrada1= "images/Fondos/Entrada_con_cabeza.png"
 image Entrada2= "images/Fondos/Entrada_sin_cabeza.png"
@@ -29,7 +27,6 @@ image CuartoRogaNoFoco="images/Fondos/TallerRoga_sinfoco.png"
 image CuartoRogaFoco="images/Fondos/TallerRoga_confoco.png"
 image CuartoYaga="images/Fondos/CuartoYaga.png"
 image CuartoYaga1="images/Fondos/CuartoYaga1.png"
-#####Cuartos Ninos###
 image Cuarto1="images/Fondos/Cuarto1.png"
 image Cuarto2="images/Fondos/Cuarto2.png"
 image Cuarto3="images/Fondos/Cuarto3.png"
@@ -37,9 +34,6 @@ image Cuarto4="images/Fondos/Cuarto4.png"
 image Cuarto5="images/Fondos/Cuarto5.png"
 
 # Variables
-default tBv = False
-default tCv = False
-default sv = False
 default visited_kitchen = False
 default visited_tower_a = False
 default visited_tower_b = False
@@ -47,14 +41,18 @@ default visited_tower_c = False
 default visited_storage = False
 default visited_entrance = False
 default rooms = 0
-
 default asked_yaga = False
 default asked_kids = False
 default asked_food = False
 default sospecha = 0
 default duda = 0
+default diario_leido = False
 default tiene_linterna = False
+default tiene_huevo = False
+default tiene_balde = False
 default tiene_cuchillo = False
+default tiene_llave_huevo = False
+default visita_cuarto_3 = False
 default tiene_llave_alce = False
 default roga_vivo = True
 
@@ -78,9 +76,7 @@ label start:
     "Te tocas los cachetes y confirmas algo"
     "No estás soñando"
     "Lo cual, es demasiado bueno para ser real"
-
     "???" "Estamos entrando… en la residencia de la señora Yaga, chico. Deberías irte despertando"
-
     "Escuchas esa voz, hosca y algo torpe, diciéndote que has llegado a tu destino"
     "No hace falta pensar demasiado para recordarlo…"
     "Es el mismo hombre que te preguntó si aceptabas ser acogido"
@@ -102,7 +98,6 @@ label start:
 
     # --Tal vez podríamos no poner esto y más bien solo hacerle fadeout al audio.
     "Los sonidos de esos supuestos sabuesos se alejan"
-
     "???" "Bueno, chicoooo, disculpa el susto. Son algo… salvajes"
     "???" "…"
     "???" "Amables"
@@ -123,8 +118,8 @@ label start:
     "No tardas mucho en finalmente llegar. El transporte dejó de vibrar. Te toca bajarte y entrar a un enorme Castillo"
     play sound "audio/efectos/PuertaAbrir.mp3" volume 2.0
     # Pantalla: Entrada Enorme
-
     scene Entrada1
+
     # Personajes en Pantalla: Roga
     "???" "Ufff, Ha sido un largo. Encontrarte fue una suerte chico. Estabas helado. Te iba a dar hipotermia si llegaba demasiado tarde"
     "???" "Y eso te hubiera llevado a algo... mucho peor"
@@ -132,7 +127,6 @@ label start:
     "???" "La señora Yagaaaaa debe estar en su cuarto"
     "???" "Ella es una buena samaritana. Sabía que algún niño… podía estar en un deplorable estado"
     "???" "Espera aquí, ya regreso"
-
     scene black
     with fade
 
@@ -148,7 +142,6 @@ label start:
     # Audio: Música
     "???" "Juo, juo, juo…"
     "???" "Pero mira que tierno niño"
-
     scene Entrada1
     with fade
     play music "audio/Musica/Impertinence.mp3" volume 1.0 fadein 1.0
@@ -157,57 +150,35 @@ label start:
 
     # Personajes en Pantalla: Yaga, Roga
     "???" "¿Algunos? A todos, mi señora"
-
     play sound "audio/efectos/GruyidoYaga.mp3" volume 2.0
-
     y "Solo algunos, simio pálido. Gente sin modales, como tú"
     y "Le estás dando mal ejemplo al niño"
 
     menu:
         "Baba Yaga no suena mal, en verdad. Es bonito apodo":
-            jump yaga_smile
+            y "¿Eh?"
+            y "¿Te gusta?"    
+            y "Bueno, tienes razón. No es un mal apodo"
+            play sound "audio/efectos/SuspiroRoga.mp3" volume 3.0
+            "???" "Si usted dice… mi señora"
+            jump act1
 
         "Baba Yaga, Baba Yaga, Baba Yagaaaa-":
-            jump yaga_frown
-
-label yaga_smile:
-    
-    y "¿Eh?"
-    y "¿Te gusta?"    
-    y "Bueno, tienes razón. No es un mal apodo"
-
-    play sound "audio/efectos/SuspiroRoga.mp3" volume 3.0
-
-    "???" "Si usted dice… mi señora"
-
-    jump act1
-
-
-label yaga_frown: 
-    
-    y "AHG, ¿Viste lo que hiciste?"
-    y "¡Lo maleducaste!"
-
-    "???" "O el chico es muy listoooo"
-
-    jump act1
+            y "AHG, ¿Viste lo que hiciste?"
+            y "¡Lo maleducaste!"
+            "???" "O el chico es muy listoooo"
+            jump act1
 
 label act1:
-
     y "Disculpa mis modales. Mi sirviente, insolente y estúpido, no sabe cuándo respetar"
     y "Él será tu sirviente igual. Así que, si ves que desobedece. Dale un golpe"
     y "Mi parte favorita es su cabeza y su estómago"
-    
     "???" "Mmmm… Ninguna de esas… es mi favorita…"
-
     y "A nadie le importa"
     y "Aunque eso sí. Debo saber, ¿Te has presentado como es debido, paleta blanca?"
-
     "???" "Noooo lo he hecho"
     "???" "Estaba conduciendo"
-
     play sound "audio/efectos/GruyidoYaga.mp3" volume 2.0
-
     y "Pudiste haberte presentado a la vez… como sea"
     y "El niño debe estar asustado"
     y "Él es Baba Roga. Como dije, es algo estúpido. Disculpa su falta de modales"
@@ -215,11 +186,9 @@ label act1:
     y "Y, bueno, te halló a tí, por lo que veo"
     y "Debes estar con frío, chico"
     y "Ten, te dejo un abrigo"
-
     "Baba Yaga te da un abrigo afelpado"
     "Es cómodo. Demasiado cómodo"
     "Es mejor que cualquier bolsa de basura que hayas encontrado"
-
     y "Oh, te es placentero, ¿eh?"
     y "Es un regalo para tí"
     y "La mansión es cálida, pero más vale prevenir que lamentar"
@@ -252,7 +221,6 @@ label act1:
     y "Oye, cara de poker"
 
     r "No necesita llamarme así…"
-
     play sound "audio/efectos/GruyidoYaga.mp3" volume 2.0
 
     y "Sí, sí. Perdona. Pero haz el favor de llevarlo a su nueva habitación"
@@ -262,7 +230,6 @@ label act1:
     with fade
     # Pantalla: Habitación
     # Personajes en Pantalla: Roga
-
     play sound "audio/efectos/SuspiroRoga.mp3" volume 3.0
     r "Esta es su… habitación. Anterioooormente le perteneció a unaaaa chiquilla que estuvo con nosotros"
     r "Era muy amigable. No obstante, quiso irse a estudiar en un colegio lejos de aquí"
@@ -286,188 +253,173 @@ label act1:
 label where:
     # Pantalla: Negra
     "¿A dónde irás?"
-
     menu:
-        "Ir a la Cocina":
+        "Ir a la Cocina" if not tiene_huevo:
             jump kitchen
-
         "Ir al Torreon A":
             jump tower_A
-
-        "Ir al Torreon B" if not visited_tower_b:
+        "Ir al Torreon B" if not visited_tower_b or not diario_leido:
             jump tower_B
-
-        "Ir al Torreon C" if not visited_tower_c:
+        "Ir al Torreon C":
             jump tower_C
-
-        "Ir al Almacén" if not visited_storage:
+        "Ir al Almacén" if not visited_storage or not diario_leido:
             jump storage
-
         "Ir a la Entrada":
             jump entrance
-
-        "Ir al Comedor":
+        "Ir al Comedor" if not diario_leido:
             jump dine
+        "Ir al Cuarto de Baba Roga" if tiene_llave_huevo:
+            jump roga_room
 
 label kitchen:
     scene Cocina
     with fade
     # Pantalla: Cocina
     # Personajes en Pantalla: Roga
+
+    # --IMPLEMENTAR FASE DISTINTA--
     if not visited_kitchen:
         $ visited_kitchen = True
         $ rooms += 1
+
     play sound "audio/efectos/SuspiroRoga.mp3" volume 4.0
     r "Oh… has venido conmiiiigo. Que… “encantador”"
     r "Disculpe. Estoy ocupadoooo en esto, querido huesped"
 
-    menu roga_dial1:
-        "¿Eres el esposo de Baba Yaga?":
-            jump yaga_roga
+    if not diario_leido:
+        menu roga_dial1:
+            "¿Eres el esposo de Baba Yaga?":
+                r "Uy… no"
+                r "No, no, no"
+                r "NUNCA"
+                r "Bueno, emmm"
+                r "Disculpe la desafortunada confusión"
+                play sound "audio/efectos/SuspiroRoga.mp3" volume 3.0
+                r "Mi señora es llamada “Baba Yaga” y a mí no me molesta llamarla así"
+                r "Pero la parte de “Baba” es solo por confundirla con mi “prometida” en el pueblo cercano"
+                r "En realidad, su nombre es “Yaga”, a secas"
+                r "Séeee que es raro, si no estamos comprometidos"
+                r "Pero, aquí entre nos"
+                r "Me gusta hacerme justicia por los excesos de sus insultos…"
+                r "Así que, BABA YAGA, BABA YAGA"
+                y "¡TE ESCUCHO DESDE LA OTRA PUNTA DEL CASTILLO, SARANGANO DE PELOS MUERTOS!"
+                r "..."
+                r "Uf, casi me escucha"
+                jump roga_dial1
 
-        "¿Uy, qué sopa haces? Huele bien":
-            jump soup
+            "¿Uy, qué sopa haces? Huele bien":
+                r "¿Ah sí?"
+                r "Creía que estaba arruinándola"
+                r "Tengo dificultades para oler…"
+                r "Y saborear. Sobre todo saborear"
+                r "Ahhhhh…"
+                r "Extraño mi juventud"
+                jump roga_dial1
 
-        "¿Por qué tan pálido?":
-            jump lantern
+            "¿Por qué tan pálido?":
+                r "Oh, por nada en especial"
+                r "Soy sensible a la luz"
+                r "La del sol, más que nada"
+                r "Aunque a veces un foco bieeeen potente me hace daño"
+                r "No te sorprendas por eso si ves que apago las luces a mi paso"
+                jump roga_dial1
 
-        "¡Adiós!":
-            jump roga_bye
+            "¡Adiós!":
+                play sound "audio/efectos/SuspiroRoga.mp3" volume 3.0
+                r "Chao, chico"
+                jump where
+    else:
+        if not tiene_balde:
+            "No, aún no tienes lo necesario para conseguir lo que buscas aquí."
+            jump where
+        else:
+            "Sería útil tirar el agua aquí"
+            "Tiras el agua para distraer a Roga"
+            r "¿Qué ocurre chico?"
+            r "¿Has tirado... aguaaaa por accidente?"
+            if sospecha < 2:
+                r "Jajajaja"
+                r "Eres muy torpe"
+                r "Ya me encargaré"
+            else:
+                r ".... No tiene gracia... chico"
+                r "Esa vieja pueeeede ser mi “jefa”..."
+                r "Pero lo es porque se lo permito"
+                r "Tú no estarás lo suficiente..... para que tenga que llamarte “jefe”"
+            "Ahora que se ha ido, robas el huevo"
+            "No hay que perder el tiempo"
+            $ tiene_huevo = True
+            jump tower_C
 
-    label yaga_roga:
-        r "Uy… no"
-        r "No, no, no"
-        r "NUNCA"
-        r "Bueno, emmm"
-        r "Disculpe la desafortunada confusión"
-        play sound "audio/efectos/SuspiroRoga.mp3" volume 3.0
-        r "Mi señora es llamada “Baba Yaga” y a mí no me molesta llamarla así"
-        r "Pero la parte de “Baba” es solo por confundirla con mi “prometida” en el pueblo cercano"
-        r "En realidad, su nombre es “Yaga”, a secas"
-        r "Séeee que es raro, si no estamos comprometidos"
-        r "Pero, aquí entre nos"
-        r "Me gusta hacerme justicia por los excesos de sus insultos…"
-        r "Así que, BABA YAGA, BABA YAGA"
-
-        y "¡TE ESCUCHO DESDE LA OTRA PUNTA DEL CASTILLO, SARANGANO DE PELOS MUERTOS!"
-
-        r "..."
-        r "Uf, casi me escucha"
-
-        jump roga_dial1
-
-    label soup:
-        r "¿Ah sí?"
-        r "Creía que estaba arruinándola"
-        r "Tengo dificultades para oler…"
-        r "Y saborear. Sobre todo saborear"
-        r "Ahhhhh…"
-        r "Extraño mi juventud"
-
-        jump roga_dial1
-
-    label lantern:
-        r "Oh, por nada en especial"
-        r "Soy sensible a la luz"
-        r "La del sol, más que nada"
-        r "Aunque a veces un foco bieeeen potente me hace daño"
-        r "No te sorprendas por eso si ves que apago las luces a mi paso"
-
-        jump roga_dial1
-
-    label roga_bye:
-        play sound "audio/efectos/SuspiroRoga.mp3" volume 3.0
-        r "Chao, chico"
-
-        jump where
 
 label tower_A:
     if not visited_tower_a:
         $ visited_tower_a = True
         $ rooms += 1
+
     scene SalaLeer
     with fade
-
     # Pantalla: Torreón A (Estantería con libros, mesa y sofá)
     "Ves una estantería con varios libros, además de una mesa y un sofá donde sentarse"
     "Hay tres libros que llaman tu atención por sus títulos"
-
+    # Cambiar la escena a los 3 libros
     label tower_A_menu:
         menu:
             "Examinar 'La Odisea'":
                 "Agarras el libro y lees un poco"
                 "Te cuesta mucho leer como para empezar con esto ahora, así que lo dejas tal como está"
                 jump tower_A_menu
-
             "Examinar 'La Biblia'":
                 "Pasas las hojas un momento"
                 "Te cuesta mucho leer como para empezar con esto ahora, así que la dejas tal como está"
                 jump tower_A_menu
-
             "Examinar 'El Cíclope' de Eurípides":
                 "Revisas las páginas de la obra de Eurípides"
                 "Te cuesta mucho leer como para empezar con esto ahora, así que lo dejas tal como está"
                 jump tower_A_menu
-
             "Regresar":
                 jump where
 
 label tower_B:
     # Pantalla: Armario
+    scene CuboIs
+    with fade
     if not visited_tower_b:
         $ visited_tower_b = True
         $ rooms += 1
-    scene CuboIs
-    with fade
     "No hay mucho aquí, solo un armario."
-
     menu closet_choice:
         "Husmear en el Armario":
-            jump yaga_arg
+            "Baba Yaga y Baba Roga se escuchan llegando"
+            "Decides esconderte en el Armario"
 
+            # Pantalla: Negra
+            scene black
+            with fade
+            play sound "audio/efectos/Armario.mp3" volume 3.0
+            play sound "audio/efectos/SuspiroRoga.mp3" volume 3.0
+            r "¿Me ha llamado… mi señora?"
+            play sound "audio/efectos/GruyidoYaga.mp3" volume 2.0
+            y "Sí, tonto. ¿Qué es ese nefasto aroma que desprende tu arte obsceno?"
+            r "Le he dicho… que noooo llame así a mi comida…"
+            y "¿Y cómo puedo si quiera considerarlo comida?"
+            y "¡Más te vale arreglarlo, por los cielos, el chiquillo se nos va a enfermar con eso!"
+            r "¿Deeeesde cuándo le importa que eso pase?"
+            y "¿Te succionó una mosca el cerebro o qué? ¡Desde siempre!"
+            y "Es un niño. Son quisquillosos con la comida"
+            y "Y sabiendo bien que donde él viene, ¿te atreves a darle algo que recuerde su horrible paso por las calles?"
+            y "Queremos hacerlo feliz, no infeliz, mentecato…"
+            y "Al menos, para algo tan horrible, deberías tener más corazón"
+            r "..."
+            r "Usted sí que puede estar mal de la cabezaaaa, ¿eh?"
+            y "¡A que te doy una…!"
+            "Los gritos se alejan. Parece que no te notaron"
+            "...Mejor regresar"
+            scene CuboIs
+            with fade
+            jump where
         "Regresar":
             jump where
-
-    label yaga_arg:
-
-        scene black
-        with fade
-        play sound "audio/efectos/Armario.mp3" volume 3.0
-
-        "Decides esconderte en el Armario"
-        "De repente, Baba Yaga y Baba Roga se escuchan llegando"
-
-        # Pantalla: Negra
-        play sound "audio/efectos/SuspiroRoga.mp3" volume 3.0
-        r "¿Me ha llamado… mi señora?"
-        play sound "audio/efectos/GruyidoYaga.mp3" volume 2.0
-        y "Sí, tonto. ¿Qué es ese nefasto aroma que desprende tu arte obsceno?"
-
-        r "Le he dicho… que noooo llame así a mi comida…"
-
-        y "¿Y cómo puedo si quiera considerarlo comida?"
-        y "¡Más te vale arreglarlo, por los cielos, el chiquillo se nos va a enfermar con eso!"
-
-        r "¿Deeeesde cuándo le importa que eso pase?"
-
-        y "¿Te succionó una mosca el cerebro o qué? ¡Desde siempre!"
-        y "Es un niño. Son quisquillosos con la comida"
-        y "Y sabiendo bien que donde él viene, ¿te atreves a darle algo que recuerde su horrible paso por las calles?"
-        y "Queremos hacerlo feliz, no infeliz, mentecato…"
-        y "Al menos, para algo tan horrible, deberías tener más corazón"
-
-        r "..."
-        r "Usted sí que puede estar mal de la cabezaaaa, ¿eh?"
-
-        y "¡A que te doy una…!"
-
-        "Los gritos se alejan. Parece que no te notaron"
-        "...Mejor regresar"
-
-        scene CuboIs
-        with fade
-
-        jump where
 
 label tower_C:
     # Pantalla: Mesa con Balanza
@@ -476,11 +428,26 @@ label tower_C:
     if not visited_tower_c:
         $ visited_tower_c = True
         $ rooms += 1
-
     "Describir lo extraño de la escena es imposible"
-    "Mejor es hora de irte"
-
-    jump where
+    "Igualmente te causa curiosidad"
+    menu egg:
+        "Inspeccionar la balanza":
+            if not tiene_huevo:
+                # Al intentar agarrar el huevo
+                "No es buena idea quitar el huevo falso sin reemplazarlo por algo de un mismo tamaño"
+                "¿Tal vez robar un huevo en la cocina sea buena idea?"
+                jump where
+            else:
+                # Al intentar distraer a Roga
+                "Ahora que tienes el huevo, lo cambias por el de la Jaula"
+                "¡Ya lo tienes en tus manos!"
+                "Lo notas al instante. Es un huevo falso"
+                "Se puede abrir con un giro, permitiendo extraer la llave de Baba Roga"
+                $ tiene_llave_huevo = True
+                jump where
+        "Irte":
+            "Mejor es hora de irte"
+            jump where
 
 label storage:
     # Pantalla: Almacén
@@ -489,468 +456,58 @@ label storage:
     if not visited_storage:
         $ visited_storage = True
         $ rooms += 1
-
     "Cuanto polvo…"
     "Si de aquí sale la comida, no quieres averiguar qué te están preparando"
     "Es tan desolado el lugar que sientes una ligera brisa helada en tus tobillos"
-
     jump where
 
 label entrance:
     if not visited_entrance:
         $ visited_entrance = True
         $ rooms += 1
-
     scene Entrada1
     with fade
 
     # Pantalla: Entrada (Paredes adoquinadas, alfombra con líneas amarillas, focos)
     "Estás en la enorme entrada del castillo"
-
     menu entrance_menu:
         "Tocar la cabeza de alce":
             "Ese alce parece estar viéndote con disgusto..."
             "Te gustaría tirarlo de su egocéntrico lugar"
             jump entrance_menu
-
         "Revisar las escaleras":
             "Ves dos escaleras que conducen hacia una segunda planta y una puerta en medio de estas"
             menu:
                 "Subir a la segunda planta":
                     jump planta_dos
-
                 "Quedarse en la planta baja":
                     jump entrance_menu
-
         "Regresar":
             jump where
 
-# --HAY QUE IMPLEMENTAR TODA LA SEGUNDA PLANTA
-label planta_dos:
-    # Pantalla: Segunda Planta
-    "Ya estás en la Segunda Planta, ¿a dónde vas?"
-
-    menu planta_dos_menu:
-        "Ir a la Sala de estar":
-            jump segunda_sala_estar
-
-        "Ir al Almacén de materiales":
-            jump almacen_materiales
-
-        "Ir al Baño":
-            jump bano_planta_dos
-
-        "Bajar a la planta baja":
-            jump entrance
-
-
-label segunda_sala_estar:
-    # Pantalla: Sala de estar (segunda planta - varios sofás y una mesa en el centro)
-    scene SalaPapel
-    with fade
-    "Ves varios sofás y, en el centro de estos, una mesa"
-    "Notas que debajo de esa mesa hay un papel asomándose"
-
-    menu sala_estar_menu:
-        "Examinar el papel bajo la mesa":
-            "Lees lo que dice el papel:"
-            "“La bestia fue eclipsada. El héroe de los dioses fue victorioso tras terminar su viaje. Pero su civilización cambió de fe pese a sus logros”"
-            "¿Qué sentido tendrá esto?"
-            
-            # Aparición sorpresa de Baba Yaga según el PDF
-            y "Oh, aquí estabas"
-            y "Al final, decidiste explorar, ¿Eh?"
-            y "Qué bueno, qué bueno"
-            y "Eso dice mucho de tí. ¿Debes estar contento, no?"
-            y "Los niños como tú no merecen vivir con la incompetencia de los adultos"
-            y "Por lo tanto, supongo que expío los pecados de mis congéneres"
-            y "Como sea, he estado esperando en el Comedor"
-            y "Ven cuando te sientas listo"
-            y "El idiota de Roga es horrible, pero sabe hacer platillos... “decentes”"
-            
-            "Baba Yaga se marcha"
-            jump planta_dos_menu
-
-        "Regresar al distribuidor de la segunda planta":
-            jump planta_dos
-
-
-label almacen_materiales:
-    scene LinternaIs
-    with fade
-    # Pantalla: Almacén de materiales (mesas, cajas)
-    "Es una habitación llena de mesas y cajas"
-    "En una de ellas hay una linterna enorme, sin foco"
-
-    menu almacen_menu:
-        "Examinar la linterna":
-            "Te suena haber visto eso en algún lugar"
-            "Recuerdas que los policías lo llamaban “linterna” en la calle, y que sirve para iluminar"
-            "Solo que esta es más grande que una normal"
-            $ tiene_linterna = True
-            "¡Te has quedado con la linterna!"
-            jump almacen_menu
-
-        "Regresar":
-            jump planta_dos
-
-
-label bano_planta_dos:
-    # Pantalla: Baño
-    scene Bayo
-    with fade
-    "Sientes el vapor tocar tu piel. El agua no es fría. No es sucia"
-    "Es agua para asearte"
-    "¿Siquiera... eso es posible?"
-    
-    menu bano_menu:
-        "Regresar":
-            jump planta_dos
-
-label dine:
-    scene Comedor
-    with fade
-    # Pantalla: Comedor Enorme (mesas con mantas, candelabro, pinturas)
-    # Personajes en Pantalla: Yaga
-    stop music fadeout 1.0
-    
-    # Caso 1: Si exploró al menos dos habitaciones ($ rooms >= 2)
-    if rooms >= 2:
-        y "¡Bienvenido chico!"
-        y "Te ves...feliz"
-        y "Un momento, en serio ¿Lo que veo ahí es una sonrisa?"
-        y "Jujujuju. ¡Qué chuecos tienes tus dienticos de leche!"
-        y "Una gran diferencia para tu... “aspecto original”"
-    
-    # Caso 2: Si fue directo al comedor ($ rooms < 2)
-    else:
-        y "Has sido muy rápido"
-        y "Supongo que tienes mucha hambre"
-        y "Pues bien, este es el comedor, querido"
-        y "No recibimos muchas visitas, pero es una herencia de otros tiempos más lejanos"
-        y "Lástima que nuestro “sirviente” no sea más competente por eso"
-
-    # Personajes en Pantalla: Yaga, Roga
-    play music "audio/Musica/Bourree .mp3" volume 1 fadein 1.0
-    y "¡Oh, mira que te tardas, lenturro!"
-
-    r "Es lo que... hay... señora"
-    r "Mi pierna no estáaaaaa en sus mejores días"
-
-    y "¿Y por eso el niño tendrá menos hambre?"
-    y "¡Ya dale de comer!"
-    stop music fadeout 2.0
-
-    "Recibes el plato en tu mesa..."
-    "Se ve sano"
-    "Demasiado sano..."
-    "¿Es tarde para retractarte y marcharte?"
-    "¿No es este un paso demasiado difícil?"
-    "Te llevas una cuchara a la boca"
-    "Sorbes"
-    "Tragas"
-    "Esperas"
-    "....."
-    "..."
-    "Estaba... delicioso..."
-
-    play music "audio/Musica/Bourree .mp3" volume 0.5 fadein 2.0
-
-    y "¿Hmmm?"
-    y "¿Estás llorando, niño?"
-    y "Oh, pobrecito"
-    y "Deja que Yaga te dé un abrazo"
-
-    "La señora te rodea con sus brazos sin permiso"
-    "No duele. No se siente falso"
-    "Sientes la calidez inundarte"
-    "....."
-    "No..."
-    "No lo entiendes"
-
-    y "Ya te sientes mejor, ¿no,[name]?"
-    y "¡No hay nada mejor que una sopa, un abrazo y un techo encima tuyo!"
-    y "Sé que los jóvenes como tú tienden a costarles dejarse amar. No los culpo, las calles los han convertido en niños-adultos. Adultos rotos"
-    y "No quiero que temas aquí"
-    y "No eres el único niño que ha estado aquí"
-    y "Siempre hay chiquillos como tú que merecen una oportunidad"
-
-    r "Mi señora tieeeene razón, chico. Estás a salvo aquí"
-
-    y "Si necesitas cualquier cosa, aquí estamos para tí"
-    y "Aquí tu abuela Yaga para servirte"
-
-    $ asked_yaga = False
-    $ asked_kids = False
-    $ asked_food = False
-
-label dine_questions:
-    menu:
-        "Muchas gracias, Abuela Yaga" if not asked_yaga:
-            $ asked_yaga = True
-            y "No hay de qué"
-            y "Esto debió serte dado desde hace mucho antes"
-            y "Realmente, enfrentarte a un destino desafortunado sin vivir la alegría de vivir. ¿Qué horrible sería, no crees?"
-            play sound "audio/efectos/SuspiroRoga.mp3" volume 4.0
-            r "¿Y a míiii no me agradecerán nada?"
-            
-            y "Cállate"
-            
-            jump dine_questions
-
-        "¿Qué pasó con los otros niños?" if not asked_kids:
-            $ asked_kids = True
-            r "Oh, tuvieron que marcharse"
-            r "No tuvieron mucho tiem-"
-            
-            y "¡Mucho tiempo con nosotros!"
-            y "Mira, chico, te ofrecemos vivir aquí"
-            y "Sin embargo, en un mes. Quiero que termines de tomar una decisión"
-            y "Hasta ahora, parece que te hemos secuestrado"
-            play sound "audio/efectos/SuspiroRoga.mp3" volume 4.0
-            r "Buenoooo... en la práctica... es eso"
-            play sound "audio/efectos/GruyidoYaga.mp3" volume 2.0
-            y "¡Silencio, animal!"
-            y "Como decía, no quiero que pienses de inmediato en quedarte aquí"
-            y "Tienes muchas oportunidades en la vida"
-            y "Por lo cual, piensa en eso, ¿sí?"
-            
-            jump dine_questions
-
-        "¿Ustedes no van a comer?" if not asked_food:
-            $ asked_food = True
-            y "¡Uh, no, tranquilo, no!"
-            y "Ya he comido"
-            y "No necesito comer... en un tiempo"
-            
-            r "Yo de por sí no como"
-            
-            y "Jojojo, qué gracioso eres"
-            y "¿verdad?"
-            
-            jump dine_questions
-
-        "Concluir conversación" if asked_yaga and asked_kids and asked_food:
-            jump dine_end
-
-label dine_end:
-    y "Muy bien, ya se está haciendo tarde"
-    y "Más te vale descansar a partir de ahora, [name]"
-    y "Te esperan varios días de deliberación"
-
-    # Transición: Cuarto del niño
-    stop music fadeout 2.0
-    "La habitación ya está climatizada"
-    "Te espera una agradable cama para tí"
-    "No sabes si esto es real"
-    "Si siquiera tiene sentido para tí"
-    "Da igual"
-    "Decides escapar en menos de una semana. Robarás todo lo que puedas para largarte"
-    "No confías ni confiarás nunca en los adultos"
-    "Así que, ¿Por qué te quedarías a pensar si quedarte o no?"
-    
-
-    scene black
-    with fade
-
-    
-
-    # Transición: Pantalla negra
-    # Texto en pantalla / Ilustraciones: "1 Mes después"
-
-    jump act2
-
-### ACTO 2 ###
-
-label act2:
-    # Pantalla: Habitación del niño (con dibujos y juguetes)
-    scene Dormitorio1
-    with fade
-    "La mañana se siente fresca"
-    "El invierno azota fuera y no por eso se cuela en tu ventana"
-    "De saber que estarías aquí hace más de un mes..."
-    "No te lo creerías"
-
-    r "Pequeño granuja, es hora de que te levantes"
-
-    menu:
-        "5 minutos más...":
-            r "Sabes queeeee no"
-            r "Venga, vamos para que puedas desayunar"
-
-        "¡Cállate, sirviente!":
-            $ sospecha += 1
-            r "Ahg... la señora Yaga sí que le enseña malos modales"
-            r "Me gustabas más antes de ser tan atrevido"
-            r "No es una pregunta. Ven, chico..."
-
-    # Transición: Comedor
-    scene Comedor
-    with fade
-    y "Miren nada más, como está el muchacho"
-    y "Te ves mejor con ropa de hombrecito bien portado"
-    y "¿Cómo amaneciste?"
-
-    menu:
-        "¡Genial, como Odiseo en la isla de Circe!":
-            y "¡Ah, has leído libros!"
-            y "Buen niño. Mereces un aplauso"
-
-        "Habría dormido mejor si el sirviente fuera más educado":
-            $ sospecha += 1
-            r "Perooo... solo hiceeee... mi trabajo"
-            
-            y "Bueno, ese trabajo no es suficiente"
-            y "Como siempre, siendo torpe. ¡Ten más educación!"
-
-    y "En fin, chico"
-    y "Desayuna bien..."
-    y "Yo hoy no estaré para acompañarte. Y, no, no porque “ya comí antes que tú”"
-    y "En realidad, me tengo que marchar un rato. Una señora como yo debe ir a la Iglesia por lo menos una vez al mes, ¿sabes?"
-    y "Cuando regrese, bueno, espero verte en la Cena"
-    y "Y que ahí, me digas qué quieres hacer con tu vida"
-    y "Te apoyaré en lo que decidas"
-
-    "Sus palabras te llegan"
-    "Hace tiempo que te empiezan a convencer, de verdad..."
-    "Así que, decides pedirle otro abrazo"
-
-    y "¡Oh, ¿en serio?"
-    y "Jojojojo"
-    y "¡No paras de darme abrazos, chaval!"
-    y "Eres adicto a los abrazos de tu yaya, ¿cómo negarme?"
-
-    "Los dos se abrazan"
-    "El cómo se aferra tí, el cómo te tapa con su tela..."
-    "Se siente auténtico"
-
-    y "Listo. Con este cariño dado, tu Yaga se despide, [name]"
-    y "Tú, sirviente, más te vale empezar con la preparación de la cena"
-
-    r "Como ordene..."
-
-    y "Bien, bien. ¡Chaito, mi niño!"
-
-    # Transición: Cuarto del niño
-    scene Dormitorio1
-    with fade
-    "Tras comer, te retiras a tu habitación"
-    "Todas estas cosas... TUS cosas están aquí"
-    "Nunca creíste que las tendrías"
-    "Y, sin duda..."
-    "Quisieras que en realidad sí fueran tuyas"
-    "Así que, hoy, después de tantos intentos, podrás confirmar que así es"
-    "Tras tantos abrazos, te hiciste por fin con la llave de su cuarto"
-    "La prueba definitiva para todo"
-    "Que sea lo que Dios quiera..."
-
-    scene black
-    with fade
-
-    play sound "audio/efectos/LlaveAbre.mp3" volume 4.0
-
-    "Aquí es"
-    "No sabes si esto es justo para ella..."
-    "Pero sí es justo para tí"
-
-    # Transición: Cuarto de Baba Yaga / Caldero
-    scene CuartoYaga
-    with fade
-    
-    "¿Así que esto es su cuarto?"
-    "Jurarías que no... no pinta con su apariencia"
-
-label yaga_diary:
-    "Esto... parece un Diario"
-    "Por suerte, has mejorado en leer"
-
-    scene black
-    with fade
-
-    "Entrada, nombre del niño: [name]"
-    "Ya ha pasado casi un mes"
-    "Estamos cerca de la fecha. Es horrible. Pero el destino es inevitable"
-    "Puedes tratar de desafiarlo todo lo que quieras, solo harás que sea más creativo a la hora de llevarte donde quiere"
-    "Recuerdo todavía lo que vi ese día en el Caldero..."
-    "Era un triste. Muy triste. Un niño sin amor que ni pudo aceptarlo"
-    "¿Por qué Dios permitiría algo así? ¿Por qué dejaría que fuese una opción?"
-    "No me importa. El destino es inevitable... siempre que siga con vida"
-    "Así que..."
-    "Ya toca ponerlo a dormir"
-    "Baba Roga hará la mejor cena de su vida. Con Cianuro de Potasio mezclado con el calor de la sopa"
-    "Solo es posible cambiar el desenlace antes de que llegue. El desarrollo igualmente puede ser distinto"
-    "Si eso es lo que necesito para que él pueda ser feliz en su final, que así sea"
-    "Iré a orar hasta que sea la hora... aunque ese idiota en el cielo sea injusto, veremos si se ablanda un poco con él en el más allá"
-
-    # Transición: Sala / Niño arrodillado
-
-    scene CuartoYaga
-    with fade
-
-    "........"
-    "¿Por...qué?"
-    "¿Por qué...?"
-    "¿Por qué?"
-    "¿Por qué? ¿Por qué? ¿Por qué? ¿Por qué? ¿Por qué? ¿Por qué? ¿Por qué?¿POR QUÉ?"
-    "..............."
-    "...Necesitas escapar de aquí"
-
-    jump puzzles_section
-
-### EXPLORACIÓN DE PISTAS Y ENFRENTAMIENTOS ###
-
-label puzzles_section:
-    # Textos de pistas e interacciones de la fase de resolución
-    "A lo mejor no es buena idea salir del cuarto todavía. Pueden haber pistas"
-
-    # Pista encontrada en la hoja
-    "Como el niño lleva un buen tiempo merodeando los alrededores, esconderé las llaves mejor. La principal la dejaré en el lugar habitual"
-    "La de los Invitados se la dejaré al idiota de Roga. Mientras que la copia de la llave de Roga estará en su “creativa trampa” del huevo. No sé qué manía tiene por intentar crear cosas tan estúpidas como esas. Pero espero que sea lo bastante seguro como él presume"
-
-    # Al intentar agarrar el huevo
-    "No es buena idea quitar el huevo falso sin reemplazarlo por algo de un mismo tamaño"
-    "¿Tal vez robar un huevo en la cocina sea buena idea?"
-
-    # Al intentar distraer a Roga
-    "Tal vez tirar agua sea una buena distracción"
-    "Has llenado el balde"
-    "Sería útil tirar el agua aquí"
-    "Tiras el agua para distraer a Roga"
-
-    # Reacción de Roga al agua
-    r "¿Qué ocurre chico?"
-    r "¿Has tirado... aguaaaa por accidente?"
-
-    if sospecha < 2:
-        r "Jajajaja"
-        r "Eres muy torpe"
-        r "Ya me encargaré"
-    else:
-        r ".... No tiene gracia... chico"
-        r "Esa vieja pueeeede ser mi “jefa”..."
-        r "Pero lo es porque se lo permito"
-        r "Tú no estarás lo suficiente..... para que tenga que llamarte “jefe”"
-
-    "Ahora que se ha ido, robas el huevo"
-    "No hay que perder el tiempo"
-    "Ahora que tienes el huevo, lo cambias por el de la Jaula"
-    "¡Ya lo tienes en tus manos!"
-    "Lo notas al instante. Es un huevo falso"
-    "Se puede abrir con un giro, permitiendo extraer la llave de Baba Roga"
-
+label roga_room:
     # En el cuarto de Baba Roga
-    "Nota de Baba Roga: La señora me ha pedido cuidar de la llave de los invitados"
-    "Nota de Baba Roga: Seguro le retuerce el estómago... recordar el pecado que se esconde en cada habitación..."
-    "Nota de Baba Roga: Solo en los niños siente pena. ¿Por qué no en mí, su sirviente?"
-    "Nota de Baba Roga: Como sea, he dejado la llave en el jardín. En el altar del centro"
-    "Nota de Baba Roga: Eeeees imposible que el niño llegué ahí. Los árboles bañan el jardín con sombras y los chuchos estáaaan rondando"
+    "Encuentras una serie de notas casi decorando el cuarto"
+    "'La señora me ha pedido cuidar de la llave de los invitados'"
+    "'Seguro le retuerce el estómago... recordar el pecado que se esconde en cada habitación...'"
+    "'Solo en los niños siente pena. ¿Por qué no en mí, su sirviente?'"
+    "'Como sea, he dejado la llave en el jardín. En el altar del centro'"
+    "'Eeeees imposible que el niño llegué ahí. Los árboles bañan el jardín con sombras y los chuchos estáaaan rondando'"
+    "..."
+    "Hay un foco aquí"
 
     if tiene_linterna:
-        "Este foco podría ser útil con tu linterna, así que se la colocas"
+        "Podría ser útil con tu linterna, así que se la colocas"
+    else:
+        "...aunque no tienes nada con lo que te sirva aún"
 
     # Patio y Huida
     "Ya tienes la llave de invitados"
     "Puede que halles pistas ahí"
+
+    menu:
+        "Salir":
+            pass
 
     # Confrontación con Baba Roga
     if sospecha < 2:
@@ -971,6 +528,7 @@ label puzzles_section:
                     r "Solo seguía... sus órdenes..."
                     "..."
                     "Ya puedes mirar los cuartos de invitados"
+                    $ roga_vivo = False
                 "Huir":
                     "Eludes sus garras"
                     "Intenta capturarte, pero es lento"
@@ -1014,6 +572,7 @@ label puzzles_section:
             "Baba Roga se retuerce. No puede hablar. Su piel se incendia..."
             ".. y termina por convertirse en polvo"
             "Ya puedes mirar los cuartos de invitados"
+            $ roga_vivo = False
         else:
             "Baba Roga intenta matarte"
             "Corres a un costado cuando él usa sus uñas para tratar de matarte"
@@ -1028,12 +587,360 @@ label puzzles_section:
             r "TOOOOODOOOOO"
             "Baba Roga sigue tocando la puerta. Decides irte."
             "Ya puedes mirar los cuartos de invitados"
-
     jump act3
+
+label planta_dos:
+    # Pantalla: Segunda Planta
+    "Ya estás en la Segunda Planta, ¿a dónde vas?"
+    menu planta_dos_menu:
+        "Ir a la Sala de estar" if not diario_leido:
+            jump segunda_sala_estar
+        "Ir al Almacén de materiales" if not tiene_linterna:
+            jump almacen_materiales
+        "Ir al Baño":
+            jump bano_planta_dos
+        "Bajar a la planta baja":
+            jump entrance
+
+
+label segunda_sala_estar:
+    # Pantalla: Sala de estar (segunda planta - varios sofás y una mesa en el centro)
+    scene SalaPapel
+    with fade
+    "Ves varios sofás y, en el centro de estos, una mesa"
+    "Notas que debajo de esa mesa hay un papel asomándose"
+
+    menu sala_estar_menu:
+        "Examinar el papel bajo la mesa":
+            "Lees lo que dice el papel:"
+            "“La bestia fue eclipsada. El héroe de los dioses fue victorioso tras terminar su viaje. Pero su civilización cambió de fe pese a sus logros”"
+            "¿Qué sentido tendrá esto?"
+            
+            # Aparición sorpresa de Baba Yaga según el PDF
+            y "Oh, aquí estabas"
+            y "Al final, decidiste explorar, ¿Eh?"
+            y "Qué bueno, qué bueno"
+            y "Eso dice mucho de tí. ¿Debes estar contento, no?"
+            y "Los niños como tú no merecen vivir con la incompetencia de los adultos"
+            y "Por lo tanto, supongo que expío los pecados de mis congéneres"
+            y "Como sea, he estado esperando en el Comedor"
+            y "Ven cuando te sientas listo"
+            y "El idiota de Roga es horrible, pero sabe hacer platillos... “decentes”"  
+            "Baba Yaga se marcha"
+            jump planta_dos_menu
+        "Regresar al distribuidor de la segunda planta":
+            jump planta_dos
+
+label almacen_materiales:
+    scene LinternaIs
+    with fade
+    # Pantalla: Almacén de materiales (mesas, cajas)
+    "Es una habitación llena de mesas y cajas"
+    "En una de ellas hay una linterna enorme, sin foco"
+    menu almacen_menu:
+        "Examinar la linterna":
+            "Te suena haber visto eso en algún lugar"
+            "Recuerdas que los policías lo llamaban “linterna” en la calle, y que sirve para iluminar"
+            "Solo que esta es más grande que una normal"
+            $ tiene_linterna = True
+            "¡Te has quedado con la linterna!"
+            jump almacen_menu
+        "Regresar":
+            jump planta_dos
+
+
+label bano_planta_dos:
+    # Pantalla: Baño
+    scene Bayo
+    with fade
+    "Sientes el vapor tocar tu piel. El agua no es fría. No es sucia"
+    "Es agua para asearte"
+    "¿Siquiera... eso es posible?"  
+    menu bano_menu:
+        "Inspeccionar balde" if diario_leido:
+            "Tal vez tirar agua sea una buena distracción"
+            "Has llenado el balde"
+            $ tiene_balde = True
+            jump planta_dos
+        "Regresar":
+            jump planta_dos
+
+label dine:
+    scene Comedor
+    with fade
+    # Pantalla: Comedor Enorme (mesas con mantas, candelabro, pinturas)
+    # Personajes en Pantalla: Yaga
+    stop music fadeout 1.0
+
+    # Caso 1: Si exploró al menos dos habitaciones ($ rooms >= 2)
+    if rooms >= 2:
+        y "¡Bienvenido chico!"
+        y "Te ves...feliz"
+        y "Un momento, en serio ¿Lo que veo ahí es una sonrisa?"
+        y "Jujujuju. ¡Qué chuecos tienes tus dienticos de leche!"
+        y "Una gran diferencia para tu... “aspecto original”"
+    # Caso 2: Si fue directo al comedor ($ rooms < 2)
+    else:
+        y "Has sido muy rápido"
+        y "Supongo que tienes mucha hambre"
+        y "Pues bien, este es el comedor, querido"
+        y "No recibimos muchas visitas, pero es una herencia de otros tiempos más lejanos"
+        y "Lástima que nuestro “sirviente” no sea más competente por eso"
+
+    # Personajes en Pantalla: Yaga, Roga
+    play music "audio/Musica/Bourree .mp3" volume 1 fadein 1.0
+    y "¡Oh, mira que te tardas, lenturro!"
+    r "Es lo que... hay... señora"
+    r "Mi pierna no estáaaaaa en sus mejores días"
+    y "¿Y por eso el niño tendrá menos hambre?"
+    y "¡Ya dale de comer!"
+    stop music fadeout 2.0
+    "Recibes el plato en tu mesa..."
+    "Se ve sano"
+    "Demasiado sano..."
+    "¿Es tarde para retractarte y marcharte?"
+    "¿No es este un paso demasiado difícil?"
+    "Te llevas una cuchara a la boca"
+    "Sorbes"
+    "Tragas"
+    "Esperas"
+    "....."
+    "..."
+    "Estaba... delicioso..."
+    play music "audio/Musica/Bourree .mp3" volume 0.5 fadein 2.0
+    y "¿Hmmm?"
+    y "¿Estás llorando, niño?"
+    y "Oh, pobrecito"
+    y "Deja que Yaga te dé un abrazo"
+    "La señora te rodea con sus brazos sin permiso"
+    "No duele. No se siente falso"
+    "Sientes la calidez inundarte"
+    "....."
+    "No..."
+    "No lo entiendes"
+    y "Ya te sientes mejor, ¿no, muchacho?"
+    y "¡No hay nada mejor que una sopa, un abrazo y un techo encima tuyo!"
+    y "Sé que los jóvenes como tú tienden a costarles dejarse amar. No los culpo, las calles los han convertido en niños-adultos. Adultos rotos"
+    y "No quiero que temas aquí"
+    y "No eres el único niño que ha estado aquí"
+    y "Siempre hay chiquillos como tú que merecen una oportunidad"
+    r "Mi señora tieeeene razón, chico. Estás a salvo aquí"
+    y "Si necesitas cualquier cosa, aquí estamos para tí"
+    y "Aquí tu abuela Yaga para servirte"
+
+    $ asked_yaga = False
+    $ asked_kids = False
+    $ asked_food = False
+
+label dine_questions:
+    menu:
+        "Muchas gracias, Abuela Yaga" if not asked_yaga:
+            $ asked_yaga = True
+            y "No hay de qué"
+            y "Esto debió serte dado desde hace mucho antes"
+            y "Realmente, enfrentarte a un destino desafortunado sin vivir la alegría de vivir. ¿Qué horrible sería, no crees?"
+            play sound "audio/efectos/SuspiroRoga.mp3" volume 4.0
+            r "¿Y a míiii no me agradecerán nada?"
+            y "Cállate"
+            jump dine_questions
+        "¿Qué pasó con los otros niños?" if not asked_kids:
+            $ asked_kids = True
+            r "Oh, tuvieron que marcharse"
+            r "No tuvieron mucho tiem-"
+            y "¡Mucho tiempo con nosotros!"
+            y "Mira, chico, te ofrecemos vivir aquí"
+            y "Sin embargo, en un mes. Quiero que termines de tomar una decisión"
+            y "Hasta ahora, parece que te hemos secuestrado"
+            play sound "audio/efectos/SuspiroRoga.mp3" volume 4.0
+            r "Buenoooo... en la práctica... es eso"  
+            play sound "audio/efectos/GruyidoYaga.mp3" volume 2.0
+            y "¡Silencio, animal!"
+            y "Como decía, no quiero que pienses de inmediato en quedarte aquí"
+            y "Tienes muchas oportunidades en la vida"
+            y "Por lo cual, piensa en eso, ¿sí?"
+            jump dine_questions
+        "¿Ustedes no van a comer?" if not asked_food:
+            $ asked_food = True
+            y "¡Uh, no, tranquilo, no!"
+            y "Ya he comido"
+            y "No necesito comer... en un tiempo"
+            r "Yo de por sí no como" 
+            y "Jojojo, qué gracioso eres"
+            y "¿Verdad?"
+            jump dine_questions
+        "Concluir conversación" if asked_yaga and asked_kids and asked_food:
+            jump dine_end
+
+label dine_end:
+    y "Muy bien, ya se está haciendo tarde"
+    y "Más te vale descansar a partir de ahora, [name]"
+    y "Te esperan varios días de deliberación"
+
+    # Transición: Cuarto del niño
+    stop music fadeout 2.0
+    "La habitación ya está climatizada"
+    "Te espera una agradable cama para tí"
+    "No sabes si esto es real"
+    "Si siquiera tiene sentido para tí"
+    "Da igual"
+    "Decides escapar en menos de una semana. Robarás todo lo que puedas para largarte"
+    "No confías ni confiarás nunca en los adultos"
+    "Así que, ¿Por qué te quedarías a pensar si quedarte o no?"
+    scene black
+    with fade
+
+    # Transición: Pantalla negra
+    # Texto en pantalla / Ilustraciones: "1 Mes después"
+    jump act2
+
+### ACTO 2 ###
+
+label act2:
+    # Pantalla: Habitación del niño (con dibujos y juguetes)
+    scene Dormitorio1
+    with fade
+    "La mañana se siente fresca"
+    "El invierno azota fuera y no por eso se cuela en tu ventana"
+    "De saber que estarías aquí hace más de un mes..."
+    "No te lo creerías"
+    r "Pequeño granuja, es hora de que te levantes"
+    menu:
+        "5 minutos más...":
+            r "Sabes queeeee no"
+            r "Venga, vamos para que puedas desayunar"
+        "¡Cállate, sirviente!":
+            $ sospecha += 1
+            r "Ahg... la señora Yaga sí que le enseña malos modales"
+            r "Me gustabas más antes de ser tan atrevido"
+            r "No es una pregunta. Ven, chico..."
+
+    # Transición: Comedor
+    scene Comedor
+    with fade
+    y "Miren nada más, como está el muchacho"
+    y "Te ves mejor con ropa de hombrecito bien portado"
+    y "¿Cómo amaneciste?"
+    menu:
+        "¡Genial, como Odiseo en la isla de Circe!":
+            y "¡Ah, has leído libros!"
+            y "Buen niño. Mereces un aplauso"
+        "Habría dormido mejor si el sirviente fuera más educado":
+            $ sospecha += 1
+            r "Perooo... solo hiceeee... mi trabajo"  
+            y "Bueno, ese trabajo no es suficiente"
+            y "Como siempre, siendo torpe. ¡Ten más educación!"
+
+    y "En fin, chico"
+    y "Desayuna bien..."
+    y "Yo hoy no estaré para acompañarte. Y, no, no porque “ya comí antes que tú”"
+    y "En realidad, me tengo que marchar un rato. Una señora como yo debe ir a la Iglesia por lo menos una vez al mes, ¿sabes?"
+    y "Cuando regrese, bueno, espero verte en la Cena"
+    y "Y que ahí, me digas qué quieres hacer con tu vida"
+    y "Te apoyaré en lo que decidas"
+    "Sus palabras te llegan"
+    "Hace tiempo que te empiezan a convencer, de verdad..."
+    "Así que, decides pedirle otro abrazo"
+    y "¡Oh, ¿en serio?"
+    y "Jojojojo"
+    y "¡No paras de darme abrazos, chaval!"
+    y "Eres adicto a los abrazos de tu yaya, ¿cómo negarme?"
+    "Los dos se abrazan"
+    "El cómo se aferra tí, el cómo te tapa con su tela..."
+    "Se siente auténtico"
+    y "Listo. Con este cariño dado, tu Yaga se despide, [name]"
+    y "Tú, sirviente, más te vale empezar con la preparación de la cena"
+    r "Como ordene..."
+    y "Bien, bien. ¡Chaito, mi niño!"
+
+    # Transición: Cuarto del niño
+    scene Dormitorio1
+    with fade
+    "Tras comer, te retiras a tu habitación"
+    "Todas estas cosas... TUS cosas están aquí"
+    "Nunca creíste que las tendrías"
+    "Y, sin duda..."
+    "Quisieras que en realidad sí fueran tuyas"
+    "Así que, hoy, después de tantos intentos, podrás confirmar que así es"
+    "Tras tantos abrazos, te hiciste por fin con la llave de su cuarto"
+    "La prueba definitiva para todo"
+    "Que sea lo que Dios quiera..."
+    scene black
+    with fade
+    play sound "audio/efectos/LlaveAbre.mp3" volume 4.0
+    "Aquí es"
+    "No sabes si esto es justo para ella..."
+    "Pero sí es justo para tí"
+
+    # Transición: Cuarto de Baba Yaga / Caldero
+    scene CuartoYaga
+    with fade
+    "¿Así que esto es su cuarto?"
+    "Jurarías que no... no pinta con su apariencia"
+
+label yaga_diary:
+    $ diario_leido = True
+    "Esto... parece un Diario"
+    "Por suerte, has mejorado en leer"
+    scene black
+    with fade
+    "Entrada, nombre del niño: [name]"
+    "Ya ha pasado casi un mes"
+    "Estamos cerca de la fecha. Es horrible. Pero el destino es inevitable"
+    "Puedes tratar de desafiarlo todo lo que quieras, solo harás que sea más creativo a la hora de llevarte donde quiere"
+    "Recuerdo todavía lo que vi ese día en el Caldero..."
+    "Era un triste. Muy triste. Un niño sin amor que ni pudo aceptarlo"
+    "¿Por qué Dios permitiría algo así? ¿Por qué dejaría que fuese una opción?"
+    "No me importa. El destino es inevitable... siempre que siga con vida"
+    "Así que..."
+    "Ya toca ponerlo a dormir"
+    "Baba Roga hará la mejor cena de su vida. Con Cianuro de Potasio mezclado con el calor de la sopa"
+    "Solo es posible cambiar el desenlace antes de que llegue. El desarrollo igualmente puede ser distinto"
+    "Si eso es lo que necesito para que él pueda ser feliz en su final, que así sea"
+    "Iré a orar hasta que sea la hora... aunque ese idiota en el cielo sea injusto, veremos si se ablanda un poco con él en el más allá"
+
+    # Transición: Sala / Niño arrodillado
+    scene CuartoYaga
+    with fade
+    "¿...Por qué...?"
+    "¿Por qué?"
+    "¿¡Por qué!?"
+    "¿Por qué? ¿Por qué? ¿Por qué? ¿Por qué? ¿Por qué? ¿Por qué? ¿Por qué?"
+    "...Necesitas escapar de aquí"
+
+    # Textos de pistas e interacciones de la fase de resolución
+    "..."
+    "A lo mejor no es buena idea salir del cuarto todavía. Pueden haber pistas"
+
+    menu clues:
+        "Revisar más el diario":
+            "Pasas página tras página, pero no encuentras nada de interés ahí"
+            jump clues
+        "Ver hojas sueltas":
+            "Agarras unas hojas que estaban fuera del diario..."
+            "..."
+            "'Como el niño lleva un buen tiempo merodeando los alrededores, esconderé las llaves mejor. La principal la dejaré en el lugar habitual'"
+            "'La de los Invitados se la dejaré al idiota de Roga. Mientras que la copia de la llave de Roga estará en su “creativa trampa” del huevo.'" 
+            "'No sé qué manía tiene por intentar crear cosas tan estúpidas como esas. Pero espero que sea lo bastante seguro como él presume'"
+            "..."
+            "Ya has visto suficiente. Es mejor irse ahora"
+            jump where
 
 ### ACTO 3: CUARTOS DE INVITADOS Y FINAL ###
 
 label act3:
+    menu:
+        "Cuarto de Invitados 1":
+            jump guest_room_1
+        "Cuarto de Invitados 2":
+            jump guest_room_2
+        "Cuarto de Invitados 3":
+            jump guest_room_3
+        "Cuarto de Invitados 4":
+            jump guest_room_4
+        "Cuarto de Invitados 5":
+            jump guest_room_5
+        "Regresar" if visita_cuarto_3:
+            jump escape_attempt
 
 label guest_room_1:
     scene Cuarto1
@@ -1050,6 +957,7 @@ label guest_room_1:
             "<Lo siento, Lucy. No podré viajar contigo>"
         "No":
             pass
+    jump act3
 
 label guest_room_2:
     scene Cuarto2
@@ -1064,6 +972,7 @@ label guest_room_2:
             "<Juro por él aprovechar esta oportunidad que me dió la señora Yaga. Me quedaré con ella para servirle. Es lo menos que puedo hacer>"
         "No":
             pass
+    jump act3
 
 label guest_room_3:
     scene Cuarto3
@@ -1087,9 +996,10 @@ label guest_room_3:
             "<Debería destruir esta hoja, ¿pero eso no sería destruir tus esfuerzos?>"
             "<Merezco recordar cada tanto cómo soy un monstruo para ellos>"
             "<Ser un monstruo es mejor que ser indiferente, ¿no lo crees, Dios?>"
-            $ tiene_llave_alce = True
+            $ visita_cuarto_3 = True
         "No":
             pass
+    jump act3
 
 label guest_room_4:
     scene Cuarto4
@@ -1106,6 +1016,7 @@ label guest_room_4:
             "No... no quiero averiguarlo>"
         "No":
             pass
+    jump act3
 
 label guest_room_5:
     scene Cuarto5
@@ -1127,9 +1038,14 @@ label guest_room_5:
             "<Tu hijo se quedará muerto>"
         "No":
             pass
+    jump act3
 
 label escape_attempt:
-    # Al pulsar la cabeza del Alce
+    $ tiene_llave_alce = True
+    "Decides regresar a la entrada para ver la cabeza de alce"
+    "La toqueteas, la mueves..."
+    # Cabeza de alce caída
+    "..."
     "Agarras la llave escondida"
     "Ya puedes salir de aquí"
     "Te giras. Te centras en girar la perilla..."
