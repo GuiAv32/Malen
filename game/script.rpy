@@ -783,6 +783,9 @@ label dine_end:
 
     # Transición: Cuarto del niño
     stop music fadeout 2.0
+
+    scene Dormitorio
+    with fade
     "La habitación ya está climatizada"
     "Te espera una agradable cama para tí"
     "No sabes si esto es real"
@@ -791,13 +794,13 @@ label dine_end:
     "Decides escapar en menos de una semana. Robarás todo lo que puedas para largarte"
     "No confías ni confiarás nunca en los adultos"
     "Así que, ¿Por qué te quedarías a pensar si quedarte o no?"
-    scene black
-    with fade
 
     # Transición: Pantalla negra
-
-    scene Mes
+    scene black
     with fade
+    pause 2.0
+    # Reproduce el video completo antes de avanzar
+    $ renpy.movie_cutscene("video/UnMes.webm")
     # Texto en pantalla / Ilustraciones: "1 Mes después"
     jump act2
 
