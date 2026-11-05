@@ -4,7 +4,12 @@ define y = Character("Baba Yaga", color = "#9B00A3")
 define r = Character("Baba Roga", color = "#0085A3")
 
 # Define los escenarios a usar
+
+#Videos
 image carruaje_bg = Movie(play="video/Carruaje.webm", loop=True)
+image Mes= Movie(play="video/UnMes.webm")
+
+#FondosImagenes
 image Entrada1= "images/Fondos/Entrada_con_cabeza.png"
 image Entrada2= "images/Fondos/Entrada_sin_cabeza.png"
 image Dormitorio= "images/Fondos/Dormitorio.png"
@@ -790,6 +795,9 @@ label dine_end:
     with fade
 
     # Transición: Pantalla negra
+
+    scene Mes
+    with fade
     # Texto en pantalla / Ilustraciones: "1 Mes después"
     jump act2
 
