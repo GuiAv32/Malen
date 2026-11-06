@@ -2,6 +2,20 @@
 define m = Character("[name]", color = "#A30031")
 define y = Character("Baba Yaga", color = "#9B00A3")
 define r = Character("Baba Roga", color = "#0085A3")
+image malen = "images/Personajes/malen.png"
+image roga angry = "images/Personajes/roga angry.png"
+image roga mad = "images/Personajes/roga mad.png"
+image roga normal = "images/Personajes/roga normal.png"
+image roga shocked = "images/Personajes/roga shocked.png"
+image roga smile = "images/Personajes/roga smile.png"
+image roga talk = "images/Personajes/roga talk.png"
+image yaga angry = "images/Personajes/yaga angry.png"
+image yaga normal = "images/Personajes/yaga normal.png"
+image yaga sad = "images/Personajes/yaga sad.png"
+image yaga shocked = "images/Personajes/yaga shocked.png"
+image yaga smile = "images/Personajes/yaga smile.png"
+image yaga talk = "images/Personajes/yaga talk.png"
+
 image carruaje_bg = Movie(play="video/Carruaje.mp4", loop=True)
 
 # Define los escenarios a usar
@@ -176,56 +190,80 @@ label start:
     scene Entrada1
     with fade
     play music "audio/Musica/Impertinence.mp3" volume 1.0 fadein 1.0
+    show yaga talk at right
     # Personajes en Pantalla: Yaga
     y "Hola, mi buen mozo,  mi nombre es Yaga. Pero a algunos les gusta llamarme Baba Yaga"
+    hide yaga
 
     # Personajes en Pantalla: Yaga, Roga
     "???" "¿Algunos? A todos, mi señora"
     play sound "audio/efectos/GruyidoYaga.mp3" volume 2.0
+    show yaga talk at right
     y "Solo algunos, simio pálido. Gente sin modales, como tú"
     y "Le estás dando mal ejemplo al niño"
+    hide yaga
 
     menu:
         "Baba Yaga no suena mal, en verdad. Es bonito apodo":
+            show yaga shocked at right
             y "¿Eh?"
+            show yaga talk at right
             y "¿Te gusta?"    
             y "Bueno, tienes razón. No es un mal apodo"
+            hide yaga
             play sound "audio/efectos/SuspiroRoga.mp3" volume 3.0
             "???" "Si usted dice… mi señora"
             jump act1
 
         "Baba Yaga, Baba Yaga, Baba Yagaaaa-":
+            show yaga talk at right
             y "AHG, ¿Viste lo que hiciste?"
+            show yaga angry at right
             y "¡Lo maleducaste!"
+            hide yaga
             "???" "O el chico es muy listoooo"
             jump act1
 
 label act1:
+    show yaga angry at right
     y "Disculpa mis modales. Mi sirviente, insolente y estúpido, no sabe cuándo respetar"
+    show yaga talk at right
     y "Él será tu sirviente igual. Así que, si ves que desobedece. Dale un golpe"
     y "Mi parte favorita es su cabeza y su estómago"
+    hide yaga
     "???" "Mmmm… Ninguna de esas… es mi favorita…"
+    show yaga talk at right
     y "A nadie le importa"
     y "Aunque eso sí. Debo saber, ¿Te has presentado como es debido, paleta blanca?"
+    hide yaga
     "???" "Noooo lo he hecho"
     "???" "Estaba conduciendo"
     play sound "audio/efectos/GruyidoYaga.mp3" volume 2.0
+    show yaga talk at right
     y "Pudiste haberte presentado a la vez… como sea"
     y "El niño debe estar asustado"
+    show yaga angry at right
     y "Él es Baba Roga. Como dije, es algo estúpido. Disculpa su falta de modales"
+    show yaga talk at right
     y "Le comenté que buscase si había un necesitado en esta terrible época del año"
     y "Y, bueno, te halló a tí, por lo que veo"
     y "Debes estar con frío, chico"
     y "Ten, te dejo un abrigo"
+    hide yaga
     "Baba Yaga te da un abrigo afelpado"
     "Es cómodo. Demasiado cómodo"
     "Es mejor que cualquier bolsa de basura que hayas encontrado"
+    show yaga shocked at right
     y "Oh, te es placentero, ¿eh?"
+    show yaga talk at right
     y "Es un regalo para tí"
     y "La mansión es cálida, pero más vale prevenir que lamentar"
     y "En fin, lamento cómo procedió tu recibida"
+    show yaga smile at right
     y "Y, sea como sea, sepas que eres bienvenido"
+    show yaga talk at right
     y "Qué a todo esto, ¿cómo te llamas?"
+    hide yaga
 
     # PARA DE PONER PUNTO AL FINAL.
 
@@ -242,32 +280,46 @@ label act1:
             else:
                 # Si pasa ambas validaciones, rompemos el bucle
                 break
+    show yaga angry at right
 
     y "¡Qué nombre tan bonito!"
+    show yaga talk at right
     y "Y pensar que un alma como la tuya, acabaría desdichado en la calle…"
+    show yaga angry at right
     y "¡Pero ya no será así!"
+    show yaga smile at right
     y "Bienvenido seas a tu nuevo hogar"
+    show yaga talk at right
     y "Siéntete como en casa"
     y "Al final y al cabo, lo será ahora"
     y "Oye, cara de poker"
+    hide yaga
 
+    show roga talk at center
     r "No necesita llamarme así…"
+    hide roga
     play sound "audio/efectos/GruyidoYaga.mp3" volume 2.0
+    show yaga talk at right
 
     y "Sí, sí. Perdona. Pero haz el favor de llevarlo a su nueva habitación"
+    hide yaga
 
+    show roga talk at center
     r "Como ordene"
+    hide roga
     scene Dormitorio
     with fade
     # Pantalla: Habitación
     # Personajes en Pantalla: Roga
     play sound "audio/efectos/SuspiroRoga.mp3" volume 3.0
+    show roga talk at center
     r "Esta es su… habitación. Anterioooormente le perteneció a unaaaa chiquilla que estuvo con nosotros"
     r "Era muy amigable. No obstante, quiso irse a estudiar en un colegio lejos de aquí"
     r "Así que, actualmente tú eres el dueño"
     r "Ven al Comedor cuando tengas hambre… iré preparando la comida. Diviéeeertete explorando"
     r "Eso sí, no puedes ir a todos loooos lugares. Hay cerraduras para ello"
     r "Por tu seguridad… claro"
+    hide roga
 
     # Personajes en Pantalla: Nadie
     "Pensar que este lugar es de verdad tuyo…te incomoda"
@@ -313,55 +365,76 @@ label kitchen:
         $ visited_kitchen = True
         $ rooms += 1
     if diario_leido:
+        show roga talk at center
         r "¿Mmmmmm?"
         r "¿Qué quiere, señorito [name]?"
         r "Ahora mismo estooooy ocupado" 
+        hide roga
     else:
         play sound "audio/efectos/SuspiroRoga.mp3" volume 4.0
+        show roga smile at center
         r "Oh… has venido conmiiiigo. Que… “encantador”"
+        show roga mad at center
         r "Disculpe. Estoy ocupadoooo en esto, querido huesped"
+        hide roga
 
     if not diario_leido:
         menu roga_dial1:
             "¿Eres el esposo de Baba Yaga?":
+                show roga talk at center
                 r "Uy… no"
                 r "No, no, no"
+                show roga angry at center
                 r "NUNCA"
+                show roga talk at center
                 r "Bueno, emmm"
+                show roga mad at center
                 r "Disculpe la desafortunada confusión"
                 play sound "audio/efectos/SuspiroRoga.mp3" volume 3.0
                 r "Mi señora es llamada “Baba Yaga” y a mí no me molesta llamarla así"
+                show roga talk at center
                 r "Pero la parte de “Baba” es solo por confundirla con mi “prometida” en el pueblo cercano"
                 r "En realidad, su nombre es “Yaga”, a secas"
                 r "Séeee que es raro, si no estamos comprometidos"
                 r "Pero, aquí entre nos"
                 r "Me gusta hacerme justicia por los excesos de sus insultos…"
                 r "Así que, BABA YAGA, BABA YAGA"
+                hide roga
+                show yaga angry at right
                 y "¡TE ESCUCHO DESDE LA OTRA PUNTA DEL CASTILLO, SARANGANO DE PELOS MUERTOS!"
+                hide yaga
+                show roga talk at center
                 r "..."
                 r "Uf, casi me escucha"
+                hide roga
                 jump roga_dial1
 
             "¿Uy, qué sopa haces? Huele bien":
+                show roga talk at center
                 r "¿Ah sí?"
                 r "Creía que estaba arruinándola"
                 r "Tengo dificultades para oler…"
                 r "Y saborear. Sobre todo saborear"
                 r "Ahhhhh…"
                 r "Extraño mi juventud"
+                hide roga
                 jump roga_dial1
 
             "¿Por qué tan pálido?":
+                show roga talk at center
                 r "Oh, por nada en especial"
                 r "Soy sensible a la luz"
                 r "La del sol, más que nada"
                 r "Aunque a veces un foco bieeeen potente me hace daño"
                 r "No te sorprendas por eso si ves que apago las luces a mi paso"
+                hide roga
                 jump roga_dial1
 
             "¡Adiós!":
                 play sound "audio/efectos/SuspiroRoga.mp3" volume 3.0
+                show roga smile at center
                 r "Chao, chico"
+                hide roga
                 jump where
     else:
         if not tiro_agua:
@@ -369,17 +442,28 @@ label kitchen:
             "Y tener a Roga cerca...no te deja tranquilo"
             jump where
         else:
+            show roga shocked at center
             r "¿Qué ocurre chico?"
+            show roga talk at center
             r "¿Has tirado... aguaaaa por accidente?"
+            hide roga
             if sospecha < 2:
+                show roga smile at center
                 r "Jajajaja"
+                show roga mad at center
                 r "Eres muy torpe"
+                show roga talk at center
                 r "Ya me encargaré"
+                hide roga
             else:
+                show roga angry at center
                 r ".... No tiene gracia... chico"
+                show roga talk at center
                 r "Esa vieja pueeeede ser mi “jefa”..."
                 r "Pero lo es porque se lo permito"
+                show roga angry at center
                 r "Tú no estarás lo suficiente..... para que tenga que llamarte “jefe”"
+                hide roga
             "Ahora que se ha ido, robas el huevo"
             "No hay que perder el tiempo"
             $ tiene_huevo = True
@@ -432,21 +516,42 @@ label tower_B:
             with fade
             play sound "audio/efectos/Armario.mp3" volume 3.0
             play sound "audio/efectos/SuspiroRoga.mp3" volume 3.0
+            show roga shocked at center
             r "¿Me ha llamado… mi señora?"
+            hide roga
             play sound "audio/efectos/GruyidoYaga.mp3" volume 2.0
+            show yaga talk at right
             y "Sí, tonto. ¿Qué es ese nefasto aroma que desprende tu arte obsceno?"
+            hide yaga
+            show roga talk at center
             r "Le he dicho… que noooo llame así a mi comida…"
+            hide roga
+            show yaga talk at right
             y "¿Y cómo puedo si quiera considerarlo comida?"
+            show yaga angry at right
             y "¡Más te vale arreglarlo, por los cielos, el chiquillo se nos va a enfermar con eso!"
+            hide yaga
+            show roga talk at center
             r "¿Deeeesde cuándo le importa que eso pase?"
+            hide roga
+            show yaga angry at right
             y "¿Te succionó una mosca el cerebro o qué? ¡Desde siempre!"
+            show yaga talk at right
             y "Es un niño. Son quisquillosos con la comida"
             y "Y sabiendo bien que donde él viene, ¿te atreves a darle algo que recuerde su horrible paso por las calles?"
+            show yaga angry at right
             y "Queremos hacerlo feliz, no infeliz, mentecato…"
+            show yaga talk at right
             y "Al menos, para algo tan horrible, deberías tener más corazón"
+            hide yaga
+            show roga talk at center
             r "..."
+            show roga shocked at center
             r "Usted sí que puede estar mal de la cabezaaaa, ¿eh?"
+            hide roga
+            show yaga angry at right
             y "¡A que te doy una…!"
+            hide yaga
             "Los gritos se alejan. Parece que no te notaron"
             "...Mejor regresar"
             scene CuboIs
@@ -564,6 +669,7 @@ label roga_room:
 
     # Confrontación con Baba Roga
     if sospecha < 2:
+        show roga talk at center
         r "¿Qué haces aquí?"
         r "Chico... ¿abriste la Jaula... y robaste la llave?"
         r "... niño..."
@@ -571,14 +677,19 @@ label roga_room:
         r "¿Saaaabes lo que nosotros...?"
         r "..."
         r "Lo... siento"
+        hide roga
 
         if tiene_linterna:
             menu:
                 "Usar la linterna contra Baba Roga":
+                    show roga talk at center
                     r "ΑΗΗΗΗΗΗΗΗΗΗΗΗΗΗ"
+                    show roga angry at center
                     r "AGH, ¡No! ¿¡Por qué tú..!?"
+                    show roga talk at center
                     r "No, por favor..."
                     r "Solo seguía... sus órdenes..."
+                    hide roga
                     "..."
                     "Ya puedes mirar los cuartos de invitados"
                     $ roga_vivo = False
@@ -586,9 +697,12 @@ label roga_room:
                     "Eludes sus garras"
                     "Intenta capturarte, pero es lento"
                     "Lo esquivas lo suficiente y escapas a la puerta. La cierras con llave para que no te siga"
+                    show roga talk at center
+            show roga talk at center
                     r "Chiicccooooo, abreeee"
                     r "Por favor... ella me castigará si no..."
                     r "ChicoooooooooOOOOOOOO"
+                    hide roga
                     "Habla y habla"
                     "Su voz se va cansando..."
                     "Es inútil preocuparte porque él entre. No hay otra entrada. Decides irte y explorar los cuartos de invitados"
@@ -600,12 +714,14 @@ label roga_room:
             r "Chiicccooooo, abreeee"
             r "Por favor... ella me castigará si no..."
             r "ChicoooooooooOOOOOOOOOOO"
+            hide roga
             "Habla y habla"
             "Su voz se va cansando..."
             "Es inútil preocuparte porque él entre. No hay otra entrada. Decides irte y explorar los cuartos de invitados"
             "Ya puedes mirar los cuartos de invitados"
 
     else: # sospecha >= 2
+        show roga talk at center
         r "..."
         r "Así queeee..."
         r "¿Looo sabías, eh?"
@@ -615,13 +731,16 @@ label roga_room:
         r "Ella es mi maestra"
         r "¿Peroooo a tí?"
         r "Me servirás para desestresarmeeee..."
+        hide roga
 
         if tiene_linterna:
             "Baba Roga te amenaza, así que usas la linterna"
             "Es eficaz, lo oyes gritar"
             "Fue instintivo. Te iba a atacar..."
             "Aún así, te duele. No sabes si tenía sentido o no su furia..."
+            show roga talk at center
             r "Agh... agh..."
+            hide roga
             "Baba Roga se retuerce. No puede hablar. Su piel se incendia..."
             ".. y termina por convertirse en polvo"
             "Ya puedes mirar los cuartos de invitados"
@@ -634,10 +753,12 @@ label roga_room:
             "Ni siquiera sabiendo cómo se siente, lo trataste mejor..."
             "Aún así, evitas sus garras..."
             "Es lento. Tú más joven y ágil. A prisas, corres a la puerta, sales, y cierras la puerta con la llave"
+            show roga talk at center
             r "ABREEEE LA PUERTAAAAAAAAAAAAAAAA"
             r "Túuuuuuuuuuuuuuuuu"
             r "Te mereeeeces tooooodo lo malo"
             r "TOOOOODOOOOO"
+            hide roga
             "Baba Roga sigue tocando la puerta. Decides irte."
             "Ya puedes mirar los cuartos de invitados"
     jump act3
@@ -668,17 +789,22 @@ label segunda_sala_estar:
             "Lees lo que dice el papel:"
             "“La bestia fue eclipsada. El héroe de los dioses fue victorioso tras terminar su viaje. Pero su civilización cambió de fe pese a sus logros”"
             "¿Qué sentido tendrá esto?"
+            show yaga talk at right
             
             # Aparición sorpresa de Baba Yaga según el PDF
             y "Oh, aquí estabas"
+            show yaga shocked at right
             y "Al final, decidiste explorar, ¿Eh?"
+            show yaga smile at right
             y "Qué bueno, qué bueno"
+            show yaga talk at right
             y "Eso dice mucho de tí. ¿Debes estar contento, no?"
             y "Los niños como tú no merecen vivir con la incompetencia de los adultos"
             y "Por lo tanto, supongo que expío los pecados de mis congéneres"
             y "Como sea, he estado esperando en el Comedor"
             y "Ven cuando te sientas listo"
             y "El idiota de Roga es horrible, pero sabe hacer platillos... “decentes”"  
+            hide yaga
             "Baba Yaga se marcha"
             jump planta_dos_menu
         "Regresar al distribuidor de la segunda planta":
@@ -759,13 +885,20 @@ label dine:
 
         # Caso 1: Si exploró al menos dos habitaciones ($ rooms >= 2)
         if rooms >= 2:
+        show yaga angry at right
             y "¡Bienvenido chico!"
+        show yaga talk at right
             y "Te ves...feliz"
+        show yaga smile at right
             y "Un momento, en serio ¿Lo que veo ahí es una sonrisa?"
+        show yaga angry at right
             y "Jujujuju. ¡Qué chuecos tienes tus dienticos de leche!"
+        show yaga talk at right
             y "Una gran diferencia para tu... “aspecto original”"
+        hide yaga
         # Caso 2: Si fue directo al comedor ($ rooms < 2)
         else:
+        show yaga talk at right
             y "Has sido muy rápido"
             y "Supongo que tienes mucha hambre"
             y "Pues bien, este es el comedor, querido"
@@ -774,11 +907,18 @@ label dine:
 
         # Personajes en Pantalla: Yaga, Roga
         play music "audio/Musica/Bourree .mp3" volume 1 fadein 1.0
+    show yaga angry at right
         y "¡Oh, mira que te tardas, lenturro!"
+    hide yaga
+    show roga talk at center
         r "Es lo que... hay... señora"
         r "Mi pierna no estáaaaaa en sus mejores días"
+    hide roga
+    show yaga talk at right
         y "¿Y por eso el niño tendrá menos hambre?"
+    show yaga angry at right
         y "¡Ya dale de comer!"
+    hide yaga
         stop music fadeout 2.0
         "Recibes el plato en tu mesa..."
         "Se ve sano"
@@ -793,25 +933,36 @@ label dine:
         "..."
         "Estaba... delicioso..."
         play music "audio/Musica/Bourree .mp3" volume 0.5 fadein 2.0
+    show yaga talk at right
         y "¿Hmmm?"
         y "¿Estás llorando, niño?"
         y "Oh, pobrecito"
+    show yaga smile at right
         y "Deja que Yaga te dé un abrazo"
+    hide yaga
         "La señora te rodea con sus brazos sin permiso"
         "No duele. No se siente falso"
         "Sientes la calidez inundarte"
         "....."
         "No..."
         "No lo entiendes"
+    show yaga talk at right
         y "Ya te sientes mejor, ¿no, muchacho?"
+    show yaga angry at right
         y "¡No hay nada mejor que una sopa, un abrazo y un techo encima tuyo!"
+    show yaga talk at right
         y "Sé que los jóvenes como tú tienden a costarles dejarse amar. No los culpo, las calles los han convertido en niños-adultos. Adultos rotos"
         y "No quiero que temas aquí"
         y "No eres el único niño que ha estado aquí"
         y "Siempre hay chiquillos como tú que merecen una oportunidad"
+    hide yaga
+    show roga mad at center
         r "Mi señora tieeeene razón, chico. Estás a salvo aquí"
+    hide roga
+    show yaga talk at right
         y "Si necesitas cualquier cosa, aquí estamos para tí"
         y "Aquí tu abuela Yaga para servirte"
+    hide yaga
 
         $ asked_yaga = False
         $ asked_kids = False
@@ -821,45 +972,71 @@ label dine:
         menu:
             "Muchas gracias, Abuela Yaga" if not asked_yaga:
                 $ asked_yaga = True
+            show yaga talk at right
                 y "No hay de qué"
                 y "Esto debió serte dado desde hace mucho antes"
                 y "Realmente, enfrentarte a un destino desafortunado sin vivir la alegría de vivir. ¿Qué horrible sería, no crees?"
+            hide yaga
                 play sound "audio/efectos/SuspiroRoga.mp3" volume 4.0
+            show roga talk at center
                 r "¿Y a míiii no me agradecerán nada?"
+            hide roga
+            show yaga angry at right
                 y "Cállate"
+            hide yaga
                 jump dine_questions
             "¿Qué pasó con los otros niños?" if not asked_kids:
                 $ asked_kids = True
+            show roga talk at center
                 r "Oh, tuvieron que marcharse"
                 r "No tuvieron mucho tiem-"
+            hide roga
+            show yaga angry at right
                 y "¡Mucho tiempo con nosotros!"
+            show yaga talk at right
                 y "Mira, chico, te ofrecemos vivir aquí"
                 y "Sin embargo, en un mes. Quiero que termines de tomar una decisión"
                 y "Hasta ahora, parece que te hemos secuestrado"
+            hide yaga
                 play sound "audio/efectos/SuspiroRoga.mp3" volume 4.0
+            show roga talk at center
                 r "Buenoooo... en la práctica... es eso"  
+            hide roga
                 play sound "audio/efectos/GruyidoYaga.mp3" volume 2.0
+            show yaga angry at right
                 y "¡Silencio, animal!"
+            show yaga talk at right
                 y "Como decía, no quiero que pienses de inmediato en quedarte aquí"
                 y "Tienes muchas oportunidades en la vida"
                 y "Por lo cual, piensa en eso, ¿sí?"
+            hide yaga
                 jump dine_questions
             "¿Ustedes no van a comer?" if not asked_food:
                 $ asked_food = True
+            show yaga angry at right
                 y "¡Uh, no, tranquilo, no!"
+            show yaga talk at right
                 y "Ya he comido"
                 y "No necesito comer... en un tiempo"
+            hide yaga
+            show roga talk at center
                 r "Yo de por sí no como" 
+            hide roga
+            show yaga smile at right
                 y "Jojojo, qué gracioso eres"
+            show yaga talk at right
                 y "¿Verdad?"
+            hide yaga
                 jump dine_questions
             "Concluir conversación" if asked_yaga and asked_kids and asked_food:
                 jump dine_end
 
     label dine_end:
+    show yaga talk at right
         y "Muy bien, ya se está haciendo tarde"
         y "Más te vale descansar a partir de ahora, [name]"
         y "Te esperan varios días de deliberación"
+    hide yaga
 
         # Transición: Cuarto del niño
         stop music fadeout 2.0
@@ -907,32 +1084,53 @@ label act2:
     "El invierno azota fuera y no por eso se cuela en tu ventana"
     "De saber que estarías aquí hace más de un mes..."
     "No te lo creerías"
+    show roga talk at center
     r "Pequeño granuja, es hora de que te levantes"
+    hide roga
     menu:
         "5 minutos más...":
+            show roga talk at center
             r "Sabes queeeee no"
             r "Venga, vamos para que puedas desayunar"
+            hide roga
         "¡Cállate, sirviente!":
             $ sospecha += 1
+            show roga mad at center
             r "Ahg... la señora Yaga sí que le enseña malos modales"
+            show roga talk at center
             r "Me gustabas más antes de ser tan atrevido"
             r "No es una pregunta. Ven, chico..."
+            hide roga
 
     # Transición: Comedor
     scene Comedor
     with fade
+    show yaga talk at right
     y "Miren nada más, como está el muchacho"
     y "Te ves mejor con ropa de hombrecito bien portado"
+    hide yaga
+    show malen at left
+    show yaga talk at right
     y "¿Cómo amaneciste?"
+    hide yaga
+    hide malen
     menu:
         "¡Genial, como Odiseo en la isla de Circe!":
+            show yaga angry at right
             y "¡Ah, has leído libros!"
+            show yaga smile at right
             y "Buen niño. Mereces un aplauso"
+            hide yaga
         "Habría dormido mejor si el sirviente fuera más educado":
             $ sospecha += 1
+            show roga talk at center
             r "Perooo... solo hiceeee... mi trabajo"  
+            hide roga
+            show yaga talk at right
             y "Bueno, ese trabajo no es suficiente"
+            show yaga angry at right
             y "Como siempre, siendo torpe. ¡Ten más educación!"
+    show yaga talk at right
 
     y "En fin, chico"
     y "Desayuna bien..."
@@ -941,26 +1139,39 @@ label act2:
     y "Cuando regrese, bueno, espero verte en la Cena"
     y "Y que ahí, me digas qué quieres hacer con tu vida"
     y "Te apoyaré en lo que decidas"
+    hide yaga
     "Sus palabras te llegan"
     "Hace tiempo que te empiezan a convencer, de verdad..."
     "Así que, decides pedirle otro abrazo"
+    show yaga shocked at right
     y "¡Oh, ¿en serio?"
+    show yaga smile at right
     y "Jojojojo"
+    show yaga angry at right
     y "¡No paras de darme abrazos, chaval!"
+    show yaga smile at right
     y "Eres adicto a los abrazos de tu yaya, ¿cómo negarme?"
+    hide yaga
     "Los dos se abrazan"
     "El cómo se aferra tí, el cómo te tapa con su tela..."
     "Se siente auténtico"
+    show yaga talk at right
     y "Listo. Con este cariño dado, tu Yaga se despide, [name]"
     y "Tú, sirviente, más te vale empezar con la preparación de la cena"
+    hide yaga
+    show roga talk at center
     r "Como ordene..."
+    hide roga
+    show yaga angry at right
     y "Bien, bien. ¡Chaito, mi niño!"
+    hide yaga
 
     stop music fadeout 2.0
 
     # Transición: Cuarto del niño
     scene Dormitorio1
     with fade
+    show malen at left
     "Tras comer, te retiras a tu habitación"
     "Todas estas cosas... TUS cosas están aquí"
     "Nunca creíste que las tendrías"
@@ -970,6 +1181,7 @@ label act2:
     "Tras tantos abrazos, te hiciste por fin con la llave de su cuarto"
     "La prueba definitiva para todo"
     "Que sea lo que Dios quiera..."
+    hide malen
     scene black
     with fade
     play sound "audio/efectos/LlaveAbre.mp3" volume 4.0
@@ -1156,16 +1368,21 @@ label escape_attempt:
     "Ya puedes salir de aquí"
     "Te giras. Te centras en girar la perilla..."
     "Entonces, cuando por fin abres la puerta..."
+    show yaga talk at right
 
     y "Oh... Así que aquí estabas"
+    hide malen
 
     # Transición: Golpe en la cabeza / Pantalla oscura
     # Sonido: Golpe seco, ruido de interferencia, sonido burbujeante de sopa
     # Escena: Atado encima del caldero con Yaga delante
 
+    show yaga sad at right
     y "...."
     y "......"
+    show yaga shocked at right
     y "..... ¿Me odias, no?"
+    show yaga talk at right
     y "Es comprensible..."
     y "Al final, todos los niños me odian..."
     y "Ya sea en esta vida, o en la futura"
@@ -1182,34 +1399,48 @@ label escape_attempt:
     y "No funcionó. Terminó pereciendo."
     y "Porque una vez la muerte enlista una fecha, no se la salta. Las formas cambian, pero no el resultado. Por eso, no vale la pena luchar contra el resultado, sino con las causas"
     y "Tú, ¿me culpas?"
+    hide yaga
 
     menu:
         "Sí. Eres horrible.":
+            show yaga talk at right
             y "Lo entiendo. Duele, pero lo entiendo"
+            show yaga sad at right
             y "Sin embargo, sigue siendo por tu bien. Lo lamento tanto. Odíame de ser necesario, si eso ayuda"
+            hide yaga
 
         "No, pero sigue estando mal.":
             $ duda += 1
+            show yaga talk at right
             y "..."
             y "Ya veo..."
             y "Es un poco patético, para una mujer como yo, que quiera hablar contigo antes de que fallezcas. Lamento molestarte con palabrerías vacías"
+            hide yaga
 
     if roga_vivo:
+        show yaga talk at right
         y "Cabe decirte que, en cualquier caso, hiciste un buen trabajo..."
         y "Encerraste a Roga en su cuarto, por lo que vale la pena que se quede ahí castigado"
+        show yaga shocked at right
         y "Al final, no sirve ni para aliviar el dolor ni para controlarlo, ¿eh?"
+        hide yaga
     else:
+        show yaga talk at right
         y "Si te sirve de consuelo, Roga se merecía su final. Tú hiciste lo que debiste. Él no era más que un pecador pagando su deuda"
         y "Así que, no llores, [name]. No merecía tus lágrimas."
         y "En eso, él y yo nos parecemos"
 
     y "En breve, el humo del caldero te hará olvidar todo lo que has descubierto ahora. Volverás a ser feliz. Ignorante de tu propio destino"
+    show yaga sad at right
     y "Lo siento mucho..."
+    show yaga talk at right
 
     # Sonido de llamas
     y "¿Ese ruido de dónde...?"
     y "Un momento... también huele a..."
+    show yaga angry at right
     y "¡ESE IDIOTAAAAAAA!"
+    hide yaga
 
     # Yaga se va
     "Se está quemando algo. Debe ser por la cocina de Roga"
@@ -1227,11 +1458,13 @@ label ending_stay:
     "En vez de soltarte, hueles a profundidad"
     "Dejas que la mentira siga, que los colores sigan... porque la felicidad que tienes ahora es lo único en lo que puedes confiar"
     "Al final, esto ha sido lo que más te ha ayudado a no sentirte insignificante"
+    show yaga sad at right
 
     # Transición a oscuridad / Música melancólica
     # Imagen del niño sonriendo sin vida en la cama, Yaga a su lado triste
 
     y "Adiós, mi dulce [name]. Te recordaré por siempre..."
+    hide yaga
     # FIN
     return
 
@@ -1267,38 +1500,56 @@ label escape_choice:
 label stab_yaga:
     "Te acercas sin dejarte notar..."
     "Injertas la cuchilla entre sus vertebras. Ella chilla de dolor"
+    show yaga talk at right
 
     y "AAAAAAAAAAAAAAAAAAAA"
+    show yaga shocked at right
     y "¿Qu-qué? ¡Tú... tú!... ¿Cómo...?"
+    hide yaga
 
     if duda == 0:
+        show yaga sad at right
         y ".... hk... hk"
         y "... ja.... ja..."
+        show yaga talk at right
         y "S-supongo que da igual... el cómo, ¿no?"
         y "... Estás aquí... estás aquí... yo..."
         y "Dios... así que... aquí termina todo..."
         y "Merecía esto... lo merecía"
         y "... jo..."
+        show yaga sad at right
         y "Sé que lo merezco, pero... ¿Por qué...?"
         y "¿Por qué tengo tanto miedo?"
         y "......."
+        show yaga talk at right
         y "Ja..."
         y "Nunca pude confiar en ayudarte... igual que tú nunca pudiste confiarme tu verdadero nombre..."
+        show yaga sad at right
         y ".... [name], ¿puedes decirme tu verdadero nombre?"
         y "...."
+        show yaga talk at right
         y "¿Malen?"
+        show yaga sad at right
         y "..... Es... un bonito nombre..."
+        hide yaga
     else:
+        show yaga talk at right
         y "¿Por... qué?"
         y "Pensaba que tú... en el fondo... me querías..."
         y "Tú... tú..."
         y "Al final... sí que te volviste tan cruel cómo yo..."
+        show yaga sad at right
         y ".... de verdad... que no sirvo como madre..."
+        show yaga talk at right
         y "Ni siquiera pudiste... decirme tu verdadero nombre, ¿no, [name]?"
+        show yaga shocked at right
         y "¿Qué...? ¿Me dirás tu verdadero nombre?"
+        show yaga talk at right
         y "..."
         y "¿Malen?"
+        show yaga sad at right
         y "...... no sé si te sienta bien... o terriblemente mal..."
+        hide yaga
 
     # Yaga cae muerta
     # FINAL: MATASTE TU MENTIRA
