@@ -29,8 +29,8 @@ image Entrada1= "images/Fondos/Entrada_con_cabeza.png"
 image Entrada2= "images/Fondos/Entrada_sin_cabeza.png"
 image Dormitorio= "images/Fondos/Dormitorio.png"
 image Dormitorio1= "images/Fondos/DormitorioPostMes.png"
-image Cocina="images/Fondos/Cocina.png"
-image Cocina="images/Fondos/CocinaIncendio.png"
+image CocinaA="images/Fondos/Cocina.png"
+image CocinaB="images/Fondos/CocinaIncendio.png"
 image B1="images/Fondos/Balanza0.png"
 image B2="images/Fondos/BalanzaOro.png"
 image Comedor="images/Fondos/Comedor.png"
@@ -51,12 +51,14 @@ image PuertaRoga="images/Fondos/PuertaRoga.png"
 image CuartoYaga="images/Fondos/CuartoYaga.png"
 image CuartoYaga1="images/Fondos/CuartoYaga1.png"
 image Caldero="images/Fondos/Caldero.png"
-
 image Cuarto1="images/Fondos/Cuarto1.png"
 image Cuarto2="images/Fondos/Cuarto2.png"
 image Cuarto3="images/Fondos/Cuarto3.png"
 image Cuarto4="images/Fondos/Cuarto4.png"
 image Cuarto5="images/Fondos/Cuarto5.png"
+image red="images/Fondos/Rojo.png"
+image white="images/Fondos/Blanco.png"
+image Libros="images/Recursos/LibrosPuzzle.png"
 
 # Variables
 default visited_kitchen = False
@@ -83,20 +85,10 @@ default visita_cuarto_3 = False
 default tiene_llave_alce = False
 default roga_vivo = True
 
-
 default TrasHuevo = 0
 default codigo_secreto = "231489"
 
-
-
-
-
-
-
-
 # El juego comienza aquí.
-
-
 label start:
     ### Acto 1 ###
     scene black
@@ -344,8 +336,6 @@ label where:
             jump roga_room
 
 label kitchen:
-    scene Cocina
-    with fade
     # Pantalla: Cocina
     # Personajes en Pantalla: Roga
 
@@ -354,12 +344,16 @@ label kitchen:
         $ visited_kitchen = True
         $ rooms += 1
     if diario_leido:
+        scene CocinaB
+        with fade
         show roga talk at center
         r "¿Mmmmmm?"
         r "¿Qué quiere, señorito [name]?"
         r "Ahora mismo estooooy ocupado" 
         hide roga
     else:
+        scene CocinaA
+        with fade
         play sound "audio/efectos/SuspiroRoga.mp3" volume 4.0
         show roga smile at center
         r "Oh… has venido conmiiiigo. Que… “encantador”"
@@ -461,21 +455,27 @@ label tower_A:
     "Ves una estantería con varios libros, además de una mesa y un sofá donde sentarse"
     "Hay tres libros que llaman tu atención por sus títulos"
     # Cambiar la escena a los 3 libros
+    scene Libros
+    with fade
     label tower_A_menu:
         menu:
             "Examinar 'La Odisea'":
-                "Agarras el libro y lees un poco"
+                "Abres el libro por el marcapáginas y lees un poco"
                 "Te cuesta mucho leer como para empezar con esto ahora, así que lo dejas tal como está"
                 jump tower_A_menu
             "Examinar 'La Biblia'":
+                "Abres el libro por el marcapáginas y lees un poco"
                 "Pasas las hojas un momento"
                 "Te cuesta mucho leer como para empezar con esto ahora, así que la dejas tal como está"
                 jump tower_A_menu
             "Examinar 'El Cíclope' de Eurípides":
+                "Abres el libro por el marcapáginas y lees un poco"
                 "Revisas las páginas de la obra de Eurípides"
                 "Te cuesta mucho leer como para empezar con esto ahora, así que lo dejas tal como está"
                 jump tower_A_menu
             "Regresar":
+                scene SalaLeer
+                with fade
                 jump where
 
 label tower_B:
@@ -1499,5 +1499,87 @@ label stab_yaga:
 
 
 label threaten_yaga:
-    # Continuación según las ramas finales del script cuando no se le apuñala directamente
+    show malen at left
+    show yaga shocked at right
+
+    "Yaga está de espaldas intentando apagar el fuego, pero decides amenazarla"
+    y "¡¿Qué!?"
+    y "¡Cómo es coff escapaste?"
+    y "Tú…"
+    y "Creciste… de verdad que creciste…"
+    y "... te veías tan débil al principio… y ahora tú…"
+    y "..."
+    y "¿Tanto… deseas escapar?"
+    y "Chico… te lo digo en serio. Tú fallecerás. De forma lenta, agónica, y fuera de este hogar…"
+    y "Da igual si te vas… ya estás marcado. Sé que es horrible. YO soy horrible…"
+    show yaga sad at right
+
+    y "Pero piénsalo… no serás más feliz. No hay más felicidad allá fuera… solo puedo… darte un final menos horrible. Por favor, déjame hacerlo…"
+
+    jump threat_choice_1
+
+
+label threat_choice_1:
+    menu:
+        "Apuñalarla":
+            jump stab_yaga
+        "Volver a amenazarla":
+            jump threat_level_2
+
+
+label threat_level_2:
+    y "No… no lo entiendes. Yo puedo darte calma. Puedo darte lo último que necesitas. Así que… por favor"
+
+    menu:
+        "Apuñalarla":
+            jump stab_yaga
+        "Volver a amenazarla":
+            jump threat_level_3
+
+
+label threat_level_3:
+    show yaga angry at right
+
+    y "¡NO LO ENTIENDES! ¡Tú!"
+    y "¡ERES UN TONTO, [name], un TONTO!"
+    y "¿No confías en mí? ¿¡Nunca confiaste en tu Yaga!? ¿¡Acaso todo lo que hice por tí cayó en saco roto!?"
+    y "..."
+    show yaga sad at right
+    y "..... Por favor…"
+    y "Si no puedo ayudarte… si de por sí lo que iba a hacerte no sirve para nada…"
+    y "Entonces, lo que hice con todos los demás niños no sirvió tampoco"
+
+    menu:
+        "Exacto, no sirvió, así que dame la llave.":
+            jump final_dialogue_yaga
+        "... Todo lo que hiciste estuvo mal, Yaga. Me voy.":
+            jump final_dialogue_yaga
+
+
+label final_dialogue_yaga:
+    y "..."
+    y "... Te lamentarás"
+
+    "Baba Yaga te dio la llave principal"
+
+    y "Entiendo que no confiarás en mí"
+    y "Solo soy escoria. Así que, perdóname por atreverme a quererte"
+    y "Pero, [name], tú no me dijiste tu verdadero nombre, ¿verdad?"
+    y "Lo he sospechado hace un tiempo… y creo que acerté"
+    y "Al final, tampoco serví como madre"
+    y "Al menos, ¿me puedes decir tu verdadero nombre?"
+    y "..."
+    y "¿Malen?"
+    y "No te queda bien ese nombre… jojo"
+
+    "Baba Yaga se queda en su lugar. No se mueve. Ni ante las brasas que crecen ni porque tú retrocedas lentamente"
+    "La miras a los ojos. Por un instante, una fuerte tristeza te sacude de pies a cabeza"
+    "Lo poco que conseguiste, lo poco que creíste haber ganado, dejará de pertenecerte una vez das media vuelta"
+    "Y aún así… lo haces"
+    hide yaga sad
+    hide malen
+
+    # Transición a la oscuridad y fin de la ruta
+    scene black
+    with fade
     return
