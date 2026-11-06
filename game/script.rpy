@@ -35,8 +35,8 @@ image B1="images/Fondos/Balanza0.png"
 image B2="images/Fondos/BalanzaOro.png"
 image Comedor="images/Fondos/Comedor.png"
 image Comedor1="images/Fondos/Comedor1.png"
-image LinternaIs="images/Fondos/LinternaEsta.png"
-image LinternaNot="images/Fondos/LinternaNoEsta.png"
+image LinternaIs="images/Fondos/LiternaEsta.png"
+image LinternaNot="images/Fondos/LiternaNoEsta.png"
 image CuboIs="images/Fondos/CuboEsta.png"
 image CuboNot="images/Fondos/CuboNoEsta.png"
 image SalaLeer="images/Fondos/SalaLeer.png"
@@ -330,7 +330,7 @@ label where:
             jump kitchen
         "Ir al Torreon A":
             jump tower_A
-        "Ir al Torreon B" if not visited_tower_b or not diario_leido:
+        "Ir al Torreon B":
             jump tower_B
         "Ir al Torreon C":
             jump tower_C
@@ -338,7 +338,7 @@ label where:
             jump storage
         "Ir a la Entrada":
             jump entrance
-        "Ir al Comedor" if not diario_leido:
+        "Ir al Comedor":
             jump dine
         "Ir al Cuarto de Baba Roga" if tiene_llave_huevo:
             jump roga_room
@@ -487,7 +487,7 @@ label tower_B:
         $ rooms += 1
     "No hay mucho aquí, solo un armario."
     menu closet_choice:
-        "Husmear en el Armario":
+        "Husmear en el Armario" if not diario_leido:
             "Baba Yaga y Baba Roga se escuchan llegando"
             "Decides esconderte en el Armario"
 
@@ -515,6 +515,12 @@ label tower_B:
             "...Mejor regresar"
             scene CuboIs
             with fade
+            jump where
+        "Agarrar balde" if diario_leido:
+            scene CuboNot
+            with fade
+            "Agarras el balde, te debe servir"
+            $tiene_balde = True
             jump where
         "Regresar":
             jump where
@@ -554,7 +560,7 @@ label tower_C:
                             "Lo notas al instante. Es un huevo falso"
                             "Se puede abrir con un giro, permitiendo extraer la llave de Baba Roga"
                             $ tiene_llave_huevo = True
-                            jump CuartoRogaFoco
+                            jump roga_room
                            
                 else:
                         "El código no ha sido correcto"
@@ -603,28 +609,29 @@ label entrance:
 
 label roga_room:
     # En el cuarto de Baba Roga
+    scene CuartoRogaFoco
+    with fade
     "Encuentras una serie de notas casi decorando el cuarto"
     "'La señora me ha pedido cuidar de la llave de los invitados'"
     "'Seguro le retuerce el estómago... recordar el pecado que se esconde en cada habitación...'"
     "'Solo en los niños siente pena. ¿Por qué no en mí, su sirviente?'"
-    "'Como sea, he dejado la llave en el jardín. En el altar del centro'"
-    "'Eeeees imposible que el niño llegué ahí. Los árboles bañan el jardín con sombras y los chuchos estáaaan rondando'"
     "..."
-    "Hay un foco aquí"
 
     if tiene_linterna:
+        "Hay un foco aquí"
         "Podría ser útil con tu linterna, así que se la colocas"
-    else:
-        "...aunque no tienes nada con lo que te sirva aún"
+        scene CuartoRogaNoFoco
+        with fade
 
-    # Patio y Huida
+    
     "Ya tienes la llave de invitados"
     "Puede que halles pistas ahí"
-
     menu:
         "Salir":
             pass
 
+    scene PuertaRoga
+    with fade
     # Confrontación con Baba Roga
     if sospecha < 2:
         show roga shocked at center
@@ -640,6 +647,8 @@ label roga_room:
         if tiene_linterna:
             menu:
                 "Usar la linterna contra Baba Roga":
+                    scene white
+                    with fade
                     show roga shocked at center
                     r "ΑΗΗΗΗΗΗΗΗΗΗΗΗΗΗ"
                     r "AGH, ¡No! ¿¡Por qué tú..!?"
@@ -650,26 +659,29 @@ label roga_room:
                     "Ya puedes mirar los cuartos de invitados"
                     $ roga_vivo = False
                 "Huir":
+                    hide roga
+                    scene black
+                    with fade
                     "Eludes sus garras"
                     "Intenta capturarte, pero es lento"
                     "Lo esquivas lo suficiente y escapas a la puerta. La cierras con llave para que no te siga"
-                    show roga shocked at center
                     r "Chiicccooooo, abreeee"
                     r "Por favor... ella me castigará si no..."
                     r "ChicoooooooooOOOOOOOO"
-                    hide roga
                     "Habla y habla"
                     "Su voz se va cansando..."
                     "Es inútil preocuparte porque él entre. No hay otra entrada. Decides irte y explorar los cuartos de invitados"
                     "Ya puedes mirar los cuartos de invitados"
         else:
+            hide roga
+            scene black
+            with fade
             "Eludes sus garras"
             "Intenta capturarte, pero es lento"
             "Lo esquivas lo suficiente y escapas a la puerta. La cierras con llave para que no te siga"
             r "Chiicccooooo, abreeee"
             r "Por favor... ella me castigará si no..."
             r "ChicoooooooooOOOOOOOOOOO"
-            hide roga
             "Habla y habla"
             "Su voz se va cansando..."
             "Es inútil preocuparte porque él entre. No hay otra entrada. Decides irte y explorar los cuartos de invitados"
@@ -690,16 +702,25 @@ label roga_room:
         hide roga
 
         if tiene_linterna:
+            scene black
+            with fade
             "Baba Roga te amenaza, así que usas la linterna"
+            scene white
+            with fade
             "Es eficaz, lo oyes gritar"
             "Fue instintivo. Te iba a atacar..."
             "Aún así, te duele. No sabes si tenía sentido o no su furia..."
             r "Agh... agh..."
             "Baba Roga se retuerce. No puede hablar. Su piel se incendia..."
             ".. y termina por convertirse en polvo"
+            scene black
+            with fade
             "Ya puedes mirar los cuartos de invitados"
             $ roga_vivo = False
         else:
+            hide roga
+            scene black
+            with fade
             "Baba Roga intenta matarte"
             "Corres a un costado cuando él usa sus uñas para tratar de matarte"
             "No intenta capturarte, te quiere usar como carne de desestrés"
@@ -792,18 +813,18 @@ label bano_planta_dos:
         "¿Siquiera... eso es posible?"  
         jump planta_dos
     if diario_leido:
-        if TrasHuevo && not tiene_balde:
+        if TrasHuevo and not tiene_balde:
             "No es tiempo para una ducha"
             "Necesitas distraer a Roga"
             jump planta_dos
-        if TrasHuevo && tiene_balde:
+        if TrasHuevo and tiene_balde:
             "Agarras algo de agua"
             "Esto debe ser suficiente"
-            $ tiene_balde=False
-            $tiene_balde_lleno=True
+            $ tiene_balde = False
+            $tiene_balde_lleno = True
             "¿Dónde sería buena idea tirarlo?"
             jump planta_dos
-        if not TrasHuevo && not tiene_balde:
+        if not TrasHuevo and not tiene_balde:
             "No es tiempo para una ducha, debes escapar de aquí"
             jump planta_dos
         
@@ -812,19 +833,19 @@ label dine:
     if diario_leido:    
         scene Comedor1
         with fade
-        if tiene_balde && TrasHuevo:
+        if tiene_balde and TrasHuevo:
             "Sería buena idea usar el balde aquí para distraer a Roga"
             "Pero primero, deberías llenarlo"
             jump where
         if tiene_balde_lleno:
             "Tiras el agua aquí..."
             "Debe ser suficiente para sacarlo de la Cocina"
-            $ tiro_agua=True
+            $ tiro_agua = True
             jump kitchen
-        if not TrasHuevo && not tiene_balde:
+        if not TrasHuevo and not tiene_balde:
             "Y pensar que comías aquí con tranquilidad..."
             jump where
-        if TrasHuevo && not tiene_balde:
+        if TrasHuevo and not tiene_balde:
             "Si lograses tirar algo en el Comedor, podrías distraer a Roga, ¿Pero qué?"
             jump where
 
@@ -1031,7 +1052,7 @@ label act2:
             hide roga
         "¡Cállate, sirviente!":
             $ sospecha += 1
-            show roga mad at center
+            show roga angry at center
             r "Ahg... la señora Yaga sí que le enseña malos modales"
             show roga talk at center
             r "Me gustabas más antes de ser tan atrevido"
@@ -1041,33 +1062,26 @@ label act2:
     # Transición: Comedor
     scene Comedor
     with fade
-    show yaga talk at right
+    show yaga smile at right
     y "Miren nada más, como está el muchacho"
     y "Te ves mejor con ropa de hombrecito bien portado"
-    hide yaga
     show malen at left
-    show yaga talk at right
     y "¿Cómo amaneciste?"
-    hide yaga
-    hide malen
     menu:
         "¡Genial, como Odiseo en la isla de Circe!":
             show yaga shocked at right
             y "¡Ah, has leído libros!"
             show yaga smile at right
             y "Buen niño. Mereces un aplauso"
-            hide yaga
         "Habría dormido mejor si el sirviente fuera más educado":
             $ sospecha += 1
-            show roga talk at center
+            show roga shocked at center
             r "Perooo... solo hiceeee... mi trabajo"  
-            hide roga
-            show yaga talk at right
-            y "Bueno, ese trabajo no es suficiente"
             show yaga angry at right
+            y "Bueno, ese trabajo no es suficiente"
             y "Como siempre, siendo torpe. ¡Ten más educación!"
+    
     show yaga talk at right
-
     y "En fin, chico"
     y "Desayuna bien..."
     y "Yo hoy no estaré para acompañarte. Y, no, no porque “ya comí antes que tú”"
@@ -1083,22 +1097,19 @@ label act2:
     y "¡Oh, ¿en serio?"
     show yaga smile at right
     y "Jojojojo"
-    show yaga angry at right
     y "¡No paras de darme abrazos, chaval!"
-    show yaga smile at right
     y "Eres adicto a los abrazos de tu yaya, ¿cómo negarme?"
     hide yaga
     "Los dos se abrazan"
     "El cómo se aferra tí, el cómo te tapa con su tela..."
     "Se siente auténtico"
-    show yaga talk at right
+    show yaga smile at right
     y "Listo. Con este cariño dado, tu Yaga se despide, [name]"
-    y "Tú, sirviente, más te vale empezar con la preparación de la cena"
-    hide yaga
-    show roga talk at center
-    r "Como ordene..."
-    hide roga
     show yaga angry at right
+    y "Tú, sirviente, más te vale empezar con la preparación de la cena"
+    show roga talk at center
+    hide roga
+    r "Como ordene..."
     y "Bien, bien. ¡Chaito, mi niño!"
     hide yaga
 
@@ -1298,7 +1309,6 @@ label escape_attempt:
     $ tiene_llave_alce = True
     "Decides regresar a la entrada para ver la cabeza de alce"
     "La toqueteas, la mueves..."
-    # Cabeza de alce caída
     "..."
     "Agarras la llave escondida"
     "Ya puedes salir de aquí"
@@ -1307,18 +1317,23 @@ label escape_attempt:
     show yaga talk at right
 
     y "Oh... Así que aquí estabas"
+    scene red
     hide malen
+    hide yaga
 
     # Transición: Golpe en la cabeza / Pantalla oscura
     # Sonido: Golpe seco, ruido de interferencia, sonido burbujeante de sopa
     # Escena: Atado encima del caldero con Yaga delante
 
+    scene Caldero
+    with fade
+
     show yaga sad at right
     y "...."
     y "......"
-    show yaga shocked at right
-    y "..... ¿Me odias, no?"
     show yaga talk at right
+    y "..... ¿Me odias, no?"
+    show yaga sad at right
     y "Es comprensible..."
     y "Al final, todos los niños me odian..."
     y "Ya sea en esta vida, o en la futura"
@@ -1347,7 +1362,7 @@ label escape_attempt:
 
         "No, pero sigue estando mal.":
             $ duda += 1
-            show yaga talk at right
+            show yaga sad at right
             y "..."
             y "Ya veo..."
             y "Es un poco patético, para una mujer como yo, que quiera hablar contigo antes de que fallezcas. Lamento molestarte con palabrerías vacías"
@@ -1357,7 +1372,7 @@ label escape_attempt:
         show yaga talk at right
         y "Cabe decirte que, en cualquier caso, hiciste un buen trabajo..."
         y "Encerraste a Roga en su cuarto, por lo que vale la pena que se quede ahí castigado"
-        show yaga shocked at right
+        show yaga sad at right
         y "Al final, no sirve ni para aliviar el dolor ni para controlarlo, ¿eh?"
         hide yaga
     else:
@@ -1374,7 +1389,7 @@ label escape_attempt:
     # Sonido de llamas
     y "¿Ese ruido de dónde...?"
     y "Un momento... también huele a..."
-    show yaga angry at right
+    show yaga shocked at right
     y "¡ESE IDIOTAAAAAAA!"
     hide yaga
 
@@ -1395,6 +1410,9 @@ label ending_stay:
     "Dejas que la mentira siga, que los colores sigan... porque la felicidad que tienes ahora es lo único en lo que puedes confiar"
     "Al final, esto ha sido lo que más te ha ayudado a no sentirte insignificante"
     show yaga sad at right
+
+    scene black
+    with fade
 
     # Transición a oscuridad / Música melancólica
     # Imagen del niño sonriendo sin vida en la cama, Yaga a su lado triste
@@ -1436,10 +1454,10 @@ label escape_choice:
 label stab_yaga:
     "Te acercas sin dejarte notar..."
     "Injertas la cuchilla entre sus vertebras. Ella chilla de dolor"
-    show yaga talk at right
-
-    y "AAAAAAAAAAAAAAAAAAAA"
     show yaga shocked at right
+    y "AAAAAAAAAAAAAAAAAAAA"
+    scene black
+    with fade
     y "¿Qu-qué? ¡Tú... tú!... ¿Cómo...?"
     hide yaga
 
@@ -1447,45 +1465,33 @@ label stab_yaga:
         show yaga sad at right
         y ".... hk... hk"
         y "... ja.... ja..."
-        show yaga talk at right
         y "S-supongo que da igual... el cómo, ¿no?"
         y "... Estás aquí... estás aquí... yo..."
         y "Dios... así que... aquí termina todo..."
         y "Merecía esto... lo merecía"
         y "... jo..."
-        show yaga sad at right
         y "Sé que lo merezco, pero... ¿Por qué...?"
         y "¿Por qué tengo tanto miedo?"
         y "......."
-        show yaga talk at right
         y "Ja..."
         y "Nunca pude confiar en ayudarte... igual que tú nunca pudiste confiarme tu verdadero nombre..."
-        show yaga sad at right
         y ".... [name], ¿puedes decirme tu verdadero nombre?"
         y "...."
-        show yaga talk at right
         y "¿Malen?"
-        show yaga sad at right
         y "..... Es... un bonito nombre..."
         hide yaga
     else:
-        show yaga talk at right
+        show yaga sad at right
         y "¿Por... qué?"
         y "Pensaba que tú... en el fondo... me querías..."
         y "Tú... tú..."
         y "Al final... sí que te volviste tan cruel cómo yo..."
-        show yaga sad at right
         y ".... de verdad... que no sirvo como madre..."
-        show yaga talk at right
         y "Ni siquiera pudiste... decirme tu verdadero nombre, ¿no, [name]?"
-        show yaga shocked at right
         y "¿Qué...? ¿Me dirás tu verdadero nombre?"
-        show yaga talk at right
         y "..."
         y "¿Malen?"
-        show yaga sad at right
         y "...... no sé si te sienta bien... o terriblemente mal..."
-        hide yaga
 
     # Yaga cae muerta
     # FINAL: MATASTE TU MENTIRA
