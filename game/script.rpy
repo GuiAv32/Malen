@@ -2,9 +2,15 @@
 define m = Character("[name]", color = "#A30031")
 define y = Character("Baba Yaga", color = "#9B00A3")
 define r = Character("Baba Roga", color = "#0085A3")
+image carruaje_bg = Movie(play="video/Carruaje.mp4", loop=True)
 
 # Define los escenarios a usar
+
+#Videos
 image carruaje_bg = Movie(play="video/Carruaje.webm", loop=True)
+image Mes = Movie(play="video/UnMes.webm", loop=False)
+
+#FondosImagenes
 image Entrada1= "images/Fondos/Entrada_con_cabeza.png"
 image Entrada2= "images/Fondos/Entrada_sin_cabeza.png"
 image Dormitorio= "images/Fondos/Dormitorio.png"
@@ -56,6 +62,17 @@ default visita_cuarto_3 = False
 default tiene_llave_alce = False
 default roga_vivo = True
 
+
+
+
+
+
+
+
+
+# El juego comienza aquí.
+
+
 label start:
     ### Acto 1 ###
     scene black
@@ -63,6 +80,7 @@ label start:
     play music "audio/efectos/Carruaje .mp3" volume 3.0 fadein 2.0
     
     # Pantalla: negra 
+    scene black
     # Audio: viento invernal y traqueteo de caballos
     "Deberías sentir el frío habitual de esta época del año"
     "El infame aliento de Dios en tus poros"
@@ -72,6 +90,9 @@ label start:
     with fade
 
     # Pantalla: carruaje
+    scene black
+    show carruaje_bg 
+  
     "Has despertado en un carruaje en movimiento" 
     "Te tocas los cachetes y confirmas algo"
     "No estás soñando"
@@ -281,10 +302,14 @@ label kitchen:
     if not visited_kitchen:
         $ visited_kitchen = True
         $ rooms += 1
-
+    if diario_leido:
+        r "¿Mmmmmm?"
+        r "¿Qué quiere, señorito [name]?"
+        r "Ahora mismo estooooy ocupado" 
+    else:
     play sound "audio/efectos/SuspiroRoga.mp3" volume 4.0
-    r "Oh… has venido conmiiiigo. Que… “encantador”"
-    r "Disculpe. Estoy ocupadoooo en esto, querido huesped"
+        r "Oh… has venido conmiiiigo. Que… “encantador”"
+        r "Disculpe. Estoy ocupadoooo en esto, querido huesped"
 
     if not diario_leido:
         menu roga_dial1:
@@ -330,7 +355,7 @@ label kitchen:
                 jump where
     else:
         if not tiene_balde:
-            "No, aún no tienes lo necesario para conseguir lo que buscas aquí."
+            "Mejor deberías irte. No parece que haya algo útil aquí."
             jump where
         else:
             "Sería útil tirar el agua aquí"
@@ -778,6 +803,9 @@ label dine_end:
 
     # Transición: Cuarto del niño
     stop music fadeout 2.0
+
+    scene Dormitorio
+    with fade
     "La habitación ya está climatizada"
     "Te espera una agradable cama para tí"
     "No sabes si esto es real"
@@ -786,10 +814,23 @@ label dine_end:
     "Decides escapar en menos de una semana. Robarás todo lo que puedas para largarte"
     "No confías ni confiarás nunca en los adultos"
     "Así que, ¿Por qué te quedarías a pensar si quedarte o no?"
-    scene black
-    with fade
 
     # Transición: Pantalla negra
+    scene black
+    with fade
+    pause 2.0  # Tiempo que se mantiene en total oscuridad
+
+    # Transición suave hacia el video (duración de 1.5 segundos de fundido)
+    scene Mes
+    with Dissolve(1.5)
+
+    # Reemplaza 5.0 por la duración total en segundos de tu archivo de video
+    $ renpy.pause(23.0, hard=True)
+
+    # Transición de salida suave de regreso al negro
+    scene black
+    with Dissolve(1.0)
+    pause 1.0
     # Texto en pantalla / Ilustraciones: "1 Mes después"
     jump act2
 
@@ -799,6 +840,9 @@ label act2:
     # Pantalla: Habitación del niño (con dibujos y juguetes)
     scene Dormitorio1
     with fade
+
+    play music "audio/Musica/Impertinence.mp3" volume 1.0 fadein 1.0
+
     "La mañana se siente fresca"
     "El invierno azota fuera y no por eso se cuela en tu ventana"
     "De saber que estarías aquí hace más de un mes..."
@@ -851,6 +895,8 @@ label act2:
     y "Tú, sirviente, más te vale empezar con la preparación de la cena"
     r "Como ordene..."
     y "Bien, bien. ¡Chaito, mi niño!"
+
+    stop music fadeout 2.0
 
     # Transición: Cuarto del niño
     scene Dormitorio1
@@ -925,7 +971,7 @@ label yaga_diary:
             "Ya has visto suficiente. Es mejor irse ahora"
             jump where
 
-### ACTO 3: CUARTOS DE INVITADOS Y FINAL ###
+### ACTO 3: CUARTOS DE INVITADOS Y FINAL ### 
 
 label act3:
     menu:
