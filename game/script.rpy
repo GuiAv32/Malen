@@ -8,13 +8,15 @@ image roga mad = "images/Personajes/roga mad.png"
 image roga normal = "images/Personajes/roga normal.png"
 image roga shocked = "images/Personajes/roga shocked.png"
 image roga smile = "images/Personajes/roga smile.png"
-image roga talk = "images/Personajes/roga talk.png"
+image roga talk = "images/Personajes/roga dead.png"
+image roga dead = "images/Personajes/roga talk.png"
 image yaga angry = "images/Personajes/yaga angry.png"
 image yaga normal = "images/Personajes/yaga normal.png"
 image yaga sad = "images/Personajes/yaga sad.png"
 image yaga shocked = "images/Personajes/yaga shocked.png"
 image yaga smile = "images/Personajes/yaga smile.png"
 image yaga talk = "images/Personajes/yaga talk.png"
+image yaga bleed = "images/Personajes/yaga bleed.png"
 
 image carruaje_bg = Movie(play="video/Carruaje.mp4", loop=True)
 
@@ -84,6 +86,7 @@ default tiene_llave_huevo = False
 default visita_cuarto_3 = False
 default tiene_llave_alce = False
 default roga_vivo = True
+default codigo_usado = False
 
 default TrasHuevo = 0
 default codigo_secreto = "231489"
@@ -338,22 +341,19 @@ label where:
 label kitchen:
     # Pantalla: Cocina
     # Personajes en Pantalla: Roga
-
+    scene CocinaA
+    with fade
     # --IMPLEMENTAR FASE DISTINTA--
     if not visited_kitchen:
         $ visited_kitchen = True
         $ rooms += 1
     if diario_leido:
-        scene CocinaB
-        with fade
         show roga talk at center
         r "¿Mmmmmm?"
         r "¿Qué quiere, señorito [name]?"
         r "Ahora mismo estooooy ocupado" 
         hide roga
     else:
-        scene CocinaA
-        with fade
         play sound "audio/efectos/SuspiroRoga.mp3" volume 4.0
         show roga smile at center
         r "Oh… has venido conmiiiigo. Que… “encantador”"
@@ -537,13 +537,16 @@ label tower_C:
     if diario_leido:
         menu egg:
             "Inspeccionar la balanza":
-                "Hay un candado con contraseña en la jaula donde está el huevo"
-                $ intento = renpy.input("Introduce el código de 6 dígitos:", length=6).strip()
+                if not codigo_usado:
+                    "Hay un candado con contraseña en la jaula donde está el huevo"
+                    $ intento = renpy.input("Introduce el código de 6 dígitos:", length=6).strip()
 
-                if intento == codigo_secreto:
+                    if intento == codigo_secreto:
+                        $ codigo_usado = True
+                        "¡Eso es! La jaula está abierta."
                         if not tiene_huevo:
                             # Al intentar agarrar el huevo
-                            "No es buena idea quitar el huevo falso sin reemplazarlo por algo de un mismo tamaño"
+                            "Aunque no es buena idea quitar el huevo falso sin reemplazarlo por algo de un mismo tamaño"
                             "¿Tal vez robar un huevo en la cocina sea buena idea?"
                             "Si es así, ¿Cómo lo robas?"
                             "Tal vez distrayendo a Roga..."
@@ -560,12 +563,33 @@ label tower_C:
                             "Lo notas al instante. Es un huevo falso"
                             "Se puede abrir con un giro, permitiendo extraer la llave de Baba Roga"
                             $ tiene_llave_huevo = True
-                            jump roga_room
-                           
+                            jump roga_room                             
+                    else:
+                            "El código no ha sido correcto"
+                            "Te toca adivinar, o tal vez buscar un posible {b}recordatorio {/b}extraviado"
+                            jump where
                 else:
-                        "El código no ha sido correcto"
-                        "Te toca adivinar, o tal vez buscar un posible {b}recordatorio {/b}extraviado"
+                    if not tiene_huevo:
+                        # Al intentar agarrar el huevo
+                        "No es buena idea quitar el huevo falso sin reemplazarlo por algo de un mismo tamaño"
+                        "¿Tal vez robar un huevo en la cocina sea buena idea?"
+                        "Si es así, ¿Cómo lo robas?"
+                        "Tal vez distrayendo a Roga..."
+                        $ TrasHuevo=1
                         jump where
+                    else:
+                        # Al intentar distraer a Roga
+                        "Ahora que tienes el huevo, lo cambias por el de la Jaula"
+                        scene black
+                        with fade
+                        "¡Ya lo tienes en tus manos!"
+                        scene B1
+                        with fade
+                        "Lo notas al instante. Es un huevo falso"
+                        "Se puede abrir con un giro, permitiendo extraer la llave de Baba Roga"
+                        $ tiene_llave_huevo = True
+                        jump roga_room
+
     else:
         "Describir lo extraño de la escena es imposible"
         "Mejor es hora de irte"
@@ -644,7 +668,7 @@ label roga_room:
                 "Usar la linterna contra Baba Roga":
                     scene white
                     with fade
-                    show roga shocked at center
+                    show roga dead at center
                     r "ΑΗΗΗΗΗΗΗΗΗΗΗΗΗΗ"
                     r "AGH, ¡No! ¿¡Por qué tú..!?"
                     r "No, por favor..."
@@ -1431,6 +1455,8 @@ label escape_choice:
     $ tiene_cuchillo = True
 
     # Transición: Cocina con fuego
+    scene CocinaB
+    with fade
     "Yaga está de espaldas mientras intenta apagar el fuego"
 
     if tiene_cuchillo:
@@ -1447,7 +1473,7 @@ label escape_choice:
 label stab_yaga:
     "Te acercas sin dejarte notar..."
     "Injertas la cuchilla entre sus vertebras. Ella chilla de dolor"
-    show yaga shocked at right
+    show yaga bleed at right
     y "AAAAAAAAAAAAAAAAAAAA"
     scene black
     with fade
@@ -1455,7 +1481,6 @@ label stab_yaga:
     hide yaga
 
     if duda == 0:
-        show yaga sad at right
         y ".... hk... hk"
         y "... ja.... ja..."
         y "S-supongo que da igual... el cómo, ¿no?"
@@ -1474,7 +1499,6 @@ label stab_yaga:
         y "..... Es... un bonito nombre..."
         hide yaga
     else:
-        show yaga sad at right
         y "¿Por... qué?"
         y "Pensaba que tú... en el fondo... me querías..."
         y "Tú... tú..."
