@@ -16,9 +16,11 @@ image Entrada2= "images/Fondos/Entrada_sin_cabeza.png"
 image Dormitorio= "images/Fondos/Dormitorio.png"
 image Dormitorio1= "images/Fondos/DormitorioPostMes.png"
 image Cocina="images/Fondos/Cocina.png"
+image Cocina="images/Fondos/CocinaIndencio.png"
 image B1="images/Fondos/Balanza0.png"
 image B2="images/Fondos/BalanzaOro.png"
 image Comedor="images/Fondos/Comedor.png"
+image Comedor1="images/Fondos/Comedor1.png"
 image LinternaIs="images/Fondos/LinternaEsta.png"
 image LinternaNot="images/Fondos/LinternaNoEsta.png"
 image CuboIs="images/Fondos/CuboEsta.png"
@@ -31,8 +33,11 @@ image AlmacenComida="images/Fondos/AlmacenComida.png"
 image Bayo="images/Fondos/Bayo.png"
 image CuartoRogaNoFoco="images/Fondos/TallerRoga_sinfoco.png"
 image CuartoRogaFoco="images/Fondos/TallerRoga_confoco.png"
+image PuertaRoga="images/Fondos/PuertaRoga.png"
 image CuartoYaga="images/Fondos/CuartoYaga.png"
 image CuartoYaga1="images/Fondos/CuartoYaga1.png"
+image Caldero="images/Fondos/Caldero.png"
+
 image Cuarto1="images/Fondos/Cuarto1.png"
 image Cuarto2="images/Fondos/Cuarto2.png"
 image Cuarto3="images/Fondos/Cuarto3.png"
@@ -56,12 +61,17 @@ default diario_leido = False
 default tiene_linterna = False
 default tiene_huevo = False
 default tiene_balde = False
+default tiene_balde_lleno = False
+default tiro_agua= False
 default tiene_cuchillo = False
 default tiene_llave_huevo = False
 default visita_cuarto_3 = False
 default tiene_llave_alce = False
 default roga_vivo = True
 
+
+default TrasHuevo = 0
+default codigo_secreto = "231489"
 
 
 
@@ -307,7 +317,7 @@ label kitchen:
         r "¿Qué quiere, señorito [name]?"
         r "Ahora mismo estooooy ocupado" 
     else:
-    play sound "audio/efectos/SuspiroRoga.mp3" volume 4.0
+        play sound "audio/efectos/SuspiroRoga.mp3" volume 4.0
         r "Oh… has venido conmiiiigo. Que… “encantador”"
         r "Disculpe. Estoy ocupadoooo en esto, querido huesped"
 
@@ -354,12 +364,11 @@ label kitchen:
                 r "Chao, chico"
                 jump where
     else:
-        if not tiene_balde:
+        if not tiro_agua:
             "Mejor deberías irte. No parece que haya algo útil aquí."
+            "Y tener a Roga cerca...no te deja tranquilo"
             jump where
         else:
-            "Sería útil tirar el agua aquí"
-            "Tiras el agua para distraer a Roga"
             r "¿Qué ocurre chico?"
             r "¿Has tirado... aguaaaa por accidente?"
             if sospecha < 2:
@@ -448,31 +457,50 @@ label tower_B:
 
 label tower_C:
     # Pantalla: Mesa con Balanza
-    scene B2
-    with fade
+
     if not visited_tower_c:
         $ visited_tower_c = True
         $ rooms += 1
-    "Describir lo extraño de la escena es imposible"
-    "Igualmente te causa curiosidad"
-    menu egg:
-        "Inspeccionar la balanza":
-            if not tiene_huevo:
-                # Al intentar agarrar el huevo
-                "No es buena idea quitar el huevo falso sin reemplazarlo por algo de un mismo tamaño"
-                "¿Tal vez robar un huevo en la cocina sea buena idea?"
-                jump where
-            else:
-                # Al intentar distraer a Roga
-                "Ahora que tienes el huevo, lo cambias por el de la Jaula"
-                "¡Ya lo tienes en tus manos!"
-                "Lo notas al instante. Es un huevo falso"
-                "Se puede abrir con un giro, permitiendo extraer la llave de Baba Roga"
-                $ tiene_llave_huevo = True
-                jump where
-        "Irte":
-            "Mejor es hora de irte"
-            jump where
+    scene B2
+    with fade
+
+    if diario_leido
+        menu egg:
+            "Inspeccionar la balanza":
+                
+                "Hay un candado con contraseña en la jaula donde está el huevo"
+                $ intento=renpy.input("Introduce el código de 6 dígitos:", length=6).strip()
+
+                if intento=codigo_secreto:
+                        if not tiene_huevo:
+                            # Al intentar agarrar el huevo
+                            "No es buena idea quitar el huevo falso sin reemplazarlo por algo de un mismo tamaño"
+                            "¿Tal vez robar un huevo en la cocina sea buena idea?"
+                            "Si es así, ¿Cómo lo robas?"
+                            "Tal vez distrayendo a Roga..."
+                            $ TrasHuevo=1
+                            jump where
+                        else:
+                            # Al intentar distraer a Roga
+                            "Ahora que tienes el huevo, lo cambias por el de la Jaula"
+                            scene black
+                            with fade
+                            "¡Ya lo tienes en tus manos!"
+                            scene B1
+                            with fade
+                            "Lo notas al instante. Es un huevo falso"
+                            "Se puede abrir con un giro, permitiendo extraer la llave de Baba Roga"
+                            $ tiene_llave_huevo = True
+                            jump CuartoRogaFoco
+                           
+                else:
+                        "El código no ha sido correcto"
+                        "Te toca adivinar, o tal vez buscar un posible {b}recordatorio {/b}extraviado"
+                        jump where
+    else:
+        "Describir lo extraño de la escena es imposible"
+        "Mejor es hora de irte"
+        jump where
 
 label storage:
     # Pantalla: Almacén
@@ -678,161 +706,193 @@ label bano_planta_dos:
     # Pantalla: Baño
     scene Bayo
     with fade
-    "Sientes el vapor tocar tu piel. El agua no es fría. No es sucia"
-    "Es agua para asearte"
-    "¿Siquiera... eso es posible?"  
-    menu bano_menu:
-        "Inspeccionar balde" if diario_leido:
-            "Tal vez tirar agua sea una buena distracción"
-            "Has llenado el balde"
-            $ tiene_balde = True
+    if not diario_leido:
+        "Sientes el vapor tocar tu piel. El agua no es fría. No es sucia"
+        "Es agua para asearte"
+        "¿Siquiera... eso es posible?"  
+        jump planta_dos
+    if diario_leido:
+        if TrasHuevo && not tiene_balde:
+            "No es tiempo para una ducha"
+            "Necesitas distraer a Roga"
             jump planta_dos
-        "Regresar":
+        if TrasHuevo && tiene_balde:
+            "Agarras algo de agua"
+            "Esto debe ser suficiente"
+            $ tiene_balde=False
+            $tiene_balde_lleno=True
+            "¿Dónde sería buena idea tirarlo?"
             jump planta_dos
-
+        if not TrasHuevo && not tiene_balde:
+            "No es tiempo para una ducha, debes escapar de aquí"
+            jump planta_dos
+        
 label dine:
-    scene Comedor
-    with fade
-    # Pantalla: Comedor Enorme (mesas con mantas, candelabro, pinturas)
-    # Personajes en Pantalla: Yaga
-    stop music fadeout 1.0
 
-    # Caso 1: Si exploró al menos dos habitaciones ($ rooms >= 2)
-    if rooms >= 2:
-        y "¡Bienvenido chico!"
-        y "Te ves...feliz"
-        y "Un momento, en serio ¿Lo que veo ahí es una sonrisa?"
-        y "Jujujuju. ¡Qué chuecos tienes tus dienticos de leche!"
-        y "Una gran diferencia para tu... “aspecto original”"
-    # Caso 2: Si fue directo al comedor ($ rooms < 2)
+    if diario_leido:
+    
+    scene Comedor1
+    with fade
+
+        if tiene_balde && TrasHuevo:
+            "Sería buena idea usar el balde aquí para distraer a Roga"
+            "Pero primero, deberías llenarlo"
+            jump where
+        if tiene_balde_lleno:
+            "Tiras el agua aquí..."
+            "Debe ser suficiente para sacarlo de la Cocina"
+            $ tiro_agua=True
+            jump kitchen
+        if not TrasHuevo && not tiene_balde
+            "Y pensar que comías aquí con tranquilidad..."
+            jump where
+        if TrasHuevo && not tiene_balde
+            "Si lograses tirar algo en el Comedor, podrías distraer a Roga, ¿Pero qué?"
+            jump where
+
     else:
-        y "Has sido muy rápido"
-        y "Supongo que tienes mucha hambre"
-        y "Pues bien, este es el comedor, querido"
-        y "No recibimos muchas visitas, pero es una herencia de otros tiempos más lejanos"
-        y "Lástima que nuestro “sirviente” no sea más competente por eso"
+        scene Comedor
+        with fade
+        # Pantalla: Comedor Enorme (mesas con mantas, candelabro, pinturas)
+        # Personajes en Pantalla: Yaga
+        stop music fadeout 1.0
 
-    # Personajes en Pantalla: Yaga, Roga
-    play music "audio/Musica/Bourree .mp3" volume 1 fadein 1.0
-    y "¡Oh, mira que te tardas, lenturro!"
-    r "Es lo que... hay... señora"
-    r "Mi pierna no estáaaaaa en sus mejores días"
-    y "¿Y por eso el niño tendrá menos hambre?"
-    y "¡Ya dale de comer!"
-    stop music fadeout 2.0
-    "Recibes el plato en tu mesa..."
-    "Se ve sano"
-    "Demasiado sano..."
-    "¿Es tarde para retractarte y marcharte?"
-    "¿No es este un paso demasiado difícil?"
-    "Te llevas una cuchara a la boca"
-    "Sorbes"
-    "Tragas"
-    "Esperas"
-    "....."
-    "..."
-    "Estaba... delicioso..."
-    play music "audio/Musica/Bourree .mp3" volume 0.5 fadein 2.0
-    y "¿Hmmm?"
-    y "¿Estás llorando, niño?"
-    y "Oh, pobrecito"
-    y "Deja que Yaga te dé un abrazo"
-    "La señora te rodea con sus brazos sin permiso"
-    "No duele. No se siente falso"
-    "Sientes la calidez inundarte"
-    "....."
-    "No..."
-    "No lo entiendes"
-    y "Ya te sientes mejor, ¿no, muchacho?"
-    y "¡No hay nada mejor que una sopa, un abrazo y un techo encima tuyo!"
-    y "Sé que los jóvenes como tú tienden a costarles dejarse amar. No los culpo, las calles los han convertido en niños-adultos. Adultos rotos"
-    y "No quiero que temas aquí"
-    y "No eres el único niño que ha estado aquí"
-    y "Siempre hay chiquillos como tú que merecen una oportunidad"
-    r "Mi señora tieeeene razón, chico. Estás a salvo aquí"
-    y "Si necesitas cualquier cosa, aquí estamos para tí"
-    y "Aquí tu abuela Yaga para servirte"
+        # Caso 1: Si exploró al menos dos habitaciones ($ rooms >= 2)
+        if rooms >= 2:
+            y "¡Bienvenido chico!"
+            y "Te ves...feliz"
+            y "Un momento, en serio ¿Lo que veo ahí es una sonrisa?"
+            y "Jujujuju. ¡Qué chuecos tienes tus dienticos de leche!"
+            y "Una gran diferencia para tu... “aspecto original”"
+        # Caso 2: Si fue directo al comedor ($ rooms < 2)
+        else:
+            y "Has sido muy rápido"
+            y "Supongo que tienes mucha hambre"
+            y "Pues bien, este es el comedor, querido"
+            y "No recibimos muchas visitas, pero es una herencia de otros tiempos más lejanos"
+            y "Lástima que nuestro “sirviente” no sea más competente por eso"
 
-    $ asked_yaga = False
-    $ asked_kids = False
-    $ asked_food = False
+        # Personajes en Pantalla: Yaga, Roga
+        play music "audio/Musica/Bourree .mp3" volume 1 fadein 1.0
+        y "¡Oh, mira que te tardas, lenturro!"
+        r "Es lo que... hay... señora"
+        r "Mi pierna no estáaaaaa en sus mejores días"
+        y "¿Y por eso el niño tendrá menos hambre?"
+        y "¡Ya dale de comer!"
+        stop music fadeout 2.0
+        "Recibes el plato en tu mesa..."
+        "Se ve sano"
+        "Demasiado sano..."
+        "¿Es tarde para retractarte y marcharte?"
+        "¿No es este un paso demasiado difícil?"
+        "Te llevas una cuchara a la boca"
+        "Sorbes"
+        "Tragas"
+        "Esperas"
+        "....."
+        "..."
+        "Estaba... delicioso..."
+        play music "audio/Musica/Bourree .mp3" volume 0.5 fadein 2.0
+        y "¿Hmmm?"
+        y "¿Estás llorando, niño?"
+        y "Oh, pobrecito"
+        y "Deja que Yaga te dé un abrazo"
+        "La señora te rodea con sus brazos sin permiso"
+        "No duele. No se siente falso"
+        "Sientes la calidez inundarte"
+        "....."
+        "No..."
+        "No lo entiendes"
+        y "Ya te sientes mejor, ¿no, muchacho?"
+        y "¡No hay nada mejor que una sopa, un abrazo y un techo encima tuyo!"
+        y "Sé que los jóvenes como tú tienden a costarles dejarse amar. No los culpo, las calles los han convertido en niños-adultos. Adultos rotos"
+        y "No quiero que temas aquí"
+        y "No eres el único niño que ha estado aquí"
+        y "Siempre hay chiquillos como tú que merecen una oportunidad"
+        r "Mi señora tieeeene razón, chico. Estás a salvo aquí"
+        y "Si necesitas cualquier cosa, aquí estamos para tí"
+        y "Aquí tu abuela Yaga para servirte"
 
-label dine_questions:
-    menu:
-        "Muchas gracias, Abuela Yaga" if not asked_yaga:
-            $ asked_yaga = True
-            y "No hay de qué"
-            y "Esto debió serte dado desde hace mucho antes"
-            y "Realmente, enfrentarte a un destino desafortunado sin vivir la alegría de vivir. ¿Qué horrible sería, no crees?"
-            play sound "audio/efectos/SuspiroRoga.mp3" volume 4.0
-            r "¿Y a míiii no me agradecerán nada?"
-            y "Cállate"
-            jump dine_questions
-        "¿Qué pasó con los otros niños?" if not asked_kids:
-            $ asked_kids = True
-            r "Oh, tuvieron que marcharse"
-            r "No tuvieron mucho tiem-"
-            y "¡Mucho tiempo con nosotros!"
-            y "Mira, chico, te ofrecemos vivir aquí"
-            y "Sin embargo, en un mes. Quiero que termines de tomar una decisión"
-            y "Hasta ahora, parece que te hemos secuestrado"
-            play sound "audio/efectos/SuspiroRoga.mp3" volume 4.0
-            r "Buenoooo... en la práctica... es eso"  
-            play sound "audio/efectos/GruyidoYaga.mp3" volume 2.0
-            y "¡Silencio, animal!"
-            y "Como decía, no quiero que pienses de inmediato en quedarte aquí"
-            y "Tienes muchas oportunidades en la vida"
-            y "Por lo cual, piensa en eso, ¿sí?"
-            jump dine_questions
-        "¿Ustedes no van a comer?" if not asked_food:
-            $ asked_food = True
-            y "¡Uh, no, tranquilo, no!"
-            y "Ya he comido"
-            y "No necesito comer... en un tiempo"
-            r "Yo de por sí no como" 
-            y "Jojojo, qué gracioso eres"
-            y "¿Verdad?"
-            jump dine_questions
-        "Concluir conversación" if asked_yaga and asked_kids and asked_food:
-            jump dine_end
+        $ asked_yaga = False
+        $ asked_kids = False
+        $ asked_food = False
 
-label dine_end:
-    y "Muy bien, ya se está haciendo tarde"
-    y "Más te vale descansar a partir de ahora, [name]"
-    y "Te esperan varios días de deliberación"
+    label dine_questions:
+        menu:
+            "Muchas gracias, Abuela Yaga" if not asked_yaga:
+                $ asked_yaga = True
+                y "No hay de qué"
+                y "Esto debió serte dado desde hace mucho antes"
+                y "Realmente, enfrentarte a un destino desafortunado sin vivir la alegría de vivir. ¿Qué horrible sería, no crees?"
+                play sound "audio/efectos/SuspiroRoga.mp3" volume 4.0
+                r "¿Y a míiii no me agradecerán nada?"
+                y "Cállate"
+                jump dine_questions
+            "¿Qué pasó con los otros niños?" if not asked_kids:
+                $ asked_kids = True
+                r "Oh, tuvieron que marcharse"
+                r "No tuvieron mucho tiem-"
+                y "¡Mucho tiempo con nosotros!"
+                y "Mira, chico, te ofrecemos vivir aquí"
+                y "Sin embargo, en un mes. Quiero que termines de tomar una decisión"
+                y "Hasta ahora, parece que te hemos secuestrado"
+                play sound "audio/efectos/SuspiroRoga.mp3" volume 4.0
+                r "Buenoooo... en la práctica... es eso"  
+                play sound "audio/efectos/GruyidoYaga.mp3" volume 2.0
+                y "¡Silencio, animal!"
+                y "Como decía, no quiero que pienses de inmediato en quedarte aquí"
+                y "Tienes muchas oportunidades en la vida"
+                y "Por lo cual, piensa en eso, ¿sí?"
+                jump dine_questions
+            "¿Ustedes no van a comer?" if not asked_food:
+                $ asked_food = True
+                y "¡Uh, no, tranquilo, no!"
+                y "Ya he comido"
+                y "No necesito comer... en un tiempo"
+                r "Yo de por sí no como" 
+                y "Jojojo, qué gracioso eres"
+                y "¿Verdad?"
+                jump dine_questions
+            "Concluir conversación" if asked_yaga and asked_kids and asked_food:
+                jump dine_end
 
-    # Transición: Cuarto del niño
-    stop music fadeout 2.0
+    label dine_end:
+        y "Muy bien, ya se está haciendo tarde"
+        y "Más te vale descansar a partir de ahora, [name]"
+        y "Te esperan varios días de deliberación"
 
-    scene Dormitorio
-    with fade
-    "La habitación ya está climatizada"
-    "Te espera una agradable cama para tí"
-    "No sabes si esto es real"
-    "Si siquiera tiene sentido para tí"
-    "Da igual"
-    "Decides escapar en menos de una semana. Robarás todo lo que puedas para largarte"
-    "No confías ni confiarás nunca en los adultos"
-    "Así que, ¿Por qué te quedarías a pensar si quedarte o no?"
+        # Transición: Cuarto del niño
+        stop music fadeout 2.0
 
-    # Transición: Pantalla negra
-    scene black
-    with fade
-    pause 2.0  # Tiempo que se mantiene en total oscuridad
+        scene Dormitorio
+        with fade
+        "La habitación ya está climatizada"
+        "Te espera una agradable cama para tí"
+        "No sabes si esto es real"
+        "Si siquiera tiene sentido para tí"
+        "Da igual"
+        "Decides escapar en menos de una semana. Robarás todo lo que puedas para largarte"
+        "No confías ni confiarás nunca en los adultos"
+        "Así que, ¿Por qué te quedarías a pensar si quedarte o no?"
 
-    # Transición suave hacia el video (duración de 1.5 segundos de fundido)
-    scene Mes
-    with Dissolve(1.5)
+        # Transición: Pantalla negra
+        scene black
+        with fade
+        pause 2.0  # Tiempo que se mantiene en total oscuridad
 
-    # Reemplaza 5.0 por la duración total en segundos de tu archivo de video
-    $ renpy.pause(23.0, hard=True)
+        # Transición suave hacia el video (duración de 1.5 segundos de fundido)
+        scene Mes
+        with Dissolve(1.5)
 
-    # Transición de salida suave de regreso al negro
-    scene black
-    with Dissolve(1.0)
-    pause 1.0
-    # Texto en pantalla / Ilustraciones: "1 Mes después"
-    jump act2
+        # Reemplaza 5.0 por la duración total en segundos de tu archivo de video
+        $ renpy.pause(23.0, hard=True)
+
+        # Transición de salida suave de regreso al negro
+        scene black
+        with Dissolve(1.0)
+        pause 1.0
+        # Texto en pantalla / Ilustraciones: "1 Mes después"
+        jump act2
 
 ### ACTO 2 ###
 
