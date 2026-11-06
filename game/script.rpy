@@ -597,13 +597,8 @@ label entrance:
             "Ese alce parece estar viéndote con disgusto..."
             "Te gustaría tirarlo de su egocéntrico lugar"
             jump entrance_menu
-        "Revisar las escaleras":
-            "Ves dos escaleras que conducen hacia una segunda planta y una puerta en medio de estas"
-            menu:
-                "Subir a la segunda planta":
-                    jump planta_dos
-                "Quedarse en la planta baja":
-                    jump entrance_menu
+        "Subir las escaleras":
+            jump planta_dos
         "Regresar":
             jump where
 
@@ -744,7 +739,7 @@ label planta_dos:
     menu planta_dos_menu:
         "Ir a la Sala de estar" if not diario_leido:
             jump segunda_sala_estar
-        "Ir al Almacén de materiales" if not tiene_linterna:
+        "Ir al Almacén de materiales" if not tiene_linterna and diario_leido:
             jump almacen_materiales
         "Ir al Baño":
             jump bano_planta_dos
@@ -1080,6 +1075,7 @@ label act2:
             show yaga angry at right
             y "Bueno, ese trabajo no es suficiente"
             y "Como siempre, siendo torpe. ¡Ten más educación!"
+            hide roga
     
     show yaga talk at right
     y "En fin, chico"
@@ -1308,8 +1304,12 @@ label guest_room_5:
 label escape_attempt:
     $ tiene_llave_alce = True
     "Decides regresar a la entrada para ver la cabeza de alce"
+    scene Entrada1
+    with fade
     "La toqueteas, la mueves..."
     "..."
+    scene Entrada2
+    with fade
     "Agarras la llave escondida"
     "Ya puedes salir de aquí"
     "Te giras. Te centras en girar la perilla..."
@@ -1427,15 +1427,8 @@ label escape_choice:
     "Forcejeas. No eres tan débil como antes de venir a este lugar..."
     "Sientes las cuerdas ceder... hasta que por fin consigues caer torpemente encima del caldero. Usas tus piernas para no acabar dentro y te mueves a un costado"
     "Necesitas recuperar la llave, a cualquier costo"
-    "La anciana la debe tener. ¿Vas como estás, o robas un cuchillo de la mesa?"
-
-    menu:
-        "Llevar cuchillo":
-            $ tiene_cuchillo = True
-            "Que sea lo que Dios quiera"
-
-        "Confrontarla como estás":
-            $ tiene_cuchillo = False
+    "La anciana la debe tener, así que te llevas un cuchillo que está cerca"
+    $ tiene_cuchillo = True
 
     # Transición: Cocina con fuego
     "Yaga está de espaldas mientras intenta apagar el fuego"
