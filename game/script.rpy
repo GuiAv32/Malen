@@ -1512,7 +1512,7 @@ label stab_yaga:
 
     # Yaga cae muerta
     # FINAL: MATASTE TU MENTIRA
-    return
+    jump ending
 
 
 label threaten_yaga:
@@ -1598,4 +1598,59 @@ label final_dialogue_yaga:
     # Transición a la oscuridad y fin de la ruta
     scene black
     with fade
-    return
+    jump ending
+
+label ending:
+    scene black
+    with fade
+    if roga_vivo and yaga_viva:
+        "Todo salió mal"
+        "Te intentaron matar, te mintieron, y por eso, perdiste tu hogar"
+        "Creíste que todo estaría bien. Quisiste que todo estuviese bien"
+        "Y ese no fue el caso, no lo fue…"
+        "Sin embargo, no todo estuvo mal"
+        "No fue perfecto. No fue lo que querías."
+        "Pero sí fue algo"
+        "Y, de ese algo, aprendiste"
+        "Quieres vivir. Quieres seguir respirando. Quieres tener la oportunidad de conseguir esta misma felicidad en esta vida"
+        "Incluso si el Destino dice que morirás, incluso si tu… <abuela> lo creía"
+        "Porque, a diferencia de tu vida de antes, ahora sabes que alguien te puede amar"
+        "Y si puedes ser amado, pese a ser tú…"
+        "Entonces, sin duda, no eres insignificante"
+        return
+
+    else if not roga_vivo and yaga_viva:
+        "Ella perdió." 
+        "Sentada en la oscuridad, no es consciente de cómo le irá a ese muchacho"
+        "No deja de pensar que ya está condenado. Que no hay nada que pueda hacer por él más de lo intentó"
+        "Pero por primera vez, se da cuenta que eso está bien. Ella intentó a su manera, así que es turno de que uno de sus niños tome las decisiones por sí solo"
+        "Puede que haya pasado más tiempo controlando lo poco que podía del destino, en vez de permitirles a ellos intentar controlarlo…"
+        "Ella pasó tanto tiempo queriendo corregir un error del pasado…"
+        "Vengar a Su difunto hijo, a quien no pudo salvar y a quién hizo tanto daño intentando protegerlo de lo inevitable"
+        "Ahora, que por fin entiende que hay personas que luchan con uñas y dientes por salvarse a si mismos, sabe que le toca pagar por sus crímenes. Con una silenciosa muerte, la anciana acepta ser juzgado en el más allá por el hijo que no salvó y los niños a los que asesinó"
+        "Si con su muerte, logra brindarle a Malen una justicia que apoye su marcha…"
+        "Entonces, por una vez, su vida será menos insignificante"
+        return
+
+    else if roga_vivo and not yaga_viva:
+        "Entre las cenizas de su vieja cárcel, el Vampiro servil halla su libertad"
+        "La Bruja que le echó su maldición de esclavitud ha perecido, y, con ello, el contrato forzoso en su alma. Ya es libre de marchar"
+        "Sin embargo, aunque el monstruo no tenía cariño real a su dama, se lamenta"
+        "Ella murió por el niño a quien realmente quiso. Incluso para él, quién una vez asesinó a su verdadero hijo, siente que es una tragedia asquerosamente poética"
+        "Se marcha en la oscuridad, dejando este sitio tal como el niño lo hizo"
+        "Ambos, humano y no muerto, se han largado pensando una sola cosa…"
+        "Hoy, liberados de algún tipo de atadura, son menos insignificantes"
+        return
+    
+    else:
+        "Has abandonado todo"
+        "La Mansión, a tu sirviente, a tu abuela…"
+        "A tu humanidad"
+        "Y, ¿Qué? Ella te mintió, te mintió…"
+        "Y si ella, que realmente te Amó, te mintió, ¿Qué dice de tí?"
+        "Te mentirán incluso si te aman. Te intentarán matar incluso si te aman…"
+        "Y el destino, de por sí, no parece amarte"
+        "Sin embargo, descubriste que no quieres morir. Quieres vivir. Quieres vivir"
+        "Y aunque no sepas muy bien para qué quieres vivir, sí sabes algo…"
+        "Ahora, tu propia vida, ya no te parece tan insignificante"
+        return
