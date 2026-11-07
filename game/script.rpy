@@ -4,6 +4,7 @@ define y = Character("Baba Yaga", color = "#9B00A3")
 define r = Character("Baba Roga", color = "#0085A3")
 image malen = "images/Personajes/malen.png"
 image malen stand = "images/Personajes/malen stand.png"
+image malen sad = "images/Personajes/malen sad.png"
 image roga angry = "images/Personajes/roga angry.png"
 image roga mad = "images/Personajes/roga mad.png"
 image roga normal = "images/Personajes/roga normal.png"
@@ -830,7 +831,7 @@ label bano_planta_dos:
         "Es agua para asearte"
         "¿Siquiera... eso es posible?"  
         jump planta_dos
-    if diario_leido:
+    else:
         if TrasHuevo and not tiene_balde:
             "No es tiempo para una ducha"
             "Necesitas distraer a Roga"
@@ -839,15 +840,22 @@ label bano_planta_dos:
             "Agarras algo de agua"
             "Esto debe ser suficiente"
             $ tiene_balde = False
-            $tiene_balde_lleno = True
+            $ tiene_balde_lleno = True
             "¿Dónde sería buena idea tirarlo?"
             jump planta_dos
         if not TrasHuevo and not tiene_balde:
             "No es tiempo para una ducha, debes escapar de aquí"
             jump planta_dos
+        else:
+            "Agarras algo de agua"
+            "Esto debe ser suficiente"
+            $ tiene_balde = False
+            $ tiene_balde_lleno = True
+            "¿Ahora, para qué podría usar este balde lleno?"
+            jump planta_dos
+
         
 label dine:
-
     if diario_leido:    
         scene Comedor1
         with fade
@@ -1137,7 +1145,7 @@ label act2:
     # Transición: Cuarto del niño
     scene Dormitorio1
     with fade
-    show malen at center
+    show malen stand at center
     "Tras comer, te retiras a tu habitación"
     "Todas estas cosas... TUS cosas están aquí"
     "Nunca creíste que las tendrías"
@@ -1185,11 +1193,13 @@ label yaga_diary:
     # Transición: Sala / Niño arrodillado
     scene CuartoYaga
     with fade
+    show malen sad at truecenter
     "¿...Por qué...?"
     "¿Por qué?"
     "¿¡Por qué!?"
     "¿Por qué? ¿Por qué? ¿Por qué? ¿Por qué? ¿Por qué? ¿Por qué? ¿Por qué?"
     "...Necesitas escapar de aquí"
+    hide malen
 
     # Textos de pistas e interacciones de la fase de resolución
     "..."
@@ -1517,8 +1527,8 @@ label stab_yaga:
 
 
 label threaten_yaga:
-    show malen at left
-    show yaga shocked at center
+    show malen stand at left
+    show yaga shocked at right
 
     "Yaga está de espaldas intentando apagar el fuego, pero decides amenazarla"
     y "¡¿Qué!?"
@@ -1620,7 +1630,7 @@ label ending:
         "Entonces, sin duda, no eres insignificante"
         return
 
-    else if not roga_vivo and yaga_viva:
+    if not roga_vivo and yaga_viva:
         "Ella perdió." 
         "Sentada en la oscuridad, no es consciente de cómo le irá a ese muchacho"
         "No deja de pensar que ya está condenado. Que no hay nada que pueda hacer por él más de lo intentó"
@@ -1633,7 +1643,7 @@ label ending:
         "Entonces, por una vez, su vida será menos insignificante"
         return
 
-    else if roga_vivo and not yaga_viva:
+    if roga_vivo and not yaga_viva:
         "Entre las cenizas de su vieja cárcel, el Vampiro servil halla su libertad"
         "La Bruja que le echó su maldición de esclavitud ha perecido, y, con ello, el contrato forzoso en su alma. Ya es libre de marchar"
         "Sin embargo, aunque el monstruo no tenía cariño real a su dama, se lamenta"
