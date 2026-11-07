@@ -3,6 +3,7 @@ define m = Character("[name]", color = "#A30031")
 define y = Character("Baba Yaga", color = "#9B00A3")
 define r = Character("Baba Roga", color = "#0085A3")
 image malen = "images/Personajes/malen.png"
+image malen stand = "images/Personajes/malen stand.png"
 image roga angry = "images/Personajes/roga angry.png"
 image roga mad = "images/Personajes/roga mad.png"
 image roga normal = "images/Personajes/roga normal.png"
