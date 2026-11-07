@@ -86,6 +86,7 @@ default tiene_llave_huevo = False
 default visita_cuarto_3 = False
 default tiene_llave_alce = False
 default roga_vivo = True
+default yaga_viva = True
 default codigo_usado = False
 
 default TrasHuevo = 0
@@ -1191,6 +1192,7 @@ label yaga_diary:
     # Textos de pistas e interacciones de la fase de resolución
     "..."
     "A lo mejor no es buena idea salir del cuarto todavía. Pueden haber pistas"
+    play music "audio/efectos/Carruaje .mp3" volume 3.0 fadein 2.0
 
     menu clues:
         "Revisar más el diario":
@@ -1337,6 +1339,7 @@ label escape_attempt:
     show yaga talk at center
 
     y "Oh... Así que aquí estabas"
+    stop music fadeout 2.0
     scene red
     hide yaga
 
@@ -1474,6 +1477,7 @@ label stab_yaga:
     with fade
     y "¿Qu-qué? ¡Tú... tú!... ¿Cómo...?"
     hide yaga
+    $ yaga_viva = False
 
     if duda == 0:
         y ".... hk... hk"
