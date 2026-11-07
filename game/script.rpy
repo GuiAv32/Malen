@@ -629,6 +629,7 @@ label entrance:
 
 label roga_room:
     # En el cuarto de Baba Roga
+    play sound "audio/efectos/PuertaAbrir.mp3" volume 3.0
     scene CuartoRogaFoco
     with fade
     "Encuentras una serie de notas casi decorando el cuarto"
@@ -1641,7 +1642,7 @@ label ending:
         "Ambos, humano y no muerto, se han largado pensando una sola cosa…"
         "Hoy, liberados de algún tipo de atadura, son menos insignificantes"
         return
-    
+
     else:
         "Has abandonado todo"
         "La Mansión, a tu sirviente, a tu abuela…"
