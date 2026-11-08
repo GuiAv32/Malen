@@ -249,21 +249,25 @@ label act1:
     show yaga angry
     y "Disculpa mis modales. Mi sirviente, insolente y estúpido, no sabe cuándo respetar"
     hide yaga angry
-    show Yagasonrisa
+    show yagasonrisa
     y "Él será tu sirviente igual. Así que, si ves que desobedece. Dale un golpe"
     y "Mi parte favorita es su cabeza y su estómago"
     "???" "Mmmm… Ninguna de esas… es mi favorita…"
+    hide yagasonrisa
     show yaga talk
     y "A nadie le importa"
     y "Aunque eso sí. Debo saber, ¿Te has presentado como es debido, paleta blanca?"
     "???" "Noooo lo he hecho"
     "???" "Estaba conduciendo"
     play sound "audio/efectos/GruyidoYaga.mp3" volume 2.0
+    hide yaga talk
     show yaga talk
     y "Pudiste haberte presentado a la vez… como sea"
     y "El niño debe estar asustado"
+    hide yaga talk
     show yaga angry
     y "Él es Baba Roga. Como dije, es algo estúpido. Disculpa su falta de modales"
+    hide yaga angry
     show yaga talk
     y "Le comenté que buscase si había un necesitado en esta terrible época del año"
     y "Y, bueno, te halló a tí, por lo que veo"
@@ -275,12 +279,15 @@ label act1:
     "Es mejor que cualquier bolsa de basura que hayas encontrado"
     show yagasonrisa
     y "Oh, te es placentero, ¿eh?"
+    hide yagasonrisa
     show yaga_feliz
     y "Es un regalo para tí"
     y "La mansión es cálida, pero más vale prevenir que lamentar"
     y "En fin, lamento cómo procedió tu recibida"
+    hide yaga_feliz
     show yaga smile
     y "Y, sea como sea, sepas que eres bienvenido"
+    hide yaga smile
     show yaga_feliz
     y "Qué a todo esto, ¿cómo te llamas?"
 
@@ -297,28 +304,30 @@ label act1:
             else:
                 # Si pasa ambas validaciones, rompemos el bucle
                 break
-    
+    hide yaga_feliz
     show yagasonrisa
     y "¡Qué nombre tan bonito!"
     y "Y pensar que un alma como la tuya, acabaría desdichado en la calle…"
+    hide yagasonrisa
     show yaga smile
     y "¡Pero ya no será así!"
     y "Bienvenido seas a tu nuevo hogar"
     y "Siéntete como en casa"
     y "Al final y al cabo, lo será ahora"
     y "Oye, cara de poker"
-
+    hide yaga smile
     show roga talk at left
     r "No necesita llamarme así…"
     play sound "audio/efectos/GruyidoYaga.mp3" volume 2.0
+    hide roga talk
     show yaga talk at right
 
     y "Sí, sí. Perdona. Pero haz el favor de llevarlo a su nueva habitación"
-    hide yaga
+    hide yaga talk
 
     show roga talk at center
     r "Como ordene"
-    hide roga
+    hide roga talk
     scene Dormitorio
     with fade
     # Pantalla: Habitación
@@ -331,8 +340,8 @@ label act1:
     r "Ven al Comedor cuando tengas hambre… iré preparando la comida. Diviéeeertete explorando"
     r "Eso sí, no puedes ir a todos loooos lugares. Hay cerraduras para ello"
     r "Por tu seguridad… claro"
-    hide roga
-
+    hide roga talk
+    with fade
     # Personajes en Pantalla: Nadie
     "Pensar que este lugar es de verdad tuyo…te incomoda"
     "Debería ser fácil pensar que hay gato encerrado"
@@ -380,14 +389,15 @@ label kitchen:
         r "¿Mmmmmm?"
         r "¿Qué quiere, señorito [name]?"
         r "Ahora mismo estooooy ocupado" 
-        hide roga
+        hide roga talk
     else:
         play sound "audio/efectos/SuspiroRoga.mp3" volume 4.0
         show roga smile at center
         r "Oh… has venido conmiiiigo. Que… “encantador”"
+        hide roga smile
         show roga mad at center
         r "Disculpe. Estoy ocupadoooo en esto, querido huesped"
-        hide roga
+        hide roga mad
 
     if not diario_leido:
         menu roga_dial1:
@@ -395,13 +405,17 @@ label kitchen:
                 show roga talk at center
                 r "Uy… no"
                 r "No, no, no"
+                hide roga talk
                 show roga shocked at center
                 r "NUNCA"
+                hide roga shocked
                 show roga talk at center
                 r "Bueno, emmm"
+                hide roga talk
                 show roga normal at center
                 r "Disculpe la desafortunada confusión"
                 play sound "audio/efectos/SuspiroRoga.mp3" volume 3.0
+                hide roga normal
                 r "Mi señora es llamada “Baba Yaga” y a mí no me molesta llamarla así"
                 show roga smile at center
                 r "Pero la parte de “Baba” es solo por confundirla con mi “prometida” en el pueblo cercano"
@@ -411,9 +425,11 @@ label kitchen:
                 r "Me gusta hacerme justicia por los excesos de sus insultos…"
                 r "Así que, BABA YAGA, BABA YAGA"
                 y "¡TE ESCUCHO DESDE LA OTRA PUNTA DEL CASTILLO, SARANGANO DE PELOS MUERTOS!"
+                hide roga smile
                 show roga talk at center
                 r "..."
                 r "Uf, casi me escucha"
+                hide roga talk
                 jump roga_dial1
 
             "¿Uy, qué sopa haces? Huele bien":
@@ -424,6 +440,7 @@ label kitchen:
                 r "Y saborear. Sobre todo saborear"
                 r "Ahhhhh…"
                 r "Extraño mi juventud"
+                hide roga talk
                 jump roga_dial1
 
             "¿Por qué tan pálido?":
@@ -433,13 +450,14 @@ label kitchen:
                 r "La del sol, más que nada"
                 r "Aunque a veces un foco bieeeen potente me hace daño"
                 r "No te sorprendas por eso si ves que apago las luces a mi paso"
+                hide roga talk
                 jump roga_dial1
 
             "¡Adiós!":
                 play sound "audio/efectos/SuspiroRoga.mp3" volume 3.0
                 show roga smile at center
                 r "Chao, chico"
-                hide roga
+                hide roga smile
                 jump where
     else:
         if not tiro_agua:
@@ -485,26 +503,50 @@ label tower_A:
     # Cambiar la escena a los 3 libros
     scene Libros
     with fade
-    label tower_A_menu:
-        menu:
-            "Examinar 'La Odisea'":
-                "Abres el libro por el marcapáginas y lees un poco"
-                "Te cuesta mucho leer como para empezar con esto ahora, así que lo dejas tal como está"
-                jump tower_A_menu
-            "Examinar 'La Biblia'":
-                "Abres el libro por el marcapáginas y lees un poco"
-                "Pasas las hojas un momento"
-                "Te cuesta mucho leer como para empezar con esto ahora, así que la dejas tal como está"
-                jump tower_A_menu
-            "Examinar 'El Cíclope' de Eurípides":
-                "Abres el libro por el marcapáginas y lees un poco"
-                "Revisas las páginas de la obra de Eurípides"
-                "Te cuesta mucho leer como para empezar con esto ahora, así que lo dejas tal como está"
-                jump tower_A_menu
-            "Regresar":
-                scene SalaLeer
-                with fade
-                jump where
+
+    if not diario_leido:
+        label tower_A_menu:
+            menu:
+                "Examinar 'La Odisea'":
+                    "Abres el libro por el marcapáginas y lees un poco"
+                    "Te cuesta mucho leer como para empezar con esto ahora, así que lo dejas tal como está"
+                    jump tower_A_menu
+                "Examinar 'La Biblia'":
+                    "Abres el libro por el marcapáginas y lees un poco"
+                    "Pasas las hojas un momento"
+                    "Te cuesta mucho leer como para empezar con esto ahora, así que la dejas tal como está"
+                    jump tower_A_menu
+                "Examinar 'El Cíclope' de Eurípides":
+                    "Abres el libro por el marcapáginas y lees un poco"
+                    "Revisas las páginas de la obra de Eurípides"
+                    "Te cuesta mucho leer como para empezar con esto ahora, así que lo dejas tal como está"
+                    jump tower_A_menu
+                "Regresar":
+                    scene SalaLeer
+                    with fade
+                    jump where
+    else:
+        label tower_A_menu:
+            menu:
+                "Examinar 'La Odisea'":
+                    "Abres el libro por el marcapáginas y lees un poco"
+                    "Trata sobre las aventuras de un héroe"
+                    jump tower_A_menu
+                "Examinar 'La Biblia'":
+                    "Abres el libro por el marcapáginas y lees un poco"
+                    "Pasas las hojas un momento"
+                    "Trata sobre la religión cristiana, ¿así que de esto hablaban los Curas?"
+                    jump tower_A_menu
+                "Examinar 'El Cíclope' de Eurípides":
+                    "Abres el libro por el marcapáginas y lees un poco"
+                    "Revisas las páginas de la obra de Eurípides"
+                    "Relata sobre un monstruo siendo cegado por un héroe"
+                    jump tower_A_menu
+                "Regresar":
+                    scene SalaLeer
+                    with fade
+                    jump where
+
 
 label tower_B:
     # Pantalla: Armario
@@ -690,7 +732,7 @@ label roga_room:
         r "¿Saaaabes lo que nosotros...?"
         r "..."
         r "Lo... siento"
-        hide roga
+        hide roga shocked
 
         if tiene_linterna:
             menu:
@@ -702,14 +744,16 @@ label roga_room:
                     r "AGH, ¡No! ¿¡Por qué tú..!?"
                     r "No, por favor..."
                     r "Solo seguía... sus órdenes..."
-                    hide roga
+                    hide roga dead
                     "Rogas es calcinado delante tuyo"
                     "No sabías que tendría ese nivel de efecto...¿O sí?"
                     "Te da miedo responder a esa pregunta..."
                     scene Entrada1
                     with fade
                     "..."
-                    "Ya puedes mirar los cuartos de invitados"
+                    ".....No sabes qué pensar sobre tí"
+                    "..."
+                    "Ya puedes mirar los cuartos de invitados..."
                     $ roga_vivo = False
                 "Huir":
                     hide roga
@@ -752,9 +796,10 @@ label roga_room:
         r "A ella no puedo hacerle nada..."
         r "Ella es mi maestra"
         r "¿Peroooo a tí?"
+        hide roga talk
         show roga mad at center
         r "Me servirás para desestresarmeeee..."
-        hide roga
+        hide roga mad
 
         if tiene_linterna:
             scene black
@@ -762,12 +807,14 @@ label roga_room:
             "Baba Roga te amenaza, así que usas la linterna"
             scene white
             with fade
+            show roga dead at center
             "Es eficaz, lo oyes gritar"
             "Fue instintivo. Te iba a atacar..."
             "Aún así, te duele. No sabes si tenía sentido o no su furia..."
             r "Agh... agh..."
             "Baba Roga se retuerce. No puede hablar. Su piel se incendia..."
             ".. y termina por convertirse en polvo"
+            hide roga dead
             scene black
             with fade
             "..."
@@ -834,11 +881,11 @@ label segunda_sala_estar:
                 y "Por lo tanto, supongo que expío los pecados de mis congéneres."
                 y "Como sea, he estado esperando en el Comedor."
                 y "Ven cuando te sientas listo."
-
+                hide yaga smile
                 show yaga angry at center
                 y "El idiota de Roga es horrible, pero sabe hacer platillos... “decentes”"
 
-                hide yaga
+                hide yaga angry
                 "Baba Yaga se marcha."
                 jump planta_dos
 
@@ -961,12 +1008,14 @@ label dine:
             show yaga smile at center
             y "¡Bienvenido chico!"
             y "Te ves...feliz"
+            hide yaga smile
             show yaga shocked at center
             y "Un momento, en serio ¿Lo que veo ahí es una sonrisa?"
+            hide yaga shocked
             show yaga smile at center
             y "Jujujuju. ¡Qué chuecos tienes tus dienticos de leche!"
             y "Una gran diferencia para tu... “aspecto original”"
-            hide yaga
+            hide yaga smile
         # Caso 2: Si fue directo al comedor ($ rooms < 2)
         else:
             show yaga_feliz at center
@@ -975,20 +1024,24 @@ label dine:
             y "Pues bien, este es el comedor, querido"
             y "No recibimos muchas visitas, pero es una herencia de otros tiempos más lejanos"
             y "Lástima que nuestro “sirviente” no sea más competente por eso"
+            hide yaga_feliz
 
         # Personajes en Pantalla: Yaga, Roga
         play music "audio/Musica/Bourree .mp3" volume 1 fadein 1.0
         show yaga angry at right
         y "¡Oh, mira que te tardas, lenturro!"
+        hide yaga angry
         show roga talk at left
         r "Es lo que... hay... señora"
         r "Mi pierna no estáaaaaa en sus mejores días"
+        hide roga talk
         show yaga talk at right
         y "¿Y por eso el niño tendrá menos hambre?"
+        hide yaga talk
         show yaga angry at right
         y "¡Ya dale de comer!"
-        hide yaga
-        hide roga
+        hide yaga angry
+        hide roga talk
         stop music fadeout 2.0
         "Recibes el plato en tu mesa..."
         "Se ve sano"
@@ -1020,11 +1073,13 @@ label dine:
         show yaga smile at center
         y "Ya te sientes mejor, ¿no, muchacho?"
         y "¡No hay nada mejor que una sopa, un abrazo y un techo encima tuyo!"
+        hide yaga smile
         show yagatriste2 at right
         y "Sé que los jóvenes como tú tienden a costarles dejarse amar. No los culpo, las calles los han convertido en niños-adultos. Adultos rotos"
         y "No quiero que temas aquí"
         y "No eres el único niño que ha estado aquí"
         y "Siempre hay chiquillos como tú que merecen una oportunidad"
+        hide yagatriste2
         show roga smile at left
         r "Mi señora tieeeene razón, chico. Estás a salvo aquí"
         show yaga smile at right
