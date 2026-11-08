@@ -551,7 +551,7 @@ label tower_A:
 
 label tower_B:
     # Pantalla: Armario
-    if tiene_balde:
+    if tiene_balde or tiene_balde_lleno:
         scene CuboNot
         with fade
         "Ya no tienes nada que hacer aquí"
@@ -670,7 +670,6 @@ label tower_C:
                         with fade 
                         pause 5.0
                         play sound "audio/efectos/CaminarMadera.mp3"
-                        play sound "audio/efectos/PuertaAbrir.mp3"
                         $ tiene_llave_huevo = True
                         jump roga_room
 
@@ -712,6 +711,7 @@ label entrance:
 
 label roga_room:
     # En el cuarto de Baba Roga
+    play sound "audio/efectos/PuertaAbrir.mp3"
     stop music
     scene CuartoRogaFoco
     with fade
@@ -1800,7 +1800,6 @@ label threaten_yaga:
 label threat_choice_1:
     menu:
         "Apuñalarla":
-            hide yagatriste1
             jump stab_yaga1
         "Volver a amenazarla":
             jump threat_level_2
@@ -1811,13 +1810,14 @@ label threat_level_2:
 
     menu:
         "Apuñalarla":
-            hide yagatriste1
             jump stab_yaga2
         "Volver a amenazarla":
             jump threat_level_3
 
 label stab_yaga1:
-    
+    $ yaga_viva = False
+    hide yagatriste1
+    with None
     "Aprovechas que se acercó a tí"
     "Sacas el cuchillo y se lo clavas en el pecho"
     show yaga bleed
@@ -1844,7 +1844,9 @@ label stab_yaga1:
     jump ending
 
 label stab_yaga2:
-    
+    $ yaga_viva = False
+    hide yagatriste1
+    with None
     "Aprovechas su estado emocional"
     "Sacas el cuchillo y se lo clavas en el pecho"
     show yaga bleed
