@@ -1865,6 +1865,7 @@ label stab_yaga2:
     y "..."
     y "¿{b}Malen{/b}?"
     y "...... no sé si te sienta bien... o terriblemente mal..."
+    $ yaga_viva = False
     hide yaga bleed
     stop music
     jump ending
