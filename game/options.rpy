@@ -31,9 +31,9 @@ define config.version = "1.0"
 ## comillas triples y deja una línea en blanco entre párrafos.
 
 define gui.about = _p("""
-    Licencias libres de Música procedente de Youtube Studio
-    Licencias libres de efectos de sonidos procedentes de Pixabay
-    Fondos generados usando Google Gemini
+    Licencias libres de Música procedente de Youtube Studio\n
+    Licencias libres de efectos de sonidos procedentes de Pixabay\n
+    Fondos generados usando Google Gemini y ChatGPT\n
     Personajes y arte de cinemáticas creado por nosotros
 """)
 
