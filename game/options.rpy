@@ -209,7 +209,7 @@ init python:
 ## Play, en "Monetizar" > "Configuración de la monetización" > "Licencias".
 
 # define build.google_play_key = "..."
-
+define build.windows_icon = "icon.ico"
 
 ## Los nombres de usuario y de proyecto asociados con un proyecto itch.io,
 ## separados por una barra.
