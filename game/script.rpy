@@ -209,7 +209,7 @@ label start:
     with fade
     play music "audio/Musica/Impertinence.mp3" volume 1.0 fadein 1.0
     show yaga smile
-    with fade
+    with dissolve
     # Personajes en Pantalla: Yaga
     y "Hola, mi buen mozo,  mi nombre es Yaga. Pero a algunos les gusta llamarme Baba Yaga"
 
@@ -341,7 +341,7 @@ label act1:
     r "Eso sí, no puedes ir a todos loooos lugares. Hay cerraduras para ello"
     r "Por tu seguridad… claro"
     hide roga talk
-    with fade
+    with dissolve
     # Personajes en Pantalla: Nadie
     "Pensar que este lugar es de verdad tuyo…te incomoda"
     "Debería ser fácil pensar que hay gato encerrado"
@@ -526,22 +526,22 @@ label tower_A:
                     with fade
                     jump where
     else:
-        label tower_A_menu:
+        label tower_A_menu2:
             menu:
                 "Examinar 'La Odisea'":
                     "Abres el libro por el marcapáginas y lees un poco"
                     "Trata sobre las aventuras de un héroe"
-                    jump tower_A_menu
+                    jump tower_A_menu2
                 "Examinar 'La Biblia'":
                     "Abres el libro por el marcapáginas y lees un poco"
                     "Pasas las hojas un momento"
                     "Trata sobre la religión cristiana, ¿así que de esto hablaban los Curas?"
-                    jump tower_A_menu
+                    jump tower_A_menu2
                 "Examinar 'El Cíclope' de Eurípides":
                     "Abres el libro por el marcapáginas y lees un poco"
                     "Revisas las páginas de la obra de Eurípides"
                     "Relata sobre un monstruo siendo cegado por un héroe"
-                    jump tower_A_menu
+                    jump tower_A_menu2
                 "Regresar":
                     scene SalaLeer
                     with fade
@@ -1287,16 +1287,16 @@ label act2:
     show yaga angry at right
     y "Tú, sirviente, más te vale empezar con la preparación de la cena"
     hide yaga angry
-    with fade
+    with dissolve
     show yaga_feliz
     show roga talk at left
     r "Como ordene..."
     y "Bien, bien. ¡Chaito, mi niño!"
     hide roga talk
-    with fade
+    with dissolve
 
     hide yaga_feliz
-    with fade
+    with dissolve
 
     stop music fadeout 2.0
 
@@ -1304,6 +1304,7 @@ label act2:
     scene Dormitorio1
     with fade
     show malen stand at center
+    with dissolve
     "Tras comer, te retiras a tu habitación"
     "Todas estas cosas... TUS cosas están aquí"
     "Nunca creíste que las tendrías"
@@ -1314,7 +1315,7 @@ label act2:
     "La prueba definitiva para todo"
     "Que sea lo que Dios quiera..."
     hide malen
-    with fade
+    with dissolve
 
     scene black
     with fade
@@ -1610,7 +1611,7 @@ label escape_attempt:
     y "..."
     y "¡ESE IDIOTAAAAAAA!"
     hide yaga shocked
-    with fade
+    with dissolve
 
     # Yaga se va
     "Se está quemando algo. Debe ser por la cocina de Roga"
@@ -1724,7 +1725,7 @@ label threaten_yaga:
     show malen stand at left
     "Yaga está de espaldas intentando apagar el fuego, pero decides amenazarla"
     show yaga shocked at right
-    with fade
+    with dissolve
     y "¡¿Qué!?"
     y "¡Cómo es coff escapaste?"
     y "Tú…"
@@ -1781,6 +1782,7 @@ label threat_level_3:
 
 
 label final_dialogue_yaga:
+
     y "..."
     y "... Te lamentarás"
     show yagatriste2 at center
