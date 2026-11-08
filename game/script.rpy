@@ -1818,18 +1818,56 @@ label threat_level_2:
 
 label stab_yaga1:
     
+    "Aprovechas que se acercó a tí"
+    "Sacas el cuchillo y se lo clavas en el pecho"
+    show yaga bleed
+    y "¡!"
+    y "¿Q-qué?"
+    y "¿Por...por qué?"
+    y "¡HK!¡ahgg!"
+    y "..."
+    y "Merecía esto... lo merecía"
+    y "... jo..."
+    y "Sé que lo merezco, pero... ¿Por qué...?"
+    y "¿Por qué tengo tanto miedo?"
+    y "......."
+    y "Ja..."
+    y "Nunca pude confiar en ayudarte... igual que tú nunca pudiste confiarme tu verdadero nombre..."
+    y ".... [name], no fue nunca tu verdadero nombre. Lo sabía...en el fondo...lo sabía"
+    y "¿Puedes decirme tu verdadero nombre? Por favor..."
+    y "Es lo único que...quisiera saber antes de....de..."
+    y "...."
+    y "¿{b}Malen{/b}?"
+    y "..... Es... un bonito nombre..."
+    hide yaga bleed
+    stop music
+    jump ending
+
+label stab_yaga2:
     
-
-
-
-
-
-
-
-
-
-
-
+    "Aprovechas su estado emocional"
+    "Sacas el cuchillo y se lo clavas en el pecho"
+    show yaga bleed
+    y "¡!"
+    y "¿Q-qué?"
+    y "¡NO!¿Qué haz...?"
+    y "¡HK!¡ahgg!"
+    y "Pensaba que tú... en el fondo... me querías..."
+    y "Tú... tú..."
+    y "Al final... sí que te volviste tan cruel cómo yo..."
+    y ".... de verdad...que no sirvo como madre..."
+    y "....tú...hiciste bien en no confiar en mí..."
+    y "Pero...... Puedes decirme tu verdadero nombre, ¿por favor, [name]?"
+    y "Sé que [name] no es tu verdadero nombre...me mentiste en eso..."
+    y "Lo sabía...pero...sentía que no tenía derecho a saberlo de por sí..."
+    y "....."
+    y "¿Qué...? ¿Me dirás tu verdadero nombre?"
+    y "..."
+    y "¿{b}Malen{/b}?"
+    y "...... no sé si te sienta bien... o terriblemente mal..."
+    hide yaga bleed
+    stop music
+    jump ending
 
 label threat_level_3:
     hide malen
